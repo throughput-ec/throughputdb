@@ -31,3 +31,12 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
+
+# Sublime files:
+neo4j_docker.sublime-workspace
+neo4j_docker.sublime-project
+
+# AWS Files
+rootkey.csv
+Throughput-Marketplace-Key.pem
+
