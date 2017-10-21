@@ -1,0 +1,224 @@
+---
+title: "Throughput Database Case Studies"
+author: "Simon Goring"
+date: "October 13, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+Throughput is designed to facilitate the transmission of schientific cultural knowledge around data resources to assist interdisciplinary research.  We want to move anecdotal information about records from the lab to the cloud.  The goal of this document is to highlight several key case studies that inform the development of the data resource, by caturing key use patterns.
+
+## Technology Background
+
+At present the Throughput DB stack is at the proof of concept stage, but much of the technological infrastructure has been chosen with the data model and architecture at the forefront of the design decisions.
+
+### API First Development
+
+The Throughoput Database is intended as a back-end service to link data resources.  As such investment in UI/UX design is less important at this stage than investment in a well developed API.  The API will have `POST` and `GET` methods, roughly mapping to:
+
+```
+GET  resource
+     body
+     target
+POST annotation
+```
+
+The `GET` methods will return data objects representing the resources associated with the annotation engine (the data repositories), the annotation bodies, supporting, for example, keyword searches *&cetera*, and target related searches, generally querying DOIs or other UIDs.
+
+### neo4j
+
+The linked nature of the data suggests that a graph database would provide the greatest support for the data model.  Here we envision several node and link types, including `person`, `resource`, `thing` data types (using the W3C Annotation and [schema.org]() data models).  Targets and Bodies would be identified through graph relationships, for example:
+
+<img src=images/simplest_annotation.svg>
+
+By ensuring that bodies and targets have a common node type we can then ensure that annotation bodies themselves can be annotated.  `neo4j` has a number of packages to support Java, JavaScript, R and other programming languages.  This means that development of the API itself can be platform agnostic, thus, replication of the database and development of a new interface should provide the ability to fork the project easily.
+
+### Docker
+
+Docker containers act to isolate a set of system components from the underlying architecture.  Given this setup it is possible to run a system with the same custom components on a local system, a remote server, or on a collaborators system.  We use a container configured for `neo4j` using the `neo4j:3.0` container, and run using a `yaml` configuration file that points the neo4j browser to port 17474.  This way it doesn't interfere with any local instances of neo4j.
+
+### W3C Standards
+
+## Case Studies
+
+```{r}
+library(RNeo4j)
+
+pass <- readr::read_lines('../auth.log')
+
+con <- RNeo4j::startGraph("http://localhost:17474/db/data/", username = pass[1], pass[2])
+
+cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+
+source('R/link_record.R')
+
+```
+
+### Individual Focused Annotation
+
+#### An Individual Annotates One or Several Records.
+
+In this instance, a researcher working on a project has discovered an issue with a single, or several datasets within a resource.  This issue may not be an error *per se* or a deficiency with the dataset, but may simply be an artifact of methodological or disciplinary-related procedures.  Thus, the annotation helps indicate that special steps may be required to process the data, or may indicate reasons why the data may be an outlier in analysis.
+
+##### Duplicate analytic layers in Neotoma
+
+In sedimentary pollen analysis it may be the case that a researcher counts multiple slides at a single depth.  In many cases these counts are summed and reported as a single value, but it may be the case that they are reported independently.  For a researcher unfamiliar with pollen analysis this may result in confusion, particularly when counts differ.  Thus, an individual encountering this issue for the first time may wish to annotate a single record.
+
+In this case, the annotator, Simon Goring (orcid: [0000-0002-2700-4605](http://orcid.org/0000-0002-2700-4605)) creates a text annotation that targets the dataset object from Neotoma.  Given this structure we generate a graph to indicate this relationship.  Once generated as part of the larger graph and API system, the annotation can be served as part of a query relating to a number of factors.
+
+```{r}
+
+creator <- list(URL = '0000-0002-2700-4605',
+               PropertyID = 'orcid',
+               firstName = 'Simon',
+               lastName = 'Goring')
+
+body <- list(type = "TextualBody",
+             value = "Two samples counted at the same depth (x=94cm) with the same ages.  It seems like these samples are two separate counts at the same depth and may be summed during analysis.")
+
+target <- list(type = "URL",
+               value = "http://api.neotomadb.org/v1/data/datasets/13047")
+
+source <- list(type = "URL",
+               value = "http://doi.org/10.17616/R3PD38")
+
+link_record(con = con, 
+            creator = creator, 
+            body = body, 
+            target = target)
+
+```
+
+```{r echo=FALSE}
+
+```
+
+##### An individual links datasets to a publication
+
+In many cases, datasets may be used in multiple publications.  Some data resources can track this resuse, but many rely on self-reporting, and this oftenresults in incomplete data.  It may also be the case that tracking data reuse is beyond the scope of the data resource.  Thus, linking resources to publications through anotation provides a service for the data resources, but also for subsequent researchers.  Here a data user annotates datasets used in one of their publications:
+
+```{r}
+
+all_neot <- neotoma::get_dataset()
+
+all_matched <- readr::read_csv('../../stepps-baconizing/data/input/blois_files/2011-01-06-all.matched.lp.sites.csv')
+
+ds_names <- sapply(all_neot, function(x) x$dataset.meta$collection.handle)
+
+blois_sets <- sapply(match(all_matched$Handle, ds_names),
+                     function(x) {
+                       if (!is.na(x)) {
+                         return(list(type = 'Dataset',
+                                     value = paste0('http://api.neotomadb.org/v1/data/datasets/', 
+                                       all_neot[[x]]$dataset.meta$dataset.id)))
+                       } else {
+                         return(NA)
+                       }
+                     })
+
+names(blois_sets) <- rep('body', length(blois_sets))
+
+for (i in length(blois_sets):1) {
+  if (any(is.na(blois_sets[[i]]))) {
+    blois_sets[[i]] <- NULL
+  }
+}
+
+creator <- list(URL = '0000-0003-4048-177X',
+                PropertyID = 'orcid',
+                lastName = 'Blois',
+                firstName = 'Jessica')
+
+target <- blois_sets
+
+body <- list(body = list(type='TextualBody',
+             value ='Age models rebuilt with new biostratigraphic markers.'),
+             body = list(type = 'ScholarlyArticle',
+                         value='http://dx.doi.org/10.1016/j.quascirev.2011.04.017'))
+
+source <- list(type = "URL",
+               value = "http://doi.org/10.17616/R3PD38")
+
+link_record(con = con, creator = creator, body = body, target = target)
+
+```
+
+**Figure Goes Here**
+
+#### An individual scripts a tool to link resources
+
+In this case a user has written a script to link a data resource, and the R package written for that resource, to resources in GitHub.  The intention here is to survey ways in which the data resource is being used in analytic workflows.
+
+```{r}
+ropensci_registry <- fromJSON("https://raw.githubusercontent.com/ropensci/roregistry/master/registry.json")
+
+packages <- ropensci_registry$packages$name
+
+search_strings <- list(neotoma = list(doi = '10.17616/R3PD38',
+                                      search = 'library(neotoma)+in:file+language:R'),
+                       dryad = list(doi = '10.17616/R34S33',
+                                    search = 'library(rdryad)+in:file+language:R'))
+
+gh_token <- scan('gh.token', what = 'character')
+
+test_pks <- list()
+
+for (i in i:length(packages)) { 
+  
+  # I had to serialize this to avoid getting caught by GitHub's abuse detection.
+  
+  x <- packages[i]
+  
+  Sys.sleep(5) # This is probably longer than it needs to be. . . 
+  
+  repos <- gh(paste0('/search/code?q=library(',x,')+in:file+language:R+extension:R+extension:Rmd'), 
+                   .token = gh_token)
+       
+  test_pks[[i]] <- list(target = lapply(unique(sapply(repos$items, function(x)x$repository$html_url)), 
+                                        function(y) { list(body = y, type = 'URL')}),
+                        body = list(body = lapply(paste0('http://github.com/ropensci/',x), 
+                                                  function(y) { list(type = 'URL', body = y) })),
+                                    body = list(type = "TextAnnotation",
+                                                body = paste0("The GitHub repository uses the package ",
+                                                              x," in a `library()` call.")),
+                        creator = list(URL = '0000-0002-2700-4605',
+                                       PropertyID = 'orcid',
+                                       lastName = 'Goring',
+                                       firstName = 'Simon'),
+                        body_rel = list(type = 'URL',
+                                        URL = 'https://ropensci.org/'))
+  cat(i, '\n')
+}
+
+for(i in 1:length(test_pks)) {
+  link_record(con = con,
+              creator = test_pks[[i]]$creator,
+              body = test_pks[[i]]$body,
+              target = test_pks[[i]]$target,
+              body_rel = test_pks[[i]]$body_rel)
+}
+
+results <- cypher(con, 'MATCH (bod:body)<-[:hasBody]-(:annotation)-[:hasTarget]->(n:target)<-[:hasTarget]-(:annotation)-[:hasBody]->(bod1:body) WHERE bod<>bod1 RETURN DISTINCT bod.body AS package, COLLECT(DISTINCT n.body) AS repos;')
+
+```
+
+### A resource annotates records
+
+There may be occasions where a script, written by an individual, but associated with a resource, may annotate records.  For example, Neotoma and the Paleobiology Database share certain records, but this may not be entirely apparent, or one database may use a script or workflow to improve geolocation of data resources from historical papers.  In this case it may be useful to annotate records to either identify links across resources, or to identify any post-processing that has occurred within the resource.
+
+#### Data resource linking
+
+```{r}
+example()
+```
+
+#### Data resource modification
+
+Neotoma contains a large number of paleoecological records obtained from lake sediment.  The lakes are identified by name and location is reported using latitude and longitude coordinates.  Data publication for records in Neotoma spans nearly 60 years (**check**), and, as such, the earliest reported locations often had low precision, either rounding when locations were reported as DMS, or as a result of uncertainty when reporting location based on the use of topographic maps.
+
+A recent project by Neotoma resulted in the conversion of locations within the database.  Some lake sites had coordinates changed, some sites were unchanged, but additional informaton was added to the resources (for example, original publications were checked and it was not possible to correct the location).
