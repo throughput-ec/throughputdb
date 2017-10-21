@@ -1,0 +1,8 @@
+##docker-compose.yml
+neo4j:
+  image: neo4j:3.0
+  ports:
+   - "17474:7474"
+  volumes:
+   - /media/simon/DATA3/throughputdb/data:/data
+   - /media/simon/DATA3/throughputdb/logs:/logs
