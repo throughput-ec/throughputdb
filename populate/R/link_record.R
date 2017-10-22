@@ -60,7 +60,7 @@ link_record <- function(creator,
   # Add the body element, one or multiple supported.  As per the W3C parameters there
   # is no order in the body elements.
   
-  add_body <- "MERGE (bod:body {type: {type}, value:{value}})
+  add_body <- "MERGE (bod:object {type: {type}, value:{value}})
                MERGE (ann:annotation {created:{create_time}, uid:{uid}})
                MERGE (bod)<-[:hasBody]-(ann)"
   
@@ -86,10 +86,10 @@ link_record <- function(creator,
     }
   }
   
-  add_target <- "MERGE (tar:target {type: {type}, value:{value}})
+  add_target <- "MERGE (tar:object {type: {type}, value:{value}})
                  MERGE (ann:annotation {created:{create_time}, uid:{uid}})
                  MERGE (tar)<-[:hasTarget]-(ann)
-                 MERGE (res:resource {type: {type}, value:{value}})
+                 MERGE (res:object {type: {type_r}, value:{value_r}, class: 'Resource'})
                  MERGE (tar)-[:hasRes]->(res)"
   
   if (!is.null(target)) {
@@ -97,6 +97,8 @@ link_record <- function(creator,
       
       target$create_time <- create_time
       target$uid         <- uid
+      target$type_r      <- source$type
+      target$value_r     <- source$value
       
       appendCypher(neo_trans,
                    add_target,
@@ -106,6 +108,8 @@ link_record <- function(creator,
       for (i in 1:length(target)) {
         target[[i]]$create_time <- create_time
         target[[i]]$uid         <- uid
+        target[[i]]$type_r      <- source$type
+        target[[i]]$value_r     <- source$value
         
         appendCypher(neo_trans,
                      add_target,
