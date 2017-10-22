@@ -12,9 +12,12 @@ This repository contains the raw code for the neo4j Docker container, test data 
 
 ## Using this Repository
 
-This repository contains a bash script called `dockrun.sh` that can be executed to initialize the container.  Currently most of the settings for the neo4j image are default, with the exception of the locations for the data and log files, along with setting the upper page file limit for the database.  To initialize the database and docker instance simply run:
+This repository contains a `yaml` file to use with `docker-compose`.  Include the `docker-compose` file with the resource and you will be able to then use the command `docker-compose up neo4j` to initiate a container named `neo4j` on your system.
 
 ```coffeescript
-> bash dockrun.sh
+> docker-compose up neo4j
 ```
 
+## Graph examples
+
+This is intended to indicate the types of relationships that can be generated with the database.  We use a simple data model at present.
