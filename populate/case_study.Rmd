@@ -2,7 +2,9 @@
 title: "Throughput Database Case Studies"
 author: "Simon Goring"
 date: "October 13, 2017"
-output: html_document
+output: 
+  html_document:
+    self_contained: false
 ---
 
 ```{r setup, include=FALSE}
@@ -44,16 +46,17 @@ Docker containers act to isolate a set of system components from the underlying 
 
 ### W3C Standards
 
+In general this model contains only four key elements.  An annotation, which is effectively an empty node used to link elements, a body and target are both the same node type, this allows an annotation body to be a target in and of itself.
+
 ## Case Studies
 
 ```{r}
 library(RNeo4j)
+library(networkD3)
 
 pass <- readr::read_lines('../auth.log')
 
 con <- RNeo4j::startGraph("http://localhost:17474/db/data/", username = pass[1], pass[2])
-
-cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
 
 source('R/link_record.R')
 
@@ -73,6 +76,8 @@ In this case, the annotator, Simon Goring (orcid: [0000-0002-2700-4605](http://o
 
 ```{r}
 
+cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+
 creator <- list(URL = '0000-0002-2700-4605',
                PropertyID = 'orcid',
                firstName = 'Simon',
@@ -84,27 +89,60 @@ body <- list(type = "TextualBody",
 target <- list(type = "URL",
                value = "http://api.neotomadb.org/v1/data/datasets/13047")
 
-source <- list(type = "URL",
-               value = "http://doi.org/10.17616/R3PD38")
+source <- list(type = "DOI",
+               value = "10.17616/R3PD38")
 
 link_record(con = con, 
             creator = creator, 
             body = body, 
-            target = target)
+            target = target,
+            source = source)
 
 ```
 
-```{r echo=FALSE}
+<div align='center'>
+```{r echo=FALSE, fig.align = 'center', fig.width = 4, fig.caption = 'Simple graph network for a single creator generating a single annotation, related to the Neotoma Database.'}
+nodes <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN DISTINCT ID(n1) AS id, LABELS(n1) AS type, '24' AS size")
+
+edges <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN ID(n1) AS source, ID(n2) AS target, type(r1) AS type")
+
+fd_data <- data.frame(source = (0:(nrow(nodes)-1))[match(edges$source, nodes$id)],
+                      target = (0:(nrow(nodes)-1))[match(edges$target, nodes$id)],
+                      rel    = edges$type)
+
+forceNetwork(Links = fd_data, 
+             Nodes = nodes, 
+             Source = 'source', 
+             Target = 'target', 
+             Value = 'rel',
+             NodeID = 'type',
+             Group = 'type',
+             Nodesize = 'size',
+             height = 150,
+             width = 150,
+             opacity = 1,
+             colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"))
 
 ```
+
+</div>
 
 ##### An individual links datasets to a publication
 
 In many cases, datasets may be used in multiple publications.  Some data resources can track this resuse, but many rely on self-reporting, and this oftenresults in incomplete data.  It may also be the case that tracking data reuse is beyond the scope of the data resource.  Thus, linking resources to publications through anotation provides a service for the data resources, but also for subsequent researchers.  Here a data user annotates datasets used in one of their publications:
 
-```{r}
+```{r add_blois}
 
-all_neot <- neotoma::get_dataset()
+cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+
+if('all_ds.rds' %in% list.files('data')) {
+  all_neot <- readRDS('data/all_ds.rds')
+} else {
+  all_neot <- neotoma::get_dataset()
+  saveRDS(all_neot, 'data/all_ds.rds')
+}
 
 all_matched <- readr::read_csv('../../stepps-baconizing/data/input/blois_files/2011-01-06-all.matched.lp.sites.csv')
 
@@ -115,13 +153,13 @@ blois_sets <- sapply(match(all_matched$Handle, ds_names),
                        if (!is.na(x)) {
                          return(list(type = 'Dataset',
                                      value = paste0('http://api.neotomadb.org/v1/data/datasets/', 
-                                       all_neot[[x]]$dataset.meta$dataset.id)))
+                                                     all_neot[[x]]$dataset.meta$dataset.id)))
                        } else {
                          return(NA)
                        }
                      })
 
-names(blois_sets) <- rep('body', length(blois_sets))
+names(blois_sets) <- rep('target', length(blois_sets))
 
 for (i in length(blois_sets):1) {
   if (any(is.na(blois_sets[[i]]))) {
@@ -136,25 +174,166 @@ creator <- list(URL = '0000-0003-4048-177X',
 
 target <- blois_sets
 
+# Multiple body elements:
 body <- list(body = list(type='TextualBody',
-             value ='Age models rebuilt with new biostratigraphic markers.'),
+                         value ='Age models rebuilt with new biostratigraphic markers.'),
              body = list(type = 'ScholarlyArticle',
                          value='http://dx.doi.org/10.1016/j.quascirev.2011.04.017'))
 
-source <- list(type = "URL",
-               value = "http://doi.org/10.17616/R3PD38")
+source <- list(type = "DOI",
+               value = "10.17616/R3PD38")
 
-link_record(con = con, creator = creator, body = body, target = target)
+link_record(con = con, 
+            creator = creator, 
+            body = body, 
+            target = target,
+            source = source)
 
 ```
 
-**Figure Goes Here**
+<div align='center'>
+```{r echo=FALSE, fig.width = 4, fig.caption = 'Simple graph network for a single creator generating a single annotation, related to the Neotoma Database.'}
 
-#### An individual scripts a tool to link resources
+nodes <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN DISTINCT ID(n1) AS id, LABELS(n1) AS type, '12' AS size")
+
+edges <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN ID(n1) AS source, ID(n2) AS target, type(r1) AS type")
+
+fd_data <- data.frame(source = (0:(nrow(nodes)-1))[match(edges$source, nodes$id)],
+                      target = (0:(nrow(nodes)-1))[match(edges$target, nodes$id)],
+                      rel    = edges$type)
+
+forceNetwork(Links = fd_data,
+             Nodes = nodes,
+             Source = 'source',
+             Target = 'target',
+             Value = 'rel',
+             NodeID = 'type',
+             Group = 'type',
+             Nodesize = 'size',
+             height = 300,
+             width = 300,
+             opacity = 1,
+             colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"))
+
+```
+
+</div>
+
+### Data resource linking
+
+Here we have two records, one, a set of pollen records from Neotoma, the other a set of records within the Arctic Data Center.  In this first code block, a researcher (Jack Williams) notes that a set of records added to the Arctic Data Center are linked to a publication in PNAS.
+
+```{r add_ads}
+
+cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+
+creator <- list(URL = '0000-0001-6046-9634',
+               PropertyID = 'orcid',
+               firstName = 'John',
+               lastName = 'Williams')
+
+body <- list(body = list(type = 'AnnotationText',
+                         value = 'All resources linked by publication and project as part of the St Paul\'s project.'),
+             body = list(type = 'ScholarlyArticle',
+                         value = '10.1073/pnas.1604903113'))
+
+target <- list(target = list(type = 'DOI',
+                             value = '10.18739/A27N5S'),
+               target = list(type = 'DOI',
+                             value = '10.18739/A2X68N'),
+               target = list(type = 'DOI',
+                             value = '10.18739/A2MH0X'))
+
+source <- list(type = 'DOI',
+               value = '10.17616/R37P98')
+
+link_record(con = con, 
+            creator = creator, 
+            body = body, 
+            target = target,
+            source = source)
+
+```
+
+These records are also in Neotoma, and, as such, these records can be linked in any number of ways.  Here, Simon Goring links the resources by noting that one of the Arctic Data records represents the same physical object as the pollen object within Neotoma:
+
+```{r}
+
+creator <- list(URL = '0000-0002-2700-4605',
+               PropertyID = 'orcid',
+               firstName = 'Simon',
+               lastName = 'Goring')
+
+body <- list(body = list(type = 'AnnotationText',
+                         value = 'The Neotoma record has a set of geophysical data recorded in the Arctic Data Center.  It\'s all part of the same analysis.'),
+             body = list(type = 'DOI',
+                         value = '10.18739/A27N5S'))
+
+target <- list(target = list(type = 'URL',
+                             value = 'http://apps.neotomadb.org/explorer/?datasetid=20188'))
+
+source <- list(type = "DOI",
+               value = "10.17616/R3PD38")
+
+link_record(con = con, 
+            creator = creator, 
+            body = body, 
+            target = target,
+            source = source)
+
+```
+
+This then produces the following graph:
+
+<div align='center'>
+```{r echo=FALSE, fig.align = 'center', fig.width = 4, fig.caption = 'Two annotations linked through the database model, providing greater insight into the records.'}
+
+nodes <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN DISTINCT ID(n1) AS id, LABELS(n1) AS type, '12' AS size")
+
+edges <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN ID(n1) AS source, ID(n2) AS target, type(r1) AS type")
+
+fd_data <- data.frame(source = (0:(nrow(nodes)-1))[match(edges$source, nodes$id)],
+                      target = (0:(nrow(nodes)-1))[match(edges$target, nodes$id)],
+                      rel    = edges$type)
+
+forceNetwork(Links = fd_data, 
+             Nodes = nodes, 
+             Source = 'source', 
+             Target = 'target', 
+             Value = 'rel',
+             NodeID = 'type',
+             Group = 'type',
+             Nodesize = 'size',
+             height = 300,
+             width = 300,
+             opacity = 1,
+             colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"))
+
+```
+
+</div>
+
+#### Data resource modification
+
+Neotoma contains a large number of paleoecological records obtained from lake sediment.  The lakes are identified by name and location is reported using latitude and longitude coordinates.  Data publication for records in Neotoma spans nearly 60 years (**check**), and, as such, the earliest reported locations often had low precision, either rounding when locations were reported as DMS, or as a result of uncertainty when reporting location based on the use of topographic maps.
+
+A recent project by Neotoma resulted in the conversion of locations within the database.  Some lake sites had coordinates changed, some sites were unchanged, but additional informaton was added to the resources (for example, original publications were checked and it was not possible to correct the location).
+
+
+### A resource annotates records
+
+There may be occasions where a script, written by an individual, but associated with a resource, may annotate records.  For example, Neotoma and the Paleobiology Database share certain records, but this may not be entirely apparent, or one database may use a script or workflow to improve geolocation of data resources from historical papers.  In this case it may be useful to annotate records to either identify links across resources, or to identify any post-processing that has occurred within the resource.
+
+
+### An individual scripts a tool to link resources
 
 In this case a user has written a script to link a data resource, and the R package written for that resource, to resources in GitHub.  The intention here is to survey ways in which the data resource is being used in analytic workflows.
 
-```{r}
+```
 ropensci_registry <- fromJSON("https://raw.githubusercontent.com/ropensci/roregistry/master/registry.json")
 
 packages <- ropensci_registry$packages$name
@@ -207,18 +386,3 @@ results <- cypher(con, 'MATCH (bod:body)<-[:hasBody]-(:annotation)-[:hasTarget]-
 
 ```
 
-### A resource annotates records
-
-There may be occasions where a script, written by an individual, but associated with a resource, may annotate records.  For example, Neotoma and the Paleobiology Database share certain records, but this may not be entirely apparent, or one database may use a script or workflow to improve geolocation of data resources from historical papers.  In this case it may be useful to annotate records to either identify links across resources, or to identify any post-processing that has occurred within the resource.
-
-#### Data resource linking
-
-```{r}
-example()
-```
-
-#### Data resource modification
-
-Neotoma contains a large number of paleoecological records obtained from lake sediment.  The lakes are identified by name and location is reported using latitude and longitude coordinates.  Data publication for records in Neotoma spans nearly 60 years (**check**), and, as such, the earliest reported locations often had low precision, either rounding when locations were reported as DMS, or as a result of uncertainty when reporting location based on the use of topographic maps.
-
-A recent project by Neotoma resulted in the conversion of locations within the database.  Some lake sites had coordinates changed, some sites were unchanged, but additional informaton was added to the resources (for example, original publications were checked and it was not possible to correct the location).
