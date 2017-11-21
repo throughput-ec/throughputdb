@@ -5,6 +5,10 @@ date: "October 13, 2017"
 output: 
   html_document:
     self_contained: false
+    css: css/sjg_markdown.css
+    code_folding: hide
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -36,7 +40,7 @@ The `GET` methods will return data objects representing the resources associated
 
 The linked nature of the data suggests that a graph database would provide the greatest support for the data model.  Here we envision several node and link types, including `person`, `resource`, `thing` data types (using the W3C Annotation and [schema.org]() data models).  Targets and Bodies would be identified through graph relationships, for example:
 
-<img src=images/simplest_annotation.svg>
+<img src=images/simplest_annotation.svg align='center' class='box curveshdw'>
 
 By ensuring that bodies and targets have a common node type we can then ensure that annotation bodies themselves can be annotated.  `neo4j` has a number of packages to support Java, JavaScript, R and other programming languages.  This means that development of the API itself can be platform agnostic, thus, replication of the database and development of a new interface should provide the ability to fork the project easily.
 
@@ -48,19 +52,53 @@ Docker containers act to isolate a set of system components from the underlying 
 
 In general this model contains only four key elements.  An annotation, which is effectively an empty node used to link elements, a body and target are both the same node type, this allows an annotation body to be a target in and of itself.
 
+#### Body, Target and Annotation
+
+<blockquote>An annotation	is considered	to be	a	set	of connected resources,	typically	including	a	body	and	target,	and	conveys that the body	is related to the	target.	The	exact	nature of	this relationship	changes	according	to the intention of the annotation,	but	the	body is	most frequently	somehow	"about" the	target.</blockquote>
+
+[W3C Annotation Standards](https://www.w3.org/annotation/)
+
+In general, this model works for the kind of annotations we want to discuss.  For example:
+
+  * An individual makes a note about a data record  [note - annotates - record]
+  * An individual tags a data record with some keywords [keywords - annotate - record]
+  * A dataset is related to an existing grant [grant # - annotates - record]
+  
+In each of these cases, the annotation (the note, the keywords or the grant) are used to supplement the information of the underlying dataset.  We consider this a "data-focused" annotation system, so the data record is most commonly the object being annotated.  It is possible that an annotation can itself be annotated, or the body of an annotation.
+
+An annotation assumes that each body applies to each target equally.  This may not be the case, for example, we may want to generate an annotation for a dataset that both links it to a record from another database, and explains why the records are being linked.  In this case, neither of the body elements can be considered independent of one another with respect to the target since the text must reference the URI and the URI relationship is not clear until addressed by the text annotation.
+
+The OpenAnnotation standards provide the concept of a [Composite](http://www.openannotation.org/spec/core/multiplicity.html#Composite).  In this case, the two body elements can be bound together, indicating that they must be considered in connection to one another, and then linked to the annotation.
+
+`body:(composite:((body1)(body2)))-annotation-target:()`
+
+##### Annotation Properties
+
+The annotation requires some secondary information if we are going to manage annotations across the data lifecycle.  These include the `creator`, the `created` date/time stamp, the `generator`, the agent responsible for generating the reference, the date in which the serialization was `generated`, and then, potentially, `modified`.
+
+##### Body Properties
+
+A body contains the information relavent to the annotation.  It may link to a target singly, or as part of a composite (see above).  
+
 ## Case Studies
 
-```{r}
+```{r loaddb, echo=FALSE, warning=FALSE}
+
 library(RNeo4j)
 library(networkD3)
+library(throughputdbr)
 
 pass <- readr::read_lines('../auth.log')
 
 con <- RNeo4j::startGraph("http://localhost:17474/db/data/", username = pass[1], pass[2])
 
-source('R/link_record.R')
-
 ```
+
+### Cross-Database Annotation
+
+### Linking Projects to Presentations - AGU 2017
+
+This is empty right now. ToDo
 
 ### Individual Focused Annotation
 
@@ -74,34 +112,40 @@ In sedimentary pollen analysis it may be the case that a researcher counts multi
 
 In this case, the annotator, Simon Goring (orcid: [0000-0002-2700-4605](http://orcid.org/0000-0002-2700-4605)) creates a text annotation that targets the dataset object from Neotoma.  Given this structure we generate a graph to indicate this relationship.  Once generated as part of the larger graph and API system, the annotation can be served as part of a query relating to a number of factors.
 
-```{r}
+```{r dupLayers, echo=TRUE, warning=FALSE, results='hide'}
 
-cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+clear_gph <- function(x) {
+  cypher(x, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+}
 
-creator <- list(URL = '0000-0002-2700-4605',
-               PropertyID = 'orcid',
-               firstName = 'Simon',
-               lastName = 'Goring')
+clear_gph(con)
 
-body <- list(type = "TextualBody",
-             value = "Two samples counted at the same depth (x=94cm) with the same ages.  It seems like these samples are two separate counts at the same depth and may be summed during analysis.")
+user <- creator(identifier = '0000-0002-2700-4605',
+                PropertyID = 'orcid',
+                 firstName = 'Simon',
+                  lastName = 'Goring')
 
-target <- list(type = "URL",
-               value = "http://api.neotomadb.org/v1/data/datasets/13047")
+body <- object(type = "TextualBody",
+               value = paste0("Two samples counted at the same depth (x=94cm) with the same ages. ",
+                              "It seems like these samples are two separate counts at the same depth ",
+                              "and may be summed during analysis."))
 
-source <- list(type = "DOI",
-               value = "10.17616/R3PD38")
+target <- object(type = "URL",
+                 value = "http://api.neotomadb.org/v1/data/datasets/13047")
 
-link_record(con = con, 
-            creator = creator, 
-            body = body, 
-            target = target,
-            source = source)
+source <- object(type = "DOI",
+                 value = "10.17616/R3PD38")
+
+link_record(      con = con, 
+            generator = user, 
+                 body = body, 
+               target = target,
+               source = source)
 
 ```
 
-<div align='center'>
-```{r echo=FALSE, fig.align = 'center', fig.width = 4, fig.caption = 'Simple graph network for a single creator generating a single annotation, related to the Neotoma Database.'}
+<div class='box curveshdw' align='center'>
+```{r echo=FALSE, fig.align = 'center', fig.width = 4, fig.caption = 'Simple graph network for a single creator generating a single annotation, related to the Neotoma Database.', warning=FALSE}
 nodes <- cypher(con, "MATCH (n1)-[r1]-(n2)
                       RETURN DISTINCT ID(n1) AS id, LABELS(n1) AS type, '24' AS size")
 
@@ -120,10 +164,12 @@ forceNetwork(Links = fd_data,
              NodeID = 'type',
              Group = 'type',
              Nodesize = 'size',
-             height = 150,
-             width = 150,
+             fontSize = 14,
+             height = 600,
+             width = 600,
              opacity = 1,
-             colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"))
+             colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"),
+             legend = TRUE)
 
 ```
 
@@ -133,9 +179,9 @@ forceNetwork(Links = fd_data,
 
 In many cases, datasets may be used in multiple publications.  Some data resources can track this resuse, but many rely on self-reporting, and this oftenresults in incomplete data.  It may also be the case that tracking data reuse is beyond the scope of the data resource.  Thus, linking resources to publications through anotation provides a service for the data resources, but also for subsequent researchers.  Here a data user annotates datasets used in one of their publications:
 
-```{r add_blois}
+```{r add_blois, echo=TRUE, warning=FALSE, message=FALSE, results='hide'}
 
-cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+clear_gph(con)
 
 if('all_ds.rds' %in% list.files('data')) {
   all_neot <- readRDS('data/all_ds.rds')
@@ -151,48 +197,46 @@ ds_names <- sapply(all_neot, function(x) x$dataset.meta$collection.handle)
 blois_sets <- sapply(match(all_matched$Handle, ds_names),
                      function(x) {
                        if (!is.na(x)) {
-                         return(list(type = 'Dataset',
-                                     value = paste0('http://api.neotomadb.org/v1/data/datasets/', 
+                         return(object(type = 'URL',
+                                       value = paste0('http://api.neotomadb.org/v1/data/datasets/', 
                                                      all_neot[[x]]$dataset.meta$dataset.id)))
                        } else {
                          return(NA)
                        }
                      })
 
-names(blois_sets) <- rep('target', length(blois_sets))
-
-for (i in length(blois_sets):1) {
-  if (any(is.na(blois_sets[[i]]))) {
-    blois_sets[[i]] <- NULL
-  }
-}
-
-creator <- list(URL = '0000-0003-4048-177X',
-                PropertyID = 'orcid',
-                lastName = 'Blois',
-                firstName = 'Jessica')
+creator <- creator(identifier = '0000-0003-4048-177X',
+                   PropertyID = 'orcid',
+                   lastName = 'Blois',
+                   firstName = 'Jessica')
 
 target <- blois_sets
 
-# Multiple body elements:
-body <- list(body = list(type='TextualBody',
-                         value ='Age models rebuilt with new biostratigraphic markers.'),
-             body = list(type = 'ScholarlyArticle',
-                         value='http://dx.doi.org/10.1016/j.quascirev.2011.04.017'))
+for (i in length(target):1) {
+  if (!class(target[[i]]) == 'object') {
+    target[[i]] <- NULL
+  }
+}
 
-source <- list(type = "DOI",
-               value = "10.17616/R3PD38")
+# Multiple body elements:
+body <- list(object( type = 'TextualBody',
+                    value = 'Age models rebuilt with new biostratigraphic markers.'),
+             object( type = 'DOI',
+                    value = '10.1016/j.quascirev.2011.04.017'))
+
+source <- object(type = "DOI",
+                value = "10.17616/R3PD38")
 
 link_record(con = con, 
-            creator = creator, 
+            generator = creator, 
             body = body, 
             target = target,
             source = source)
 
 ```
 
-<div align='center'>
-```{r echo=FALSE, fig.width = 4, fig.caption = 'Simple graph network for a single creator generating a single annotation, related to the Neotoma Database.'}
+<div class='box curveshdw' align='center'>
+```{r blois_graph, echo=FALSE, fig.width = 4, fig.caption = 'Simple graph network for a single creator generating a single annotation, related to the Neotoma Database.'}
 
 nodes <- cypher(con, "MATCH (n1)-[r1]-(n2)
                       RETURN DISTINCT ID(n1) AS id, LABELS(n1) AS type, '12' AS size")
@@ -212,8 +256,8 @@ forceNetwork(Links = fd_data,
              NodeID = 'type',
              Group = 'type',
              Nodesize = 'size',
-             height = 300,
-             width = 300,
+             height = 600,
+             width = 600,
              opacity = 1,
              colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"))
 
@@ -223,62 +267,62 @@ forceNetwork(Links = fd_data,
 
 ### Data resource linking
 
-Here we have two records, one, a set of pollen records from Neotoma, the other a set of records within the Arctic Data Center.  In this first code block, a researcher (Jack Williams) notes that a set of records added to the Arctic Data Center are linked to a publication in PNAS.
+Here we have two records, one, a set of pollen records from Neotoma, the other a set of records within the Arctic Data Center.  In this first code block, a researcher (Jack Williams, University of Wisconsin) notes that a set of records added to the Arctic Data Center are linked to a publication in PNAS:
 
-```{r add_ads}
+```{r add_ads, echo=TRUE, warning=FALSE, message=FALSE, results='hide'}
 
-cypher(con, 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;')
+clear_gph(con)
 
-creator <- list(URL = '0000-0001-6046-9634',
-               PropertyID = 'orcid',
-               firstName = 'John',
-               lastName = 'Williams')
+creator <- creator(identifier = '0000-0001-6046-9634',
+                   PropertyID = 'orcid',
+                    firstName = 'John',
+                     lastName = 'Williams')
 
-body <- list(body = list(type = 'AnnotationText',
-                         value = 'All resources linked by publication and project as part of the St Paul\'s project.'),
-             body = list(type = 'ScholarlyArticle',
-                         value = '10.1073/pnas.1604903113'))
+body <- list(object(type = 'annotationText',
+                   value = 'All resources linked by publication and project as part of the St Paul\'s project.'),
+             object(type = 'DOI',
+                   value = '10.1073/pnas.1604903113'))
 
-target <- list(target = list(type = 'DOI',
-                             value = '10.18739/A27N5S'),
-               target = list(type = 'DOI',
-                             value = '10.18739/A2X68N'),
-               target = list(type = 'DOI',
-                             value = '10.18739/A2MH0X'))
+target <- list(object(type = 'DOI',
+                     value = '10.18739/A27N5S'),
+               object(type = 'DOI',
+                     value = '10.18739/A2X68N'),
+               object(type = 'DOI',
+                     value = '10.18739/A2MH0X'))
 
-source <- list(type = 'DOI',
-               value = '10.17616/R37P98')
+source <- object(type = 'DOI',
+                value = '10.17616/R37P98')
 
 link_record(con = con, 
-            creator = creator, 
+            generator = creator, 
             body = body, 
             target = target,
             source = source)
 
 ```
 
-These records are also in Neotoma, and, as such, these records can be linked in any number of ways.  Here, Simon Goring links the resources by noting that one of the Arctic Data records represents the same physical object as the pollen object within Neotoma:
+Some of the records linked by Dr. Williams are also in Neotoma, and, as such, these records can be linked in any number of ways. In this case, Simon Goring links the resources by noting that one of the Arctic Data Center records represents the same physical object (it's the same core) as the pollen object within Neotoma:
 
-```{r}
+```{r neotoma_to_ads, echo=TRUE, warning=FALSE, message=FALSE, results='hide'}
 
-creator <- list(URL = '0000-0002-2700-4605',
-               PropertyID = 'orcid',
-               firstName = 'Simon',
-               lastName = 'Goring')
+creator <- creator(identifier = '0000-0002-2700-4605',
+                   PropertyID = 'orcid',
+                    firstName = 'Simon',
+                     lastName = 'Goring')
 
-body <- list(body = list(type = 'AnnotationText',
-                         value = 'The Neotoma record has a set of geophysical data recorded in the Arctic Data Center.  It\'s all part of the same analysis.'),
-             body = list(type = 'DOI',
-                         value = '10.18739/A27N5S'))
+body <- list(object(type = 'annotationText',
+                   value = 'The Neotoma record has a set of geophysical data recorded in the Arctic Data Center.  It\'s all part of the same analysis.'),
+             object(type = 'DOI',
+                   value = '10.18739/A27N5S'))
 
-target <- list(target = list(type = 'URL',
-                             value = 'http://apps.neotomadb.org/explorer/?datasetid=20188'))
+target <- object(type = 'URL',
+                value = 'http://apps.neotomadb.org/explorer/?datasetid=20188')
 
-source <- list(type = "DOI",
-               value = "10.17616/R3PD38")
+source <- object(type = "DOI",
+                value = "10.17616/R3PD38")
 
 link_record(con = con, 
-            creator = creator, 
+            generator = creator, 
             body = body, 
             target = target,
             source = source)
@@ -287,8 +331,8 @@ link_record(con = con,
 
 This then produces the following graph:
 
-<div align='center'>
-```{r echo=FALSE, fig.align = 'center', fig.width = 4, fig.caption = 'Two annotations linked through the database model, providing greater insight into the records.'}
+<div class='box curveshdw' align='center'>
+```{r ads_neotoma_graph, echo=FALSE, fig.align = 'center', fig.width = 4, fig.caption = 'Two annotations linked through the database model, providing greater insight into the records.'}
 
 nodes <- cypher(con, "MATCH (n1)-[r1]-(n2)
                       RETURN DISTINCT ID(n1) AS id, LABELS(n1) AS type, '12' AS size")
@@ -308,8 +352,8 @@ forceNetwork(Links = fd_data,
              NodeID = 'type',
              Group = 'type',
              Nodesize = 'size',
-             height = 300,
-             width = 300,
+             height = 600,
+             width = 600,
              opacity = 1,
              colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"))
 
@@ -317,72 +361,137 @@ forceNetwork(Links = fd_data,
 
 </div>
 
+In this way, the dataset, through this graph, is now connected to the publication indirectly.  There is no requirement that the database add this information, it can be discovered through the annotation engine API.  
+
 #### Data resource modification
 
 Neotoma contains a large number of paleoecological records obtained from lake sediment.  The lakes are identified by name and location is reported using latitude and longitude coordinates.  Data publication for records in Neotoma spans nearly 60 years (**check**), and, as such, the earliest reported locations often had low precision, either rounding when locations were reported as DMS, or as a result of uncertainty when reporting location based on the use of topographic maps.
 
 A recent project by Neotoma resulted in the conversion of locations within the database.  Some lake sites had coordinates changed, some sites were unchanged, but additional informaton was added to the resources (for example, original publications were checked and it was not possible to correct the location).
 
+For this exercise we rely on a single annotation that can connect the neotoma data objects resources to a script, a csv table and a text annotation.
 
 ### A resource annotates records
 
 There may be occasions where a script, written by an individual, but associated with a resource, may annotate records.  For example, Neotoma and the Paleobiology Database share certain records, but this may not be entirely apparent, or one database may use a script or workflow to improve geolocation of data resources from historical papers.  In this case it may be useful to annotate records to either identify links across resources, or to identify any post-processing that has occurred within the resource.
 
-
 ### An individual scripts a tool to link resources
 
 In this case a user has written a script to link a data resource, and the R package written for that resource, to resources in GitHub.  The intention here is to survey ways in which the data resource is being used in analytic workflows.
 
-```
-ropensci_registry <- fromJSON("https://raw.githubusercontent.com/ropensci/roregistry/master/registry.json")
+```{r ropensci_links, echo=TRUE, warning=FALSE, message=FALSE, results='hide'}
+
+clear_gph(con)
+
+ropensci_registry <- jsonlite::fromJSON("https://raw.githubusercontent.com/ropensci/roregistry/master/registry.json")
 
 packages <- ropensci_registry$packages$name
 
-search_strings <- list(neotoma = list(doi = '10.17616/R3PD38',
-                                      search = 'library(neotoma)+in:file+language:R'),
-                       dryad = list(doi = '10.17616/R34S33',
-                                    search = 'library(rdryad)+in:file+language:R'))
-
 gh_token <- scan('gh.token', what = 'character')
 
-test_pks <- list()
+if('all_github.rds' %in% list.files('data')) {
+  test_pks <- readRDS('data/all_github.rds')
+} else {
+  test_pks <- list()  
+}
 
-for (i in i:length(packages)) { 
+script_home <- 'https://github.com/throughput-ec/throughputdb/blob/master/populate/case_study.Rmd'
+
+for (i in 1:length(packages)) { 
   
   # I had to serialize this to avoid getting caught by GitHub's abuse detection.
   
   x <- packages[i]
   
-  Sys.sleep(5) # This is probably longer than it needs to be. . . 
   
-  repos <- gh(paste0('/search/code?q=library(',x,')+in:file+language:R+extension:R+extension:Rmd'), 
-                   .token = gh_token)
+  if (!length(test_pks) >= i) {
+    Sys.sleep(5) # This is probably longer than it needs to be. . . 
+
+    repos <- gh::gh(paste0('/search/code?q=library(',x,
+                           ')+in:file+language:R+extension:R+extension:Rmd'), 
+                     .token = gh_token)
        
-  test_pks[[i]] <- list(target = lapply(unique(sapply(repos$items, function(x)x$repository$html_url)), 
-                                        function(y) { list(body = y, type = 'URL')}),
-                        body = list(body = lapply(paste0('http://github.com/ropensci/',x), 
-                                                  function(y) { list(type = 'URL', body = y) })),
-                                    body = list(type = "TextAnnotation",
-                                                body = paste0("The GitHub repository uses the package ",
-                                                              x," in a `library()` call.")),
-                        creator = list(URL = '0000-0002-2700-4605',
-                                       PropertyID = 'orcid',
-                                       lastName = 'Goring',
-                                       firstName = 'Simon'),
-                        body_rel = list(type = 'URL',
-                                        URL = 'https://ropensci.org/'))
+    annotation_text <- paste0("The GitHub repository uses the package ",
+                              x, " in a `library()` or `require()` call.")
+    
+    repo_list <- unique(sapply(repos$items, function(x)x$repository$html_url))
+    
+    target_list <- lapply(repo_list,
+                          function(y) { 
+                            if(length(repo_list) > 0) {
+                              return(object(value = y, type = 'URL')) 
+                              } else { return(NULL) }
+                            }
+                          )
+    
+    if (length(target_list) > 0) {
+    
+      test_pks[[i]] <- list(
+        target = target_list,
+        body = list(object(value = paste0('http://github.com/ropensci/',x), 
+                                     type = 'URL'),
+                    object( type = "annotationText",
+                           value = annotation_text),
+                    object(type = 'URL',
+                          value = script_home)),
+        generator = creator(identifier = '0000-0002-2700-4605',
+                                    PropertyID = 'orcid',
+                                      lastName = 'Goring',
+                                     firstName = 'Simon'),
+                body_rel = object(type = 'URL',
+                                 value = 'https://ropensci.org/'),
+                source = object(type = 'URL',
+                                value = 'http://github.com'))
+    } else {
+      test_pks[[i]] <- list()
+    }
+  }
+  
+  if (length(test_pks[[i]]) > 0) {
+    
+    link_record(con,
+                target = test_pks[[i]]$target,
+                  body = test_pks[[i]]$body,
+             generator = test_pks[[i]]$generator,
+              body_rel = test_pks[[i]]$body_rel,
+                source = test_pks[[i]]$source)
+  }
+  
+  saveRDS(object = test_pks, file = 'data/all_github.rds')
   cat(i, '\n')
+  
 }
-
-for(i in 1:length(test_pks)) {
-  link_record(con = con,
-              creator = test_pks[[i]]$creator,
-              body = test_pks[[i]]$body,
-              target = test_pks[[i]]$target,
-              body_rel = test_pks[[i]]$body_rel)
-}
-
-results <- cypher(con, 'MATCH (bod:body)<-[:hasBody]-(:annotation)-[:hasTarget]->(n:target)<-[:hasTarget]-(:annotation)-[:hasBody]->(bod1:body) WHERE bod<>bod1 RETURN DISTINCT bod.body AS package, COLLECT(DISTINCT n.body) AS repos;')
 
 ```
+
+<div class='box curveshdw' align='center'>
+
+```{r ropensci_graph, echo=FALSE, fig.align = 'center', fig.width = 4, fig.caption = 'rOpenSci package use within the GitHub environment.'}
+
+nodes <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN DISTINCT ID(n1) AS id, LABELS(n1) AS type, '12' AS size LIMIT 300")
+
+edges <- cypher(con, "MATCH (n1)-[r1]-(n2)
+                      RETURN ID(n1) AS source, ID(n2) AS target, type(r1) AS type LIMIT 300")
+
+fd_data <- data.frame(source = (0:(nrow(nodes)-1))[match(edges$source, nodes$id)],
+                      target = (0:(nrow(nodes)-1))[match(edges$target, nodes$id)],
+                      rel    = edges$type)
+
+forceNetwork(Links = fd_data, 
+             Nodes = nodes, 
+             Source = 'source', 
+             Target = 'target', 
+             Value = 'rel',
+             NodeID = 'type',
+             Group = 'type',
+             Nodesize = 'size',
+             height = 600,
+             width = 600,
+             opacity = 1,
+             colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"))
+
+```
+
+</div>
 

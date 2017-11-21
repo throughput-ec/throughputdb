@@ -1,0 +1,71 @@
+@import url('http://fonts.googleapis.com/css?family=Roboto:400,700');
+@import url('http://fonts.googleapis.com/css?family=Droid+Serif');
+
+body {background:#ccc}
+
+body {
+  font-family: 'Droid Serif', serif;
+}
+h1 {
+  font-family: 'Roboto';
+  font-weight: 500;
+  line-height: 1.1;
+  color: #48ca3b;
+}
+h2 {
+  font-family: 'Roboto';
+  font-weight: 300;
+  line-height: 1;
+  color: #48ca3b;
+}
+
+.box h3{
+  text-align:center;
+    position:relative;
+    top:80px;
+}
+.box {
+    width:70%;
+    height:200px;
+    background:#FFF;
+    margin:40px auto;
+}
+
+/*==================================================
+ * Effect 2
+ * ===============================================*/
+.curveshdw
+{
+  position: relative;
+}
+.curveshdw:before, .curveshdw:after
+{
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  top: 80%;
+  max-width:300px;
+  background: #777;
+  -webkit-box-shadow: 0 15px 10px #777;
+  -moz-box-shadow: 0 15px 10px #777;
+  box-shadow: 0 15px 10px #777;
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -o-transform: rotate(-3deg);
+  -ms-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}
+.curveshdw:after
+{
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  transform: rotate(3deg);
+  right: 10px;
+  left: auto;
+}
+
