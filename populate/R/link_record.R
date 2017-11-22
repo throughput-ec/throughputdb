@@ -2,16 +2,22 @@
 #' @title Link Records
 #' @description Links records within the graph database using an annotation model.
 #' @author Simon Goring
-#' @param creator A list containing (at minimum)
+#' @param creator A list containing (at minimum) a single element, representing a person.
+#' @param body An (optional) object of class \code{object}, with parameters \code{type} and \code{body}.
+#' @param body_rel An (optional) object of class \code{object}, which acts as a parent for the body element, for example, a database from which the \code{body} is drawn.
+#' @param target The \code{object} that is being annotated.  May be a single object or a list of \code{object}s.
+#' @param target_rel An (optional) object of class \code{object}, which acts as a parent for the body element, for example, a database from which the \code{body} is drawn.
 #' @description This function generates a graph that links bodies to targets, and adds the resources from which the post is made.
 #' @importFrom assertthat::assert_that
 #' @import RNeo4j
+#' 
 link_record <- function(creator, 
                         body = NULL, 
                         body_rel = NULL, 
                         target, 
                         target_rel = NULL, 
                         source = NULL,
+                        body_composite = FALSE,
                         con) {
 
   assertthat::assert_that(is(creator, "list"))
