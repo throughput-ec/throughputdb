@@ -1,32 +1,43 @@
 @import url('http://fonts.googleapis.com/css?family=Roboto:400,700');
 @import url('http://fonts.googleapis.com/css?family=Droid+Serif');
 
-body {background:#ccc}
-
 body {
   font-family: 'Droid Serif', serif;
 }
+
 h1 {
   font-family: 'Roboto';
   font-weight: 500;
   line-height: 1.1;
-  color: #48ca3b;
+  color: #ffffff;
+  background-color: #337ab7;
+  padding:10px;
 }
+
 h2 {
   font-family: 'Roboto';
   font-weight: 300;
   line-height: 1;
-  color: #48ca3b;
+  color: #6ca9ea;
 }
 
-.box h3{
-  text-align:center;
-    position:relative;
-    top:80px;
+h3 {
+  font-family: 'Roboto';
+  font-weight: 200;
+  line-height: 1;
+  color: #6ca9ea;
 }
+
+
+h4 {
+  font-family: 'Roboto';
+  font-weight: 150;
+  line-height: 1;
+  color: #6ca9ea;
+}
+
 .box {
     width:70%;
-    height:200px;
     background:#FFF;
     margin:40px auto;
 }
