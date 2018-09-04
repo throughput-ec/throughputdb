@@ -245,7 +245,7 @@ div.tocify {
 
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p>Throughput is designed to facilitate the transmission of schientific cultural knowledge around data resources to assist interdisciplinary research. We want to move anecdotal information about records from the lab to the cloud. The goal of this document is to highlight several key case studies that inform the development of the data resource, by caturing key use patterns.</p>
+<p>Throughput is designed to facilitate the transmission of scientific cultural knowledge around data resources to assist interdisciplinary research. We want to move anecdotal information about records from the lab to the cloud where it can be accessed via API for wider use. The goal of this document is to highlight several key case studies that inform the development of the data resource, by caturing key use patterns.</p>
 </div>
 <div id="technology-background" class="section level2">
 <h2>Technology Background</h2>
@@ -261,7 +261,7 @@ POST annotation</code></pre>
 </div>
 <div id="neo4j" class="section level3">
 <h3>neo4j</h3>
-<p>The linked nature of the data suggests that a graph database would provide the greatest support for the data model. Here we envision several node and link types, including <code>person</code>, <code>resource</code>, <code>thing</code> data types (using the W3C Annotation and <a href="">schema.org</a> data models). Targets and Bodies would be identified through graph relationships, for example:</p>
+<p>The linked nature of the data suggests that a graph database would provide the greatest support for the data model. Here we envision several node and link types, including <code>person</code>, <code>resource</code>, <code>thing</code> data types (using the <a href="https://www.w3.org/TR/annotation-model/">W3C Annotation</a> and <a href="https://schema.org/">schema.org</a> data models). Targets and Bodies would be identified through graph relationships, for example:</p>
 <p><img src=images/simplest_annotation.svg align='center' class='box curveshdw'></p>
 <p>By ensuring that bodies and targets have a common node type we can then ensure that annotation bodies themselves can be annotated. <code>neo4j</code> has a number of packages to support Java, JavaScript, R and other programming languages. This means that development of the API itself can be platform agnostic, thus, replication of the database and development of a new interface should provide the ability to fork the project easily.</p>
 </div>
