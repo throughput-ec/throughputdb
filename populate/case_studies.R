@@ -14,7 +14,7 @@ library(stringi)
 orcid <- data.frame(simon = "orcid.org/0000-0002-2700-4605",
                     jessica = "orcid.org/0000-0003-4048-177X")
 
-neotoma <- "http://doi.org/10.17616/R3PD38"
+neotoma <- "https://doi.org/10.17616/R3PD38"
 
 # Simon finds a core:
 
@@ -72,7 +72,7 @@ target <- blois_sets
 body <- list(body = list(type='TextualBody',
              value ='Age models rebuilt with new biostratigraphic markers.'),
              body = list(type = 'ScholarlyArticle',
-                         value='http://dx.doi.org/10.1016/j.quascirev.2011.04.017'))
+                         value='https://doi.org/10.1016/j.quascirev.2011.04.017'))
 
 link_record(con = con, creator = creator, body = body, target = target)
 

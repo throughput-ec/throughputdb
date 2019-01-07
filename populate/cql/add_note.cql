@@ -1,5 +1,5 @@
 CREATE (ann:annotation {created: timestamp()})
-WITH [{type:"TextualBody",value:"Age models rebuilt with new biostratigraphic markers."},{type:"ScholarlyArticle",value:"http://dx.doi.org/10.1016/j.quascirev.2011.04.017"}] as prop, ann
+WITH [{type:"TextualBody",value:"Age models rebuilt with new biostratigraphic markers."},{type:"ScholarlyArticle",value:"https://doi.org/10.1016/j.quascirev.2011.04.017"}] as prop, ann
 UNWIND prop AS bodyprop
 MERGE (bod:body {type:bodyprop.type, value:bodyprop.value})
 MERGE (ann)<-[annotates:annotates]-(bod)
