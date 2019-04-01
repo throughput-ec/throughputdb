@@ -1,0 +1,9 @@
+["https://www.iana.org/assignments/media-types/application.csv"
+ "https://www.iana.org/assignments/media-types/audio.csv",
+ "https://www.iana.org/assignments/media-types/font.csv",
+ "https://www.iana.org/assignments/media-types/image.csv",
+"https://www.iana.org/assignments/media-types/message.csv",
+"https://www.iana.org/assignments/media-types/model.csv",
+"https://www.iana.org/assignments/media-types/multipart.csv",
+"https://www.iana.org/assignments/media-types/text.csv",
+"https://www.iana.org/assignments/media-types/video.csv"]

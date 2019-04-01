@@ -1,0 +1,11 @@
+{
+  "type": [
+    "Person",
+    "Organization",
+    "Software"
+  ],
+  "name": null,
+  "nickname": null,
+  "email": null,
+  "homepage": null
+}
