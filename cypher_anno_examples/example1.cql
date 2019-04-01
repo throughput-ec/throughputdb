@@ -1,0 +1,6 @@
+MERGE (ob:OBJECT {id: "http://example.org/post1"})
+ON CREATE SET ob.created = timestamp()
+CREATE (ob)<-[b:Body]-(a:ANNOTATION { created: timestamp() })
+MERGE (ot:OBJECT {id: "http://example.com/page1"})
+ON CREATE SET ot.created = timestamp()
+CREATE (ot)<-[t:Target]-(a)
