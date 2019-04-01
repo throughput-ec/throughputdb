@@ -1,0 +1,1162 @@
+[
+   {
+      "subclasses" : [
+         {
+            "name" : "Ancient Cultures",
+            "subclasses" : [
+               {
+                  "name" : "Prehistory",
+                  "RBNR" : "101-01"
+               },
+               {
+                  "name" : "Classical Philology",
+                  "RBNR" : "101-02"
+               },
+               {
+                  "name" : "Ancient History",
+                  "RBNR" : "101-03"
+               },
+               {
+                  "name" : "Classical Archaeology",
+                  "RBNR" : "101-04"
+               },
+               {
+                  "RBNR" : "101-05",
+                  "name" : "Egyptology and Ancient Near Eastern Studies"
+               }
+            ],
+            "RBNR" : "101"
+         },
+         {
+            "RBNR" : "102",
+            "subclasses" : [
+               {
+                  "RBNR" : "102-01",
+                  "name" : "Medieval History"
+               },
+               {
+                  "RBNR" : "102-02",
+                  "name" : "Early Modern History"
+               },
+               {
+                  "name" : "Modern and Current History",
+                  "RBNR" : "102-03"
+               },
+               {
+                  "RBNR" : "102-04",
+                  "name" : "History of Science"
+               }
+            ],
+            "name" : "History"
+         },
+         {
+            "name" : "Fine Arts, Music, Theatre and Media Studies",
+            "subclasses" : [
+               {
+                  "RBNR" : "103-01",
+                  "name" : "Art History"
+               },
+               {
+                  "RBNR" : "103-02",
+                  "name" : "Musicology"
+               },
+               {
+                  "RBNR" : "103-03",
+                  "name" : "Theatre and Media Studies"
+               }
+            ],
+            "RBNR" : "103"
+         },
+         {
+            "subclasses" : [
+               {
+                  "name" : "General and Comparative Linguistics, Typology, Non-European Languages",
+                  "RBNR" : "104-01"
+               },
+               {
+                  "name" : "Individual Linguistics",
+                  "RBNR" : "104-02"
+               },
+               {
+                  "RBNR" : "104-03",
+                  "name" : "Historical Linguistics"
+               },
+               {
+                  "name" : "Applied Linguistics, Experimental Linguistics, Computational Linguistics",
+                  "RBNR" : "104-04"
+               }
+            ],
+            "RBNR" : "104",
+            "name" : "Linguistics"
+         },
+         {
+            "name" : "Literary Studies",
+            "RBNR" : "105",
+            "subclasses" : [
+               {
+                  "name" : "Medieval German Literature",
+                  "RBNR" : "105-01"
+               },
+               {
+                  "name" : "Modern German Literature",
+                  "RBNR" : "105-02"
+               },
+               {
+                  "RBNR" : "105-03",
+                  "name" : "European and American Literature"
+               },
+               {
+                  "name" : "General and Comparative Literature and Cultural Studies",
+                  "RBNR" : "105-04"
+               }
+            ]
+         },
+         {
+            "RBNR" : "106",
+            "subclasses" : [
+               {
+                  "RBNR" : "106-01",
+                  "name" : "Social and Cultural Anthropology and Ethnology"
+               },
+               {
+                  "RBNR" : "106-02",
+                  "name" : "Asian Studies"
+               },
+               {
+                  "RBNR" : "106-03",
+                  "name" : "African, American and Oceania Studies"
+               },
+               {
+                  "RBNR" : "106-04",
+                  "name" : "Islamic Studies, Arabian Studies, Semitic Studies"
+               },
+               {
+                  "RBNR" : "106-05",
+                  "name" : "Religious Studies and Jewish Studies"
+               }
+            ],
+            "name" : "Social and Cultural Anthropology, Non-European Cultures, Jewish Studies and Religious Studies"
+         },
+         {
+            "name" : "Theology",
+            "subclasses" : [
+               {
+                  "name" : "Protestant Theology",
+                  "RBNR" : "107-01"
+               },
+               {
+                  "name" : "Roman Catholic Theology",
+                  "RBNR" : "107-02"
+               }
+            ],
+            "RBNR" : "107"
+         },
+         {
+            "RBNR" : "108",
+            "subclasses" : [
+               {
+                  "name" : "History of Philosophy",
+                  "RBNR" : "108-01"
+               },
+               {
+                  "RBNR" : "108-02",
+                  "name" : "Theoretical Philosophy"
+               },
+               {
+                  "RBNR" : "108-03",
+                  "name" : "Practical Philosophy"
+               }
+            ],
+            "name" : "Philosophy"
+         },
+         {
+            "name" : "Educational Research",
+            "RBNR" : "109",
+            "subclasses" : [
+               {
+                  "name" : "General Education and History of Education",
+                  "RBNR" : "109-01"
+               },
+               {
+                  "name" : "General and Domain-Specific Teaching and Learning",
+                  "RBNR" : "109-02"
+               },
+               {
+                  "name" : "Education Systems and Educational Institutions",
+                  "RBNR" : "109-03"
+               },
+               {
+                  "name" : "Educational Research on Socialization, Welfare and Organisations",
+                  "RBNR" : "109-04"
+               }
+            ]
+         },
+         {
+            "RBNR" : "110",
+            "subclasses" : [
+               {
+                  "name" : "General, Biological and Mathematical Psychology",
+                  "RBNR" : "110-01"
+               },
+               {
+                  "RBNR" : "110-02",
+                  "name" : "Developmental and Educational Psychology"
+               },
+               {
+                  "RBNR" : "110-03",
+                  "name" : "Social Psychology, Industrial and Organisational Psychology"
+               },
+               {
+                  "RBNR" : "110-04",
+                  "name" : "Differential Psychology, Clinical Psychology, Medical Psychology, Methodology"
+               }
+            ],
+            "name" : "Psychology"
+         },
+         {
+            "name" : "Social Sciences",
+            "RBNR" : "111",
+            "subclasses" : [
+               {
+                  "RBNR" : "111-01",
+                  "name" : "Sociological Theory"
+               },
+               {
+                  "name" : "Empirical Social Research",
+                  "RBNR" : "111-02"
+               },
+               {
+                  "RBNR" : "111-03",
+                  "name" : "Communication Sciences"
+               },
+               {
+                  "name" : "Political Science",
+                  "RBNR" : "111-04"
+               }
+            ]
+         },
+         {
+            "RBNR" : "112",
+            "subclasses" : [
+               {
+                  "name" : "Economic Theory",
+                  "RBNR" : "112-01"
+               },
+               {
+                  "name" : "Economic Policy and Public Finance",
+                  "RBNR" : "112-02"
+               },
+               {
+                  "name" : "Business Administration",
+                  "RBNR" : "112-03"
+               },
+               {
+                  "name" : "Statistics and Econometrics",
+                  "RBNR" : "112-04"
+               },
+               {
+                  "RBNR" : "112-05",
+                  "name" : "Economic and Social History"
+               }
+            ],
+            "name" : "Economics"
+         },
+         {
+            "RBNR" : "113",
+            "subclasses" : [
+               {
+                  "name" : "Principles of Law and Jurisprudence",
+                  "RBNR" : "113-01"
+               },
+               {
+                  "name" : "Private Law",
+                  "RBNR" : "113-02"
+               },
+               {
+                  "RBNR" : "113-03",
+                  "name" : "Public Law"
+               },
+               {
+                  "name" : "Criminal Law and Law of Criminal Procedure",
+                  "RBNR" : "113-04"
+               },
+               {
+                  "name" : "Criminology",
+                  "RBNR" : "113-05"
+               }
+            ],
+            "name" : "Jurisprudence"
+         }
+      ],
+      "name" : "Humanities and Social Sciences"
+   },
+   {
+      "subclasses" : [
+         {
+            "name" : "Basic Research in Biology and Medicine",
+            "RBNR" : "201",
+            "subclasses" : [
+               {
+                  "RBNR" : "201-01",
+                  "name" : "Biochemistry"
+               },
+               {
+                  "name" : "Biophysics",
+                  "RBNR" : "201-02"
+               },
+               {
+                  "RBNR" : "201-03",
+                  "name" : "Cell Biology"
+               },
+               {
+                  "name" : "Structural Biology",
+                  "RBNR" : "201-04"
+               },
+               {
+                  "RBNR" : "201-05",
+                  "name" : "General Genetics"
+               },
+               {
+                  "name" : "Developmental Biology",
+                  "RBNR" : "201-06"
+               },
+               {
+                  "name" : "Bioinformatics and Theoretical Biology",
+                  "RBNR" : "201-07"
+               },
+               {
+                  "name" : "Anatomy",
+                  "RBNR" : "201-08"
+               }
+            ]
+         },
+         {
+            "subclasses" : [
+               {
+                  "RBNR" : "202-01",
+                  "name" : "Evolution and Systematics of Plants and Fungi"
+               },
+               {
+                  "name" : "Plant Ecology and Ecosystem Analysis",
+                  "RBNR" : "202-02"
+               },
+               {
+                  "RBNR" : "202-03",
+                  "name" : "Inter-Organismic Interactions and Chemical Ecology of Plant Systems"
+               },
+               {
+                  "RBNR" : "202-04",
+                  "name" : "Plant Physiology"
+               },
+               {
+                  "RBNR" : "202-05",
+                  "name" : "Plant Biochemistry and Biophysics"
+               },
+               {
+                  "name" : "Plant Cell and Developmental Biology",
+                  "RBNR" : "202-06"
+               },
+               {
+                  "RBNR" : "202-07",
+                  "name" : "Plant Genetics"
+               }
+            ],
+            "RBNR" : "202",
+            "name" : "Plant Sciences"
+         },
+         {
+            "subclasses" : [
+               {
+                  "name" : "Special Zoology and Morphology",
+                  "RBNR" : "203-01"
+               },
+               {
+                  "RBNR" : "203-02",
+                  "name" : "Evolution, Anthropology"
+               },
+               {
+                  "RBNR" : "203-03",
+                  "name" : "Animal Ecology, Biodiversity and Ecosystem Research"
+               },
+               {
+                  "name" : "Sensory and Behavioural Biology",
+                  "RBNR" : "203-04"
+               },
+               {
+                  "RBNR" : "203-05",
+                  "name" : "Biochemistry and Animal Physiology"
+               },
+               {
+                  "RBNR" : "203-06",
+                  "name" : "Evolutionary Cell and Developmental Biology (Zoology)"
+               }
+            ],
+            "RBNR" : "203",
+            "name" : "Zoology"
+         },
+         {
+            "name" : "Microbiology, Virology and Immunology",
+            "subclasses" : [
+               {
+                  "RBNR" : "204-01",
+                  "name" : "Metabolism, Biochemistry and Genetics of Microorganisms"
+               },
+               {
+                  "name" : "Microbial Ecology and Applied Microbiology",
+                  "RBNR" : "204-02"
+               },
+               {
+                  "name" : "Medical Microbiology, Parasitology, Medical Mycology and Hygiene, Molecular Infection Biology",
+                  "RBNR" : "204-03"
+               },
+               {
+                  "name" : "Virology",
+                  "RBNR" : "204-04"
+               },
+               {
+                  "name" : "Immunology",
+                  "RBNR" : "204-05"
+               }
+            ],
+            "RBNR" : "204"
+         },
+         {
+            "name" : "Medicine",
+            "subclasses" : [
+               {
+                  "name" : "Epidemiology, Medical Biometry, Medical Informatics",
+                  "RBNR" : "205-01"
+               },
+               {
+                  "name" : "Public Health, Health Services Research, Social Medicine",
+                  "RBNR" : "205-02"
+               },
+               {
+                  "name" : "Human Genetics",
+                  "RBNR" : "205-03"
+               },
+               {
+                  "RBNR" : "205-04",
+                  "name" : "Physiology"
+               },
+               {
+                  "RBNR" : "205-05",
+                  "name" : "Nutritional Sciences"
+               },
+               {
+                  "RBNR" : "205-06",
+                  "name" : "Pathology"
+               },
+               {
+                  "name" : "Clinical Chemistry and Pathobiochemistry",
+                  "RBNR" : "205-07"
+               },
+               {
+                  "RBNR" : "205-08",
+                  "name" : "Pharmacy"
+               },
+               {
+                  "name" : "Pharmacology",
+                  "RBNR" : "205-09"
+               },
+               {
+                  "name" : "Toxicology, Occupational Medicine and Forensic Medicine",
+                  "RBNR" : "205-10"
+               },
+               {
+                  "RBNR" : "205-11",
+                  "name" : "Anaesthesiology"
+               },
+               {
+                  "name" : "Cardiology, Angiology",
+                  "RBNR" : "205-12"
+               },
+               {
+                  "RBNR" : "205-13",
+                  "name" : "Pneumology, Clinical Infectiology"
+               },
+               {
+                  "RBNR" : "205-14",
+                  "name" : "Hematology, Oncology, Transfusion Medicine"
+               },
+               {
+                  "RBNR" : "205-15",
+                  "name" : "Gastroenterology, Metabolism"
+               },
+               {
+                  "RBNR" : "205-16",
+                  "name" : "Nephrology"
+               },
+               {
+                  "name" : "Endocrinology, Diabetology",
+                  "RBNR" : "205-17"
+               },
+               {
+                  "RBNR" : "205-18",
+                  "name" : "Rheumatology, Clinical Immunology, Allergology"
+               },
+               {
+                  "name" : "Dermatology",
+                  "RBNR" : "205-19"
+               },
+               {
+                  "RBNR" : "205-20",
+                  "name" : "Pediatric and Adolescent Medicine"
+               },
+               {
+                  "RBNR" : "205-21",
+                  "name" : "Gynaecology and Obstetrics"
+               },
+               {
+                  "RBNR" : "205-22",
+                  "name" : "Reproductive Medicine/Biology"
+               },
+               {
+                  "RBNR" : "205-23",
+                  "name" : "Urology"
+               },
+               {
+                  "RBNR" : "205-24",
+                  "name" : "Biogerontology and Geriatric Medicine"
+               },
+               {
+                  "RBNR" : "205-25",
+                  "name" : "General and Visceral Surgery"
+               },
+               {
+                  "name" : "Cardiothoracic and Vascular Surgery",
+                  "RBNR" : "205-26"
+               },
+               {
+                  "RBNR" : "205-27",
+                  "name" : "Traumatology and Orthopaedics"
+               },
+               {
+                  "name" : "Dentistry, Oral Surgery",
+                  "RBNR" : "205-28"
+               },
+               {
+                  "RBNR" : "205-29",
+                  "name" : "Otolaryngology"
+               },
+               {
+                  "RBNR" : "205-30",
+                  "name" : "Radiology and Nuclear Medicine"
+               },
+               {
+                  "RBNR" : "205-31",
+                  "name" : "Radiation Oncology and Radiobiology"
+               },
+               {
+                  "RBNR" : "205-32",
+                  "name" : "Biomedical Technology and Medical Physics"
+               }
+            ],
+            "RBNR" : "205"
+         },
+         {
+            "RBNR" : "206",
+            "subclasses" : [
+               {
+                  "RBNR" : "206-01",
+                  "name" : "Molecular Neuroscience and Neurogenetics"
+               },
+               {
+                  "RBNR" : "206-02",
+                  "name" : "Cellular Neuroscience"
+               },
+               {
+                  "name" : "Developmental Neurobiology",
+                  "RBNR" : "206-03"
+               },
+               {
+                  "RBNR" : "206-04",
+                  "name" : "Systemic Neuroscience, Computational Neuroscience, Behaviour"
+               },
+               {
+                  "name" : "Organismic Neurobiology",
+                  "RBNR" : "206-05"
+               },
+               {
+                  "name" : "Cognitive Neuroscience",
+                  "RBNR" : "206-06"
+               },
+               {
+                  "name" : "Molecular and Cellular Neurology, Neuropathology",
+                  "RBNR" : "206-07"
+               },
+               {
+                  "RBNR" : "206-08",
+                  "name" : "Clinical Neurosciences I - Neurology, Neurosurgery, Neuroradiology"
+               },
+               {
+                  "RBNR" : "206-09",
+                  "name" : "Biological and Molecular Psychiatry"
+               },
+               {
+                  "RBNR" : "206-10",
+                  "name" : "Clinical Neurosciences II - Psychiatry, Psychotherapy, Child and Adolescent Psychiatry"
+               },
+               {
+                  "RBNR" : "206-11",
+                  "name" : "Clinical Neurosciences III - Ophthalmology"
+               }
+            ],
+            "name" : "Neurosciences"
+         },
+         {
+            "subclasses" : [
+               {
+                  "RBNR" : "207-01",
+                  "name" : "Soil Sciences"
+               },
+               {
+                  "name" : "Plant Cultivation and Agricultural Technology",
+                  "RBNR" : "207-02"
+               },
+               {
+                  "RBNR" : "207-03",
+                  "name" : "Plant Nutrition"
+               },
+               {
+                  "name" : "Ecology of Agricultural Landscapes",
+                  "RBNR" : "207-04"
+               },
+               {
+                  "name" : "Plant Breeding",
+                  "RBNR" : "207-05"
+               },
+               {
+                  "RBNR" : "207-06",
+                  "name" : "Phytomedicine"
+               },
+               {
+                  "RBNR" : "207-07",
+                  "name" : "Agricultural Economics and Sociology"
+               },
+               {
+                  "name" : "Forestry",
+                  "RBNR" : "207-08"
+               },
+               {
+                  "RBNR" : "207-09",
+                  "name" : "Animal Husbandry, Breeding and Hygiene"
+               },
+               {
+                  "RBNR" : "207-10",
+                  "name" : "Animal Nutrition and Nutrition Physiology"
+               },
+               {
+                  "RBNR" : "207-11",
+                  "name" : "Basic Veterinary Medical Science"
+               },
+               {
+                  "RBNR" : "207-12",
+                  "name" : "Basic Research on Pathogenesis, Diagnostics and Therapy and Clinical Veterinary Medicine"
+               }
+            ],
+            "RBNR" : "207",
+            "name" : "Agriculture, Forestry and Veterinary Medicine"
+         }
+      ],
+      "name" : "Life Sciences"
+   },
+   {
+      "subclasses" : [
+         {
+            "subclasses" : [
+               {
+                  "RBNR" : "301-01",
+                  "name" : "Inorganic Molecular Chemistry"
+               },
+               {
+                  "name" : "Organic Molecular Chemistry",
+                  "RBNR" : "301-02"
+               }
+            ],
+            "RBNR" : "301",
+            "name" : "Molecular Chemistry"
+         },
+         {
+            "name" : "Chemical Solid State and Surface Research",
+            "subclasses" : [
+               {
+                  "RBNR" : "302-01",
+                  "name" : "Solid State and Surface Chemistry, Material Synthesis"
+               },
+               {
+                  "RBNR" : "302-02",
+                  "name" : "Physical Chemistry of Solids and Surfaces, Material Characterisation"
+               },
+               {
+                  "name" : "Theory and Modelling",
+                  "RBNR" : "302-03"
+               }
+            ],
+            "RBNR" : "302"
+         },
+         {
+            "subclasses" : [
+               {
+                  "name" : "Physical Chemistry of Molecules, Interfaces and Liquids - Spectroscopy, Kinetics",
+                  "RBNR" : "303-01"
+               },
+               {
+                  "name" : "General Theoretical Chemistry",
+                  "RBNR" : "303-02"
+               }
+            ],
+            "RBNR" : "303",
+            "name" : "Physical and Theoretical Chemistry"
+         },
+         {
+            "name" : "Analytical Chemistry, Method Development (Chemistry)",
+            "RBNR" : "304",
+            "subclasses" : [
+               {
+                  "name" : "Analytical Chemistry, Method Development (Chemistry)",
+                  "RBNR" : "304-01"
+               }
+            ]
+         },
+         {
+            "RBNR" : "305",
+            "subclasses" : [
+               {
+                  "RBNR" : "305-01",
+                  "name" : "Biological and Biomimetic Chemistry"
+               },
+               {
+                  "name" : "Food Chemistry",
+                  "RBNR" : "305-02"
+               }
+            ],
+            "name" : "Biological Chemistry and Food Chemistry"
+         },
+         {
+            "subclasses" : [
+               {
+                  "RBNR" : "306-01",
+                  "name" : "Preparatory and Physical Chemistry of Polymers"
+               },
+               {
+                  "name" : "Experimental and Theoretical Physics of Polymers",
+                  "RBNR" : "306-02"
+               },
+               {
+                  "name" : "Polymer Materials",
+                  "RBNR" : "306-03"
+               }
+            ],
+            "RBNR" : "306",
+            "name" : "Polymer Research"
+         },
+         {
+            "name" : "Condensed Matter Physics",
+            "subclasses" : [
+               {
+                  "RBNR" : "307-01",
+                  "name" : "Experimental Condensed Matter Physics"
+               },
+               {
+                  "name" : "Theoretical Condensed Matter Physics",
+                  "RBNR" : "307-02"
+               }
+            ],
+            "RBNR" : "307"
+         },
+         {
+            "name" : "Optics, Quantum Optics and Physics of Atoms, Molecules and Plasmas",
+            "subclasses" : [
+               {
+                  "name" : "Optics, Quantum Optics, Atoms, Molecules, Plasmas",
+                  "RBNR" : "308-01"
+               }
+            ],
+            "RBNR" : "308"
+         },
+         {
+            "subclasses" : [
+               {
+                  "RBNR" : "309-01",
+                  "name" : "Particles, Nuclei and Fields"
+               }
+            ],
+            "RBNR" : "309",
+            "name" : "Particles, Nuclei and Fields"
+         },
+         {
+            "name" : "Statistical Physics, Soft Matter, Biological Physics, Nonlinear Dynamics",
+            "subclasses" : [
+               {
+                  "name" : "Statistical Physics, Soft Matter, Biological Physics, Nonlinear Dynamics",
+                  "RBNR" : "310-01"
+               }
+            ],
+            "RBNR" : "310"
+         },
+         {
+            "name" : "Astrophysics and Astronomy",
+            "RBNR" : "311",
+            "subclasses" : [
+               {
+                  "name" : "Astrophysics and Astronomy",
+                  "RBNR" : "311-01"
+               }
+            ]
+         },
+         {
+            "subclasses" : [
+               {
+                  "name" : "Mathematics",
+                  "RBNR" : "312-01"
+               }
+            ],
+            "RBNR" : "312",
+            "name" : "Mathematics"
+         },
+         {
+            "name" : "Atmospheric Science, Oceanography and Climate Research",
+            "subclasses" : [
+               {
+                  "RBNR" : "313-01",
+                  "name" : "Atmospheric Science"
+               },
+               {
+                  "name" : "Oceanography",
+                  "RBNR" : "313-02"
+               }
+            ],
+            "RBNR" : "313"
+         },
+         {
+            "name" : "Geology and Palaeontology",
+            "subclasses" : [
+               {
+                  "RBNR" : "314-01",
+                  "name" : "Geology and Palaeontology"
+               }
+            ],
+            "RBNR" : "314"
+         },
+         {
+            "name" : "Geophysics and Geodesy",
+            "RBNR" : "315",
+            "subclasses" : [
+               {
+                  "name" : "Geophysics",
+                  "RBNR" : "315-01"
+               },
+               {
+                  "RBNR" : "315-02",
+                  "name" : "Geodesy, Photogrammetry, Remote Sensing, Geoinformatics, Cartography"
+               }
+            ]
+         },
+         {
+            "name" : "Geochemistry, Mineralogy and Crystallography",
+            "subclasses" : [
+               {
+                  "RBNR" : "316-01",
+                  "name" : "Geochemistry, Mineralogy and Crystallography"
+               }
+            ],
+            "RBNR" : "316"
+         },
+         {
+            "name" : "Geography",
+            "subclasses" : [
+               {
+                  "RBNR" : "317-01",
+                  "name" : "Physical Geography"
+               },
+               {
+                  "name" : "Human Geography",
+                  "RBNR" : "317-02"
+               }
+            ],
+            "RBNR" : "317"
+         },
+         {
+            "name" : "Water Research",
+            "RBNR" : "318",
+            "subclasses" : [
+               {
+                  "RBNR" : "318-01",
+                  "name" : "Hydrogeology, Hydrology, Limnology, Urban Water Management, Water Chemistry, Integrated Water Resources Management"
+               }
+            ]
+         }
+      ],
+      "name" : "Natural Sciences"
+   },
+   {
+      "name" : "Engineering Sciences",
+      "subclasses" : [
+         {
+            "subclasses" : [
+               {
+                  "name" : "Metal-Cutting Manufacturing Engineering",
+                  "RBNR" : "401-01"
+               },
+               {
+                  "name" : "Primary Shaping and Reshaping Technology",
+                  "RBNR" : "401-02"
+               },
+               {
+                  "name" : "Joining, Mounting and Separation Technology",
+                  "RBNR" : "401-03"
+               },
+               {
+                  "RBNR" : "401-04",
+                  "name" : "Plastics Engineering"
+               },
+               {
+                  "name" : "Production Management and Operations Management",
+                  "RBNR" : "401-05"
+               },
+               {
+                  "RBNR" : "401-06",
+                  "name" : "Machine Tools and Production Automation"
+               }
+            ],
+            "RBNR" : "401",
+            "name" : "Production Technology"
+         },
+         {
+            "subclasses" : [
+               {
+                  "RBNR" : "402-01",
+                  "name" : "Engineering Design, Machine Elements, Product Development"
+               },
+               {
+                  "name" : "Mechanics",
+                  "RBNR" : "402-02"
+               },
+               {
+                  "name" : "Lightweight Construction, Textile Technology",
+                  "RBNR" : "402-03"
+               },
+               {
+                  "RBNR" : "402-04",
+                  "name" : "Acoustics"
+               }
+            ],
+            "RBNR" : "402",
+            "name" : "Mechanics and Constructive Mechanical Engineering"
+         },
+         {
+            "name" : "Process Engineering, Technical Chemistry",
+            "subclasses" : [
+               {
+                  "name" : "Chemical and Thermal Process Engineering",
+                  "RBNR" : "403-01"
+               },
+               {
+                  "name" : "Technical Chemistry",
+                  "RBNR" : "403-02"
+               },
+               {
+                  "name" : "Mechanical Process Engineering",
+                  "RBNR" : "403-03"
+               },
+               {
+                  "RBNR" : "403-04",
+                  "name" : "Biological Process Engineering"
+               }
+            ],
+            "RBNR" : "403"
+         },
+         {
+            "subclasses" : [
+               {
+                  "name" : "Energy Process Engineering",
+                  "RBNR" : "404-01"
+               },
+               {
+                  "RBNR" : "404-02",
+                  "name" : "Technical Thermodynamics"
+               },
+               {
+                  "RBNR" : "404-03",
+                  "name" : "Fluid Mechanics"
+               },
+               {
+                  "name" : "Hydraulic and Turbo Engines and Piston Engines",
+                  "RBNR" : "404-04"
+               }
+            ],
+            "RBNR" : "404",
+            "name" : "Heat Energy Technology, Thermal Machines, Fluid Mechanics"
+         },
+         {
+            "subclasses" : [
+               {
+                  "name" : "Metallurgical and Thermal Processes, Thermomechanical Treatment of Materials",
+                  "RBNR" : "405-01"
+               },
+               {
+                  "RBNR" : "405-02",
+                  "name" : "Sintered Metallic and Ceramic Materials"
+               },
+               {
+                  "RBNR" : "405-03",
+                  "name" : "Composite Materials"
+               },
+               {
+                  "name" : "Mechanical Behaviour of Construction Materials",
+                  "RBNR" : "405-04"
+               },
+               {
+                  "name" : "Coating and Surface Technology",
+                  "RBNR" : "405-05"
+               }
+            ],
+            "RBNR" : "405",
+            "name" : "Materials Engineering"
+         },
+         {
+            "name" : "Materials Science",
+            "RBNR" : "406",
+            "subclasses" : [
+               {
+                  "name" : "Thermodynamics and Kinetics of Materials",
+                  "RBNR" : "406-01"
+               },
+               {
+                  "RBNR" : "406-02",
+                  "name" : "Synthesis and Properties of Functional Materials"
+               },
+               {
+                  "name" : "Microstructural Mechanical Properties of Materials",
+                  "RBNR" : "406-03"
+               },
+               {
+                  "RBNR" : "406-04",
+                  "name" : "Structuring and Functionalisation"
+               },
+               {
+                  "RBNR" : "406-05",
+                  "name" : "Biomaterials"
+               }
+            ]
+         },
+         {
+            "name" : "Systems Engineering",
+            "subclasses" : [
+               {
+                  "name" : "Automation, Control Systems, Robotics, Mechatronics, Cyber Physical Systems",
+                  "RBNR" : "407-01"
+               },
+               {
+                  "name" : "Measurement Systems",
+                  "RBNR" : "407-02"
+               },
+               {
+                  "RBNR" : "407-03",
+                  "name" : "Microsystems"
+               },
+               {
+                  "name" : "Traffic and Transport Systems, Logistics, Intelligent and Automated Traffic",
+                  "RBNR" : "407-04"
+               },
+               {
+                  "RBNR" : "407-05",
+                  "name" : "Human Factors, Ergonomics, Human-Machine Systems"
+               },
+               {
+                  "RBNR" : "407-06",
+                  "name" : "Biomedical Systems Technology"
+               }
+            ],
+            "RBNR" : "407"
+         },
+         {
+            "RBNR" : "408",
+            "subclasses" : [
+               {
+                  "name" : "Electronic Semiconductors, Components, Circuits, Systems",
+                  "RBNR" : "408-01"
+               },
+               {
+                  "RBNR" : "408-02",
+                  "name" : "Communications, High-Frequency and Network Technology, Theoretical Electrical Engineering"
+               },
+               {
+                  "RBNR" : "408-03",
+                  "name" : "Electrical Energy Generation, Distribution, Application"
+               }
+            ],
+            "name" : "Electrical Engineering and Information Technology"
+         },
+         {
+            "RBNR" : "409",
+            "subclasses" : [
+               {
+                  "name" : "Theoretical Computer Science",
+                  "RBNR" : "409-01"
+               },
+               {
+                  "RBNR" : "409-02",
+                  "name" : "Software Engineering and Programming Languages"
+               },
+               {
+                  "RBNR" : "409-03",
+                  "name" : "Security and Dependability"
+               },
+               {
+                  "RBNR" : "409-04",
+                  "name" : "Operating, Communication, Database and Distributed Systems"
+               },
+               {
+                  "name" : "Interactive and Intelligent Systems, Image and Language Processing, Computer Graphics and Visualisation",
+                  "RBNR" : "409-05"
+               },
+               {
+                  "name" : "Information Systems, Process and Knowledge Management",
+                  "RBNR" : "409-06"
+               },
+               {
+                  "name" : "Computer Architecture and Embedded Systems",
+                  "RBNR" : "409-07"
+               },
+               {
+                  "RBNR" : "409-08",
+                  "name" : "Massively Parallel and Data-Intensive Systems"
+               }
+            ],
+            "name" : "Computer Science"
+         },
+         {
+            "RBNR" : "410",
+            "subclasses" : [
+               {
+                  "RBNR" : "410-01",
+                  "name" : "Architecture, Building and Construction History, Construction Research, Sustainable Building Technology"
+               },
+               {
+                  "RBNR" : "410-02",
+                  "name" : "Urbanism, Spatial Planning, Transportation and Infrastructure Planning, Landscape Planning"
+               },
+               {
+                  "RBNR" : "410-03",
+                  "name" : "Construction Material Sciences, Chemistry, Building Physics"
+               },
+               {
+                  "RBNR" : "410-04",
+                  "name" : "Structural Engineering, Building Informatics and Construction Operation"
+               },
+               {
+                  "name" : "Applied Mechanics, Statics and Dynamics",
+                  "RBNR" : "410-05"
+               },
+               {
+                  "name" : "Geotechnics, Hydraulic Engineering",
+                  "RBNR" : "410-06"
+               }
+            ],
+            "name" : "Construction Engineering and Architecture"
+         }
+      ]
+   }
+]
