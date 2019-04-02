@@ -1,3 +1,3 @@
-UNWIND ["Person", "Organization", "SoftwareAgent"] AS x
-MERGE (:AGENT {type: x})
+UNWIND ["Person", "Organization", "SoftwareAgent", "Undefined"] AS x
+MERGE (:AGENTTYPE {type: x})
 ON CREATE SET x.created = timestamp()
