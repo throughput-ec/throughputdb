@@ -1,0 +1,36 @@
+// List ovtained from https://www.w3.org/wiki/WebSchemas/Accessibility
+UNWIND [
+  "alternativeText",
+  "annotations",
+  "audioDescription",
+  "bookmarks",
+  "braille",
+  "captions",
+  "ChemML",
+  "describedMath",
+  "displayTransformability",
+  "highContrastAudio",
+  "highContrastDisplay",
+  "index",
+  "largePrint",
+  "latex",
+  "longDescription",
+  "MathML",
+  "none",
+  "printPageNumbers",
+  "readingOrder",
+  "rubyAnnotations",
+  "signLanguage",
+  "structuralNavigation",
+  "synchronizedAudioText",
+  "tableOfContents",
+  "taggedPDF",
+  "tactileGraphic",
+  "tactileObject",
+  "timingControl",
+  "transcript",
+  "ttsMarkup",
+  "unlocked"
+] AS x
+MERGE (af:ACCESSIBILITYFEATURE {feature: x})
+ON CREATE SET af.created = timestamp();
