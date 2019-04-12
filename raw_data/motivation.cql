@@ -67,3 +67,4 @@ WITH [
 ] AS long
 UNWIND long AS x
 MERGE (m:MOTIVATION {term: x.term, type: x.type, description: x.description })
+ON CREATE SET t.created = timestamp();
