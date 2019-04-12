@@ -1,6 +1,14 @@
 # neo4j Annotation Engine
 
-This engine is designed to run in a docker container for deployment portability & to facilitate reproducibility among collaborators.  The intention of this engine is to provide a platform for credentialed crowd-sourcing of scientific records and publications without requiring underlying data resources to manage additional unstructured data.  Annotations should follow the [WC3 Web Annotation](https://www.w3.org/TR/annotation-model/) protocols and follow a model that supports API first development.  As such, this database is in fact composed of two distinct elements, a database, built using `neo4j`, and an API built using node/express.
+This engine is designed to run in a [`docker` container](https://www.docker.com/) for deployment portability & to facilitate reproducibility among collaborators.  The intention of this engine is to provide a platform for the credentialed crowd-sourcing of scientific records and publications without requiring underlying data resources to manage additional unstructured data.
+
+Use cases include:
+
+   * An early career researcher finds that a dataset in Neotoma is an outlier within a particular statistical model.  They wish to indicate this, in case others apply the same model, but do not want to (or cannot) modify the `datasetnotes` field in Neotoma.
+   * A researcher finds that one of their datasets has been used in a synthesis paper, but the set of sites was cited only as `EarthChem`.  The author wishes to indicate that her paper and dataset are linked to the published synthesis.
+   * The manager of a data resource finds code on the web that uses their data.  They wish to link their database to the code so that others can see how the database was used for research purposes.
+
+Annotations should follow the [WC3 Web Annotation](https://www.w3.org/TR/annotation-model/) protocols and follow a model that supports API first development.  As such, this database is in fact composed of two distinct elements, a database, built using `neo4j`, and an API built using node/express.
 
 This repository contains the raw code for the `neo4j` Docker container, test data for populating the database, database scripts for the database schema and constraints, and helper cypher scripts.
 
@@ -23,3 +31,13 @@ This repository contains a `yaml` file to use with `docker-compose`.  Include th
 ```
 
 ## Environmental Variables
+
+Environmental variables for database setup and for the docker container are defined in the `setup.sh` file that is included in this repository. For any security-sensitive elements we have defined the variable as `XXsensitiveXX`.  In the end-users repository these should be changed before `setup.sh` is run.  When `setup.sh` is run it includes a line in the bash script to check that these fields have been changed and to add `setup.sh` to the `.gitignore` file to ensure that the end user does not accidentally commit passwords to their own public repository.
+
+## Annotation to Cypher Data Model
+
+The W3C data model proposes a number of elements for annotations, including the `body`, `target`, motivations and audiences, among others.  The data model is well described in the [W3C standards](https://www.w3.org/TR/annotation-model/).  To help build the data model for the Annotation Engine we have transcribed the examples presented in the Annotation Model document into the Cypher queries that that would generate similar elements.  These examples are all named by their example numbers in the main model document, and are stored in the [cypher_anno_examples]() folder.
+
+These examples are preliminary, but they are developed to provide a template for the generation of the Throughput APIs.  Where the examples rely on external vocabularies, or require a set of pre-defined terms, these have been placed in the [raw_data]() folder, either as a JSON file, to be processed, or in a CQL file that can be executed to initialize the database.  A `README` in that folder provides further explanations.
+
+## Database Schema
