@@ -39,11 +39,17 @@ graph = Graph(**data)
 
 tx = graph.begin()
 
+with open("accessibilityFeatures.cql") as ascfeat:
+    graph.run(ascfeat.read())
+
+with open("agents.cql") as agents:
+    graph.run(agents.read())
+
+with open("audiences.cql") as aud:
+    graph.run(aud.read())
+
 with open("motivation.cql") as motive:
     graph.run(motive.read())
 
 with open("type.cql") as type:
     graph.run(type.read())
-
-with open("agents.cql") as agents:
-    graph.run(agents.read())
