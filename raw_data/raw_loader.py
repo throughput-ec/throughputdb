@@ -43,7 +43,7 @@ graph = Graph(**data)
 
 tx = graph.begin()
 
-// Some simple vocabularies and node types:
+""" Some simple vocabularies and node types: """
 with open("accessibilityFeatures.cql") as ascfeat:
     graph.run(ascfeat.read())
 
@@ -59,7 +59,7 @@ with open("motivation.cql") as motive:
 with open("type.cql") as type:
     graph.run(type.read())
 
-// Language is more complicated - There is a defined list available on the web:
+""" Language is more complicated - There is a defined list available on the web: """
 print("Adding Language Nodes")
 link = "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"
 f = requests.get(link)
@@ -67,15 +67,21 @@ f = requests.get(link)
 langelem = f.text.split("%%")
 elements = list(map(lambda x: x.split("\n"), langelem))
 
-lang = "MERGE (ln:LANGUAGE {})"
-
 for elm in elements:
+  print("  * " + str(elm))
+  tx = graph.begin()
   empty = [i for i, x in enumerate(elm) if x == '']
-  for j in reversed(empty):
-    elm.pop(j)
-    things = list(map(lambda x: x.split(": ").strip(), elm))
-    typeIdx = list(map(lambda x: x[0] == "Type", elm)).index(True)
-    type = elm[typeIdx][1].upper()
-    elmDict = dict(elm.pop(typeIdx))
-    elmDict = {k.lower(): v for k, v in elmDict.items()}
-    Node(type, **elmDict)
+  if len(elm) > 2:
+      for j in reversed(empty):
+        elm.pop(j)
+      things = list(map(lambda x: x.split(": "), elm))
+      typeIdx = list(map(lambda x: x[0] == "Type", things)).index(True)
+      type = things[typeIdx][1].upper()
+      things.pop(typeIdx)
+      print("    * " + str(things))
+      elmDict = dict(things)
+      elmDict = {k.lower(): v for k, v in elmDict.items()}
+      elmDict = {k.lower(): v.strip() for k, v in elmDict.items()}
+      print("    * " + type + " " + str(elmDict))
+      tx.create(Node(type, **elmDict))
+      tx.commit()
