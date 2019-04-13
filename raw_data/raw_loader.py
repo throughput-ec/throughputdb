@@ -18,7 +18,11 @@ Please ensure that this file is included in the .gitignore file.
 '''
 
 from py2neo import Graph
+from py2neo.data import Node, Relationship
 import json
+import urllib
+import requests
+import re
 
 with open('../.gitignore') as gi:
     good = False
@@ -39,6 +43,7 @@ graph = Graph(**data)
 
 tx = graph.begin()
 
+// Some simple vocabularies and node types:
 with open("accessibilityFeatures.cql") as ascfeat:
     graph.run(ascfeat.read())
 
@@ -53,3 +58,24 @@ with open("motivation.cql") as motive:
 
 with open("type.cql") as type:
     graph.run(type.read())
+
+// Language is more complicated - There is a defined list available on the web:
+print("Adding Language Nodes")
+link = "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"
+f = requests.get(link)
+
+langelem = f.text.split("%%")
+elements = list(map(lambda x: x.split("\n"), langelem))
+
+lang = "MERGE (ln:LANGUAGE {})"
+
+for elm in elements:
+  empty = [i for i, x in enumerate(elm) if x == '']
+  for j in reversed(empty):
+    elm.pop(j)
+    things = list(map(lambda x: x.split(": ").strip(), elm))
+    typeIdx = list(map(lambda x: x[0] == "Type", elm)).index(True)
+    type = elm[typeIdx][1].upper()
+    elmDict = dict(elm.pop(typeIdx))
+    elmDict = {k.lower(): v for k, v in elmDict.items()}
+    Node(type, **elmDict)
