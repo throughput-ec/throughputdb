@@ -1,4 +1,4 @@
-// List ovtained from https://www.w3.org/wiki/WebSchemas/Accessibility
+// List obtained from https://www.w3.org/wiki/WebSchemas/Accessibility
 UNWIND [
   "alternativeText",
   "annotations",
