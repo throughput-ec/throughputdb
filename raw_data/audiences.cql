@@ -3,4 +3,5 @@ UNWIND [
   "PeopleAudience",
   "BusinessAudience"
 ] AS x
-MERGE (:AUDIENCE {type: x})
+MERGE (au:AUDIENCE {type: x})
+ON CREATE SET au.created = timestamp();
