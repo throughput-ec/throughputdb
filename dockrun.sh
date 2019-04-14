@@ -9,5 +9,5 @@ docker run \
     -v $HOME/neo4j/import:/var/lib/neo4j/import \
     -v $HOME/neo4j/plugins:/plugins \
     --env NEO4J_AUTH=neo4j/test \
-    neo4j:latest || \
+    neo4j:latest 2> /dev/null || \
     docker start testneo4j
