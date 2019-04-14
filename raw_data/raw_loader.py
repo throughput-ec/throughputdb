@@ -64,24 +64,36 @@ print("Adding Language Nodes")
 link = "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"
 f = requests.get(link)
 
-langelem = f.text.split("%%")
-elements = list(map(lambda x: x.split("\n"), langelem))
+""" Breaks the language list into chunks delimited by %% """
 
-for elm in elements:
-  print("  * " + str(elm))
+langelem = f.text.split("\n%%\n")
+
+for elm in langelem[1:]:
+
+  """
+      Find all the language labels:
+      Split by the colon, keeping the colon as a property marker
+  """
+  things = [x for x in (re.split("\n*(.*:)", elm)) if x != '']
+
+  isElem = list(map(lambda x: re.search(":", x) != None, things))
+
+  """ Once we've found them, get the typeself.
+      Because there are a number of subtypes in this definition we use the
+      prefix 'lng_' to indicate they are all types of 'language' nodes. """
+
+  type = "lng_" + re.sub("^ ", "", things[([c for c, v in enumerate(things) if things[c - 1] == 'Type:'][0])]
+).upper()
+
+  """ Then add all the node properties to a dictionary: """
+  nodeProp = dict()
+
+  for counter, v in enumerate(isElem):
+    if counter < len(isElem) - 1:
+      if isElem[counter] & (things[counter] != "Type:"):
+        key = re.sub(":", "", things[counter]).lower()
+        nodeProp[key] = re.sub("^ ", "", things[counter + 1])
+
   tx = graph.begin()
-  empty = [i for i, x in enumerate(elm) if x == '']
-  if len(elm) > 2:
-      for j in reversed(empty):
-        elm.pop(j)
-      things = list(map(lambda x: x.split(": "), elm))
-      typeIdx = list(map(lambda x: x[0] == "Type", things)).index(True)
-      type = things[typeIdx][1].upper()
-      things.pop(typeIdx)
-      print("    * " + str(things))
-      elmDict = dict(things)
-      elmDict = {k.lower(): v for k, v in elmDict.items()}
-      elmDict = {k.lower(): v.strip() for k, v in elmDict.items()}
-      print("    * " + type + " " + str(elmDict))
-      tx.create(Node(type, **elmDict))
-      tx.commit()
+  tx.create(Node(type, **nodeProp))
+  tx.commit()
