@@ -59,7 +59,10 @@ with open("motivation.cql") as motive:
 with open("type.cql") as type:
     graph.run(type.read())
 
-""" Language is more complicated - There is a defined list available on the web: """
+"""
+   Language is more complicated - There is a defined list available on the web:
+"""
+
 print("Adding Language Nodes")
 link = "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"
 f = requests.get(link)
@@ -78,9 +81,11 @@ for elm in langelem[1:]:
 
   isElem = list(map(lambda x: re.search(":", x) != None, things))
 
-  """ Once we've found them, get the typeself.
+  """
+      Once we've found them, get the typeself.
       Because there are a number of subtypes in this definition we use the
-      prefix 'lng_' to indicate they are all types of 'language' nodes. """
+      prefix 'lng_' to indicate they are all types of 'language' nodes.
+  """
 
   type = "lng_" + re.sub("^ ", "", things[([c for c, v in enumerate(things) if things[c - 1] == 'Type:'][0])]
 ).upper()
