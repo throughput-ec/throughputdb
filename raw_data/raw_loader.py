@@ -44,18 +44,23 @@ graph = Graph(**data)
 tx = graph.begin()
 
 """ Some simple vocabularies and node types: """
+print("Adding Accessibility Nodes")
 with open("accessibilityFeatures.cql") as ascfeat:
     graph.run(ascfeat.read())
 
+print("Adding Agent Nodes")
 with open("agents.cql") as agents:
     graph.run(agents.read())
 
+print("Adding Audience Nodes")
 with open("audiences.cql") as aud:
     graph.run(aud.read())
 
+print("Adding Motivation Nodes")
 with open("motivation.cql") as motive:
     graph.run(motive.read())
 
+print("Adding Type Nodes")
 with open("type.cql") as type:
     graph.run(type.read())
 
