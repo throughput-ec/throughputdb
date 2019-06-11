@@ -12,4 +12,4 @@ docker run \
     neo4j:latest 2> /dev/null || \
     docker start testneo4j
 
-pip3 install py2neo, json, urllib, requests, re
+pip3 install py2neo urllib requests re
