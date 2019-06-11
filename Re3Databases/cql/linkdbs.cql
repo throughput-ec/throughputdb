@@ -2,10 +2,10 @@ MERGE (ob:OBJECT {id: "%s",
                   name: "%s",
                   url: "%s",
                   keywords: "%s",
-                  description: "%s"})
+                  description: '%s'})
 ON CREATE SET ob.created = timestamp()
 MERGE (ty:TYPE {type: "schema:DataCatalog"})
-MERGE (tyt:TYPE {type: "schema:DataCatalog"})
+MERGE (tyt:TYPE {type: "TextualBody"})
 MERGE (mv:MOTIVATION {term: "linking"})
 MERGE (aty:AGENTTYPE {type:"Person"})
 WITH ty, tyt, ob, mv, aty
