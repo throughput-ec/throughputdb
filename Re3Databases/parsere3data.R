@@ -2,6 +2,7 @@ library(jsonlite)
 library(neo4r)
 library(xml2)
 library(dplyr)
+library(readr)
 
 re3api_full <- "https://www.re3data.org/api/v1/repositories"
 re3api_short <- "https://www.re3data.org/api/beta/repository/"
