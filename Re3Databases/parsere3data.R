@@ -50,7 +50,7 @@ for(i in 1:nrow(all_repos)) {
       sprintf(import,
               test_run$id,
               test_run$name,
-              test_run$id,
+              test_run$url,
               test_run$keywords,
               gsub("'|\"", "", test_run$description)) %>% call_neo4j(con)
 
