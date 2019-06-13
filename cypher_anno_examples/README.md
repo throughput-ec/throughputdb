@@ -7,19 +7,19 @@ The W3C standards for annotations include a number of examples that indicate how
 These examples are drawn from the [Annotation Standards]() and rendered into CQL.  In some cases specific vocabularies are required.  For these vocabularies we have constructed sample data elements in the [`raw_data`](../raw_data) folder.  Those `raw_data` CQL queries are run on creation of the database, such that elements including `agents`, `motivation` and others, already exist within the database.
 
   * Example 1: [Basic Annotation Model](https://www.w3.org/TR/annotation-model/#annotations) ([cql](example1.cql))
-  * Example 2: External Web Resources
-  * Example 3: Typing of Body and Target
-  * Example 4: IRIs with Fragment Components
-  * Example 5: Textual Body
-  * Example 6: String Body
-  * Example 7: Equivalent Textual Body
-  * Example 8: Annotations without a Body
-  * Example 9: Multiple Bodies or Targets
-  * Example 10: Choice
-  * Example 11: Lifecycle Information
-  * Example 12: Agents
-  * Example 13: Audience
-  * Example 14: Accessibility
+  * Example 2: [External Web Resources](https://www.w3.org/TR/annotation-model/#external-web-resources)  ([cql](example2.cql))
+  * Example 3: [Typing of Body and Target](https://www.w3.org/TR/annotation-model/#classes)  ([cql](example3.cql))
+  * Example 4: [IRIs with Fragment Components](https://www.w3.org/TR/annotation-model/#segments-of-external-resources)  ([cql](example4.cql))
+  * Example 5: [Textual Body](https://www.w3.org/TR/annotation-model/#embedded-textual-body) ([cql](example5.cql))
+  * Example 6: [String Body](https://www.w3.org/TR/annotation-model/#string-body) ([cql](example6.cql))
+  * Example 7: [Equivalent Textual Body](https://www.w3.org/TR/annotation-model/#string-body) ([cql](example7.cql))
+  * Example 8: [Annotations without a Body](https://www.w3.org/TR/annotation-model/#cardinality-of-bodies-and-targets) ([cql](example8.cql))
+  * Example 9: [Multiple Bodies or Targets](https://www.w3.org/TR/annotation-model/#cardinality-of-bodies-and-targets) ([cql](example9.cql))
+  * Example 10: [Choice](https://www.w3.org/TR/annotation-model/#choice-between-bodies) ([cql](example10.cql))
+  * Example 11: [Lifecycle Information](https://www.w3.org/TR/annotation-model/#lifecycle-information) ([cql](example11.cql))
+  * Example 12: [Agents](https://www.w3.org/TR/annotation-model/#agents) ([cql](example12.cql))
+  * Example 13: [Audience](https://www.w3.org/TR/annotation-model/#intended-audience) ([cql](example13.cql))
+  * Example 14: [Accessibility](https://www.w3.org/TR/annotation-model/#accessibility-of-content) ([cql](example14.cql))
   * Example 15: Motivation and Purpose
   * Example 16: Rights
   * Example 17: Other Identities
