@@ -44,7 +44,10 @@ for db in dbs:
     time.sleep(10)
     print("Running graphs for", db['ob']['name'])
     repositories = []
-    searchString = '"' + db['ob']['name'] + '" ' + db['ob']['url'] + ' in:file'
+    if len('"' + db['ob']['name'] + '" ' + db['ob']['url'] + ' in:file') > 127:
+        searchString = '"' + db['ob']['name'] + '" in:file'
+    else:
+        searchString = '"' + db['ob']['name'] + '" ' + db['ob']['url'] + ' in:file'
     rate_limit = g.get_rate_limit()
     print("   There are " + str(rate_limit.search.remaining) + " calls to GitHub remaining.")
     if rate_limit.search.remaining < 2:
@@ -52,12 +55,19 @@ for db in dbs:
         time.sleep(10)
     try:
         content_files = g.search_code(query=searchString)
+        print("   Returning " + str(content_files.totalCount) + " results.")
     except:
         print("Sleeping for 30 seconds")
         time.sleep(30)
         g = Github(**token)
         next
-    print("   Returning " + str(content_files.totalCount) + " results.")
+    if content_files.totalCount == 1000:
+        print("   **** There are more than 1000 results returned.  Skipping this element. ***")
+        f = open('skipped_re3.txt', 'w+')
+        f.write(searchString + "\r\n")
+        f.close()
+        time.sleep(10)
+        continue
     for content in content_files:
         time.sleep(2)
         print("   There are " + str(rate_limit.search.remaining) + " calls to GitHub remaining.")
