@@ -1,4 +1,5 @@
 connect_remote.json
+github_scraper/gh.token
 
 # History files
 .Rhistory
