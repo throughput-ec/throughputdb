@@ -24,11 +24,13 @@ Setting up Docker followed the [instructions posted by Docker](https://docs.dock
 
 ## Using this Repository
 
-This repository contains a `yaml` file to use with `docker-compose`.  Include the `docker-compose` file with the resource and you will be able to then use the command `docker-compose up neo4j` to initiate a container named `neo4j` on your system.
+This repository contains a bash script to initialize a Docker container that generates a neo4j instance on the end users server.
 
 ```coffeescript
-> docker-compose up neo4j
+> sudo bash dockrun.sh
 ```
+
+There are a set of bash scripts used to initialize data within the repository.  Some of these make use of external web resources, and require the use of token files (e.g., there is the expectation of a file named `gh.token` in the `github_scraper` folder) to provide access to user tokens or password encrypted services.
 
 ## Environmental Variables
 
@@ -36,8 +38,20 @@ Environmental variables for database setup and for the docker container are defi
 
 ## Annotation to Cypher Data Model
 
-The W3C data model proposes a number of elements for annotations, including the `body`, `target`, motivations and audiences, among others.  The data model is well described in the [W3C standards](https://www.w3.org/TR/annotation-model/).  To help build the data model for the Annotation Engine we have transcribed the examples presented in the Annotation Model document into the Cypher queries that that would generate similar elements.  These examples are all named by their example numbers in the main model document, and are stored in the [cypher_anno_examples]() folder.
+The W3C data model proposes a number of elements for annotations, including the `body`, `target`, motivations and audiences, among others.  The data model is well described in the [W3C standards](https://www.w3.org/TR/annotation-model/).  To help build the data model for the Annotation Engine we have transcribed the examples presented in the Annotation Model document into the Cypher queries that that would generate similar elements.  These examples are all named by their example numbers in the main model document, and are stored in the [cypher_anno_examples](https://github.com/throughput-ec/throughputdb/tree/master/cypher_anno_examples) folder.
 
-These examples are preliminary, but they are developed to provide a template for the generation of the Throughput APIs.  Where the examples rely on external vocabularies, or require a set of pre-defined terms, these have been placed in the [raw_data]() folder, either as a JSON file, to be processed, or in a CQL file that can be executed to initialize the database.  A `README` in that folder provides further explanations.
+These examples are preliminary, but they are developed to provide a template for the generation of the Throughput APIs.  Where the examples rely on external vocabularies, or require a set of pre-defined terms, these have been placed in the [raw_data](https://github.com/throughput-ec/throughputdb/tree/master/raw_data) folder, either as a JSON file, to be processed, or in a CQL file that can be executed to initialize the database.  A `README` in that folder provides further explanations.
 
 ## Database Schema
+
+![](images/graph_schema.png)
+
+The database schema is modeled on the annotation standard, but uses the graph database model of nodes and relationships to constrain elements in the annotations to help improve the efficiency of queries against the data resource.
+
+## External Data
+
+Currently there are two sets of external data that can be added to a new instance of the database.  The first, the set of data within the [re3data resource](https://www.re3data.org/) provides us with a set of core data resources.  The second is GitHub code repositories that contain scripts that reference databases within the Re3Data database.
+
+![](images/euro_data_portal.png)
+
+As the graph fills we can use progressively more powerful search tools to access data, data resources and understand connections within the annotation database.
