@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 -- GitHub Python scraper --
 
@@ -25,9 +26,14 @@ graph = Graph(**data)
 tx = graph.begin()
 
 # The use of the >>>!!!<<< is used to show deprecation apparently.
-cypher = """MATCH (ob:OBJECT)-[:isType]-(:TYPE {type:'schema:DataCatalog'})
-            WHERE NOT ob.description CONTAINS '>>>!!!<<<'
-            RETURN ob"""
+# This returns 2255 research databases from re3data.
+
+cypher = """MATCH (:TYPE {type:'schema:CodeRepository'})-[:isType]-(cr:OBJECT)-[:Target]-(:ANNOTATION)-[tar:Target]-(ot:OBJECT)-[:isType]-(:TYPE {type:'schema:DataCatalog'})
+    WITH COLLECT(DISTINCT ot.name) AS goodies
+    MATCH (ob:OBJECT)-[:isType]-(:TYPE {type:'schema:DataCatalog'})
+    WHERE (NOT ob.name IN goodies)
+    RETURN DISTINCT ob"""
+
 dbs = graph.run(cypher).data()
 
 with open('gh.token') as f:
@@ -70,7 +76,6 @@ for db in dbs:
         continue
     for content in content_files:
         time.sleep(2)
-        print("   There are " + str(rate_limit.search.remaining) + " calls to GitHub remaining.")
         repo = content.repository
         repElem = { 'ghid': repo.id,
                     'ghurl': repo.html_url,
