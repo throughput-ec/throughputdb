@@ -45,3 +45,6 @@ Throughput-Marketplace-Key.pem
 
 .Rproj.user
 auth.log
+
+github_scraper/gh.token
+
