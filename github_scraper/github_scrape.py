@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-'''
--- GitHub Python scraper --
+''' GitHub Python scraper
 
 Linking to github repositories to find all repositories that contain code
 related to the Re3Data databases.
@@ -17,6 +16,7 @@ import urllib
 import requests
 import re
 import time
+import csv
 
 with open('../connect_remote.json') as f:
     data = json.load(f)
@@ -44,6 +44,9 @@ g = Github(**token)
 gitadd = open('cql/github_linker.cql', mode="r")
 git_cql = gitadd.read()
 
+for db in dbs:
+    keywords = db['ob']['keywords'].split(',')
+
 random.shuffle(dbs)
 
 for db in dbs:
@@ -63,14 +66,17 @@ for db in dbs:
         content_files = g.search_code(query=searchString)
         print("   Returning " + str(content_files.totalCount) + " results.")
     except:
+        f = open('skipped_re3.txt', 'a')
+        f.write(searchString + " exception\n")
+        f.close()
         print("Sleeping for 30 seconds")
         time.sleep(30)
         g = Github(**token)
         next
     if content_files.totalCount == 1000:
         print("   **** There are more than 1000 results returned.  Skipping this element. ***")
-        f = open('skipped_re3.txt', 'w+')
-        f.write(searchString + "\r\n")
+        f = open('skipped_re3.txt', 'a')
+        f.write(searchString + " over 1k results\r\n")
         f.close()
         time.sleep(10)
         continue

@@ -1,1 +1,231 @@
-"PDS" https://pds.jpl.nasa.gov/ in:file
+"Internet Archive" https://archive.org/ in:file over 1k results
+"Norwegian Marine Data Center" https://www.hi.no/en/hi/forskning/research-groups-1/the-norwegian-marine-data-centre-nmd in:file exception
+"UNITE" https://unite.ut.ee/index.php in:file over 1k results
+"CARMEN" http://www.carmen.org.uk/ in:file over 1k results
+"CDC WONDER" http://wonder.cdc.gov/ in:file over 1k results
+"AnimalGenome.ORG" http://www.animalgenome.org:8181/ in:file exception
+"Biosamples" https://www.ebi.ac.uk/biosamples/ in:file over 1k results
+"GOVDATA" https://www.govdata.de/ in:file over 1k results
+"XSEDE" https://www.xsede.org/ in:file over 1k results
+"RADAR" https://www.radar-service.eu/en in:file over 1k results
+"Sequence Read Archive" https://www.ncbi.nlm.nih.gov/sra in:file over 1k results
+"Arch" http://arch.library.northwestern.edu/ in:file over 1k results
+"dictybase" http://dictybase.org/ in:file over 1k results
+"Atlantic Oceanographic and Meteorological Laboratory" http://www.aoml.noaa.gov/ in:file over 1k results
+"ISIDORE" https://isidore.science/ in:file over 1k results
+"DrugBank" https://www.drugbank.ca/ in:file over 1k results
+"myExperiment" https://www.myexperiment.org/home in:file over 1k results
+"EcoGene" http://ecogene.org/ in:file over 1k results
+"SeaDataNet" https://www.seadatanet.org/ in:file over 1k results
+"EOL" http://www.eol.ucar.edu/ in:file over 1k results
+"VertNet" http://vertnet.org/ in:file over 1k results
+"Conserved Domain database" https://www.ncbi.nlm.nih.gov/cdd/ in:file over 1k results
+"Coriolis" http://www.coriolis.eu.org/ in:file over 1k results
+"GOVDATA" https://www.govdata.de/ in:file over 1k results
+"Internet Archive" https://archive.org/ in:file over 1k results
+"BRC" http://www.brc.ac.uk/ in:file over 1k results
+"GenBank" https://www.ncbi.nlm.nih.gov/genbank/ in:file over 1k results
+"myExperiment" https://www.myexperiment.org/home in:file over 1k results
+"SENSOR" https://sensor.awi.de in:file over 1k results
+"Global Change Master Directory" http://gcmd.nasa.gov/ in:file over 1k results
+"SOFIA" https://sofia.usgs.gov/ in:file over 1k results
+"EMEP" http://www.emep.int/ in:file over 1k results
+"DSpace@MIT" http://dspace.mit.edu/ in:file over 1k results
+"Pathway Commons" http://www.pathwaycommons.org/ in:file over 1k results
+"Environmental Monitoring System" in:file over 1k results
+"ISIDORE" https://isidore.science/ in:file over 1k results
+"HYDAT" in:file over 1k results
+"Google Code Project Hosting" https://code.google.com/archive/ in:file over 1k results
+"Eurostat" https://ec.europa.eu/eurostat/ in:file over 1k results
+"TROVE" http://trove.nla.gov.au/ in:file over 1k results
+"Digital South Asia Library" http://dsal.uchicago.edu/ in:file over 1k results
+"heiDATA" https://heidata.uni-heidelberg.de in:file exception
+"EarthStat" http://www.earthstat.org/ in:file over 1k results
+"Zenodo" https://zenodo.org/ in:file over 1k results
+"SimTK" https://simtk.org in:file over 1k results
+"SwissLipids" http://www.swisslipids.org/#/ in:file over 1k results
+"SENSOR" https://sensor.awi.de in:file over 1k results
+"Linguistic Data Consortium" https://www.ldc.upenn.edu/ in:file over 1k results
+"EcoGene" http://ecogene.org/ in:file over 1k results
+"Cornell University Geospatial Information Repository" https://cugir.library.cornell.edu/ in:file over 1k results
+"GEOFON" http://geofon.gfz-potsdam.de/ in:file over 1k results
+"Intermagnet" http://www.intermagnet.org/ in:file over 1k results
+"SOFIA" https://sofia.usgs.gov/ in:file over 1k results
+"Rhea" https://www.rhea-db.org/ in:file over 1k results
+"NCBI Protein" http://www.ncbi.nlm.nih.gov/protein in:file over 1k results
+"UNdata" http://data.un.org/ in:file over 1k results
+"Deutsches BioBanken-Register" http://www.biobanken.de/en-gb/home.aspx in:file exception
+"UWE Research Data Repository" http://www1.uwe.ac.uk/library/searchforthingsa-z/researchdatarepository.aspx in:file exception
+"LIAS" http://www.lias.net/ in:file over 1k results
+"KBase" http://kbase.us/ in:file over 1k results
+"APPLAUSE" https://www.plate-archive.org/applause/ in:file over 1k results
+"Conserved Domain database" https://www.ncbi.nlm.nih.gov/cdd/ in:file over 1k results
+"ChEMBL" https://www.ebi.ac.uk/chembl/beta/ in:file over 1k results
+"Pathway Commons" http://www.pathwaycommons.org/ in:file over 1k results
+"BioPortal" http://bioportal.bioontology.org/ in:file over 1k results
+"NCBI Gene" https://www.ncbi.nlm.nih.gov/gene?db=gene in:file over 1k results
+"OSTI" https://www.osti.gov/search-tools in:file over 1k results
+"NCBI Taxonomy" https://www.ncbi.nlm.nih.gov/taxonomy in:file over 1k results
+"EOS-EarthData" http://eos-earthdata.sr.unh.edu/ in:file exception
+"International Plant Names Index" http://www.ipni.org/index.html in:file over 1k results
+"BRENDA" https://www.brenda-enzymes.info/ in:file over 1k results
+"arrayMap" http://arraymap.org in:file over 1k results
+"T3DB" http://www.t3db.ca/ in:file over 1k results
+"IOOS®" https://ioos.noaa.gov/ in:file over 1k results
+"Digital Collections ULB Düsseldorf" http://digital.ub.uni-duesseldorf.de/?lang=en in:file exception
+"CiteSeerX" http://citeseerx.ist.psu.edu/index in:file over 1k results
+"Coriolis" http://www.coriolis.eu.org/ in:file over 1k results
+"MADATA - Mannheim research data repository" https://madata.bib.uni-mannheim.de/ in:file exception
+"DrugBank" https://www.drugbank.ca/ in:file over 1k results
+"Synapse" https://www.synapse.org in:file over 1k results
+"Met office" http://www.metoffice.gov.uk/research in:file over 1k results
+"BioPortal" http://bioportal.bioontology.org/ in:file over 1k results
+"EarthChem" http://www.earthchem.org in:file over 1k results
+"SeaDataNet" https://www.seadatanet.org/ in:file over 1k results
+"LOAR" https://loar.kb.dk/ in:file over 1k results
+"SILVA" http://www.arb-silva.de/ in:file over 1k results
+"Geothermal Information System" https://www.geotis.de/homepage/GeotIS-Startpage?loc=en in:file exception
+"UNITE" https://unite.ut.ee/index.php in:file over 1k results
+"Mouse Genome Informatics" http://www.informatics.jax.org/ in:file over 1k results
+"Artstor" http://www.artstor.org in:file over 1k results
+"Intermagnet" http://www.intermagnet.org/ in:file over 1k results
+"CLARIN-ERIC" https://www.clarin.eu/ in:file over 1k results
+"GeoNames" http://www.geonames.org/ in:file over 1k results
+"WATCH" http://www.eu-watch.org/ in:file over 1k results
+"Norwegian Marine Data Center" https://www.hi.no/en/hi/forskning/research-groups-1/the-norwegian-marine-data-centre-nmd in:file exception
+"Africa Centre for Population Health" http://www.africacentre.ac.za/ in:file exception
+"PlasmoDB" http://plasmodb.org/plasmo/ in:file over 1k results
+"Global Biodiversity Information Facility" https://www.gbif.org/ in:file over 1k results
+"Cancer in Young People in Canada" http://www.c17.ca/index.php?cID=70 in:file exception
+"dbSNP" https://www.ncbi.nlm.nih.gov/SNP/ in:file over 1k results
+"NatureServe" http://www.natureserve.org/ in:file over 1k results
+"ClinicalTrials.gov" https://clinicaltrials.gov/ in:file over 1k results
+"MG-RAST" http://www.mg-rast.org/ in:file over 1k results
+"DSpace@MIT" http://dspace.mit.edu/ in:file over 1k results
+"Atlantic Oceanographic and Meteorological Laboratory" http://www.aoml.noaa.gov/ in:file over 1k results
+"Digital South Asia Library" http://dsal.uchicago.edu/ in:file over 1k results
+"British Geological Survey" http://www.bgs.ac.uk/ in:file over 1k results
+"OrthoMCL" http://orthomcl.org/orthomcl/ in:file over 1k results
+"NCEI" https://www.ncei.noaa.gov/ in:file over 1k results
+"NCBI Gene" https://www.ncbi.nlm.nih.gov/gene?db=gene in:file over 1k results
+"Kaggle" https://www.kaggle.com/datasets in:file over 1k results
+"Hydra" https://hydra.hull.ac.uk/ in:file over 1k results
+"Biosamples" https://www.ebi.ac.uk/biosamples/ in:file over 1k results
+"Moderate Resolution Imaging Spectroradiometer" https://modis.gsfc.nasa.gov/ in:file exception
+"Moderate Resolution Imaging Spectroradiometer" https://modis.gsfc.nasa.gov/ in:file over 1k results
+"Google Code Project Hosting" https://code.google.com/archive/ in:file over 1k results
+"Harvard Dataverse" https://dataverse.harvard.edu/ in:file over 1k results
+"APPLAUSE" https://www.plate-archive.org/applause/ in:file over 1k results
+"Internet Archive" https://archive.org/ in:file over 1k results
+"GISTEMP" https://data.giss.nasa.gov/gistemp/ in:file over 1k results
+"Protected Planet" https://protectedplanet.net/ in:file over 1k results
+"Office for National Statistics" https://www.ons.gov.uk/ in:file over 1k results
+"Apollo" https://www.repository.cam.ac.uk/ in:file over 1k results
+"Atlas of Living Australia" https://www.ala.org.au/ in:file over 1k results
+"EuPathDB" https://eupathdb.org/eupathdb/ in:file over 1k results
+"GOVDATA" https://www.govdata.de/ in:file over 1k results
+"NCBI" http://www.ncbi.nlm.nih.gov/ in:file over 1k results
+"CiteSeerX" http://citeseerx.ist.psu.edu/index in:file over 1k results
+"dictybase" http://dictybase.org/ in:file over 1k results
+"Atlas of Living Australia" https://www.ala.org.au/ in:file over 1k results
+"The Data Hub" https://datahub.io/ in:file over 1k results
+"General Social Survey" http://gss.norc.org/ in:file over 1k results
+"NITRC" https://www.nitrc.org/ in:file over 1k results
+"VertNet" http://vertnet.org/ in:file over 1k results
+"Open Tree of Life" https://tree.opentreeoflife.org/opentree/argus/opentree7.0@ott93302 in:file exception
+"Epidat" http://www.steinheim-institut.de/cgi-bin/epidat?lang=de in:file over 1k results
+"JASPAR" http://jaspar.genereg.net/ in:file over 1k results
+"WRAP" http://wrap.warwick.ac.uk/ in:file over 1k results
+"T3DB" http://www.t3db.ca/ in:file over 1k results
+"TreeBASE" https://treebase.org/treebase-web/home.html in:file over 1k results
+"Avibase" https://avibase.bsc-eoc.org/avibase.jsp?lang=EN&pg=home in:file over 1k results
+"ARS" https://ars.rki.de/ in:file over 1k results
+"OLAC" http://www.language-archives.org/ in:file over 1k results
+"American Mineralogist Crystal Structure Database" http://rruff.geo.arizona.edu/AMS/amcsd.php in:file over 1k results
+"Pathway Commons" http://www.pathwaycommons.org/ in:file over 1k results
+"Spiral" http://spiral.imperial.ac.uk/ in:file over 1k results
+"TERENO Data Portal" http://teodoor.icg.kfa-juelich.de/ibg3searchportal/index.jsp in:file exception
+"UNdata" http://data.un.org/ in:file over 1k results
+"Office for National Statistics" https://www.ons.gov.uk/ in:file over 1k results
+"National Archives" https://www.archives.gov/ in:file over 1k results
+"Crystallography Open Database" http://www.crystallography.net/cod/ in:file over 1k results
+"IOOS®" https://ioos.noaa.gov/ in:file over 1k results
+"Open Science Framework" https://osf.io/ in:file over 1k results
+"ASTM International" https://www.astm.org/Standard/index.html in:file over 1k results
+"Kaggle" https://www.kaggle.com/datasets in:file over 1k results
+"ENCODE" https://www.encodeproject.org/ in:file over 1k results
+"Atlas of Living Australia" https://www.ala.org.au/ in:file over 1k results
+"modENCODE" http://www.modencode.org/ in:file over 1k results
+"World Register of Marine Species" http://www.marinespecies.org/index.php in:file over 1k results
+"PharmGKB" https://www.pharmgkb.org/ in:file over 1k results
+"Harvard Dataverse" https://dataverse.harvard.edu/ in:file over 1k results
+"VectorBase" https://www.vectorbase.org/ in:file over 1k results
+"ZVDD" http://www.zvdd.de/en/start/ in:file over 1k results
+"Centre for Environmental Data Analysis" http://www.ceda.ac.uk in:file over 1k results
+"IOOS®" https://ioos.noaa.gov/ in:file over 1k results
+"National Archives" https://www.archives.gov/ in:file over 1k results
+"Avibase" https://avibase.bsc-eoc.org/avibase.jsp?lang=EN&pg=home in:file over 1k results
+"Allen Brain Atlas" http://www.brain-map.org/ in:file over 1k results
+"Copernicus" http://www.copernicus.eu/ in:file over 1k results
+"TRY" https://www.try-db.org/TryWeb/Home.php in:file over 1k results
+"World Register of Marine Species" http://www.marinespecies.org/index.php in:file over 1k results
+"Madrigal Database" http://cedar.openmadrigal.org/madrigal/ in:file exception
+"ClinicalTrials.gov" https://clinicaltrials.gov/ in:file over 1k results
+"OLAC" http://www.language-archives.org/ in:file over 1k results
+"Mutopia Project" http://www.mutopiaproject.org/ in:file over 1k results
+"Apollo" https://www.repository.cam.ac.uk/ in:file over 1k results
+"Atlas of Living Australia" https://www.ala.org.au/ in:file over 1k results
+"Biosearch" http://www.biosearch.in/ in:file over 1k results
+"Dallas Heart Study" https://www.utsouthwestern.edu/research/translational-medicine/doing-research/dallas-heart/ in:file exception
+"VectorBase" https://www.vectorbase.org/ in:file over 1k results
+"ANPERSANA" https://anpersana.iker.univ-pau.fr in:file exception
+"plankton*net" http://planktonnet.awi.de in:file exception
+"CRAWDAD" https://crawdad.org in:file over 1k results
+"United States Census Bureau" https://www.census.gov/ in:file over 1k results
+"database of Sequence Tagged Sites" http://www.ncbi.nlm.nih.gov/dbSTS/ in:file over 1k results
+"Open Tree of Life" https://tree.opentreeoflife.org/opentree/argus/opentree7.0@ott93302 in:file exception
+"REBASE" http://rebase.neb.com/rebase/rebase.html in:file over 1k results
+"T3DB" http://www.t3db.ca/ in:file over 1k results
+"PDBj" https://pdbj.org/ in:file over 1k results
+"NCEI" https://www.ncei.noaa.gov/ in:file over 1k results
+"PDS" https://pds.jpl.nasa.gov/ in:file over 1k results
+"Biosamples" https://www.ebi.ac.uk/biosamples/ in:file over 1k results
+"National Center for Education Statistics" http://nces.ed.gov/ in:file over 1k results
+"The World Data Center for Remote Sensing of the Atmosphere" http://wdc.dlr.de/ in:file exception
+"Open Science Framework" https://osf.io/ in:file over 1k results
+"Online Mendelian Inheritance in Man" https://www.ncbi.nlm.nih.gov/omim in:file over 1k results
+"Apollo" https://www.repository.cam.ac.uk/ in:file over 1k results
+"Allen Brain Atlas" http://www.brain-map.org/ in:file exception
+"Allen Brain Atlas" http://www.brain-map.org/ in:file over 1k results
+"DSMZ" https://www.dsmz.de/ in:file over 1k results
+"SILVA" http://www.arb-silva.de/ in:file over 1k results
+"ChemSpider" http://www.chemspider.com/ in:file over 1k results
+"DBpedia" https://wiki.dbpedia.org/ in:file over 1k results
+"Open Tree of Life" https://tree.opentreeoflife.org/opentree/argus/opentree7.0@ott93302 in:file exception
+"Cornell University Geospatial Information Repository" https://cugir.library.cornell.edu/ in:file over 1k results
+"SwissLipids" http://www.swisslipids.org/#/ in:file over 1k results
+"CARMEN" http://www.carmen.org.uk/ in:file over 1k results
+"TOXNET" https://toxnet.nlm.nih.gov/ in:file over 1k results
+"EarthChem" http://www.earthchem.org in:file over 1k results
+"Crystallography Open Database" http://www.crystallography.net/cod/ in:file over 1k results
+"BioPortal" http://bioportal.bioontology.org/ in:file over 1k results
+"DataONE" https://www.dataone.org/ in:file over 1k results
+"Apollo" https://www.repository.cam.ac.uk/ in:file over 1k results
+"CoRIS" http://www.coris.noaa.gov/ in:file over 1k results
+"UNdata" http://data.un.org/ in:file over 1k results
+"ASTM International" https://www.astm.org/Standard/index.html in:file over 1k results
+"TAMBORA" https://www.tambora.org/ in:file over 1k results
+"LOAR" https://loar.kb.dk/ in:file over 1k results
+"United States Census Bureau" https://www.census.gov/ in:file over 1k results
+"modENCODE" http://www.modencode.org/ in:file over 1k results
+"PDS" https://pds.jpl.nasa.gov/ in:file over 1k results
+"arrayMap" http://arraymap.org in:file over 1k results
+"EarthChem" http://www.earthchem.org in:file over 1k results
+"NatureServe" http://www.natureserve.org/ in:file over 1k results
+"PhysioNet" http://physionet.org/ in:file over 1k results
+"DRYAD" https://datadryad.org in:file over 1k results
+"SOFIA" https://sofia.usgs.gov/ in:file over 1k results
+"CATH" http://www.cathdb.info/ in:file over 1k results
+"Harvard Dataverse" https://dataverse.harvard.edu/ in:file over 1k results
+"HALO database" https://halo-db.pa.op.dlr.de/ in:file exception
+"OpenKIM" https://openkim.org/ in:file over 1k results

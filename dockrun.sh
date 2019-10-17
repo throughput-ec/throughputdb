@@ -8,6 +8,7 @@ docker run \
     -v $HOME/neo4j/logs:/logs \
     -v $HOME/neo4j/import:/var/lib/neo4j/import \
     -v $HOME/neo4j/plugins:/plugins \
+    --ulimit=nofile=40000:40000 \
     --env NEO4J_AUTH=neo4j/test \
     neo4j:latest 2> /dev/null || \
     docker start testneo4j
