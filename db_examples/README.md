@@ -1,7 +1,7 @@
 ## How many Code Repositories are in the Database
 
 ```
-MATCH (:TYPE {type:"schema:CodeRepository"})-[:isType]-(ocr:OBJECT)
+OPTIONAL MATCH (:TYPE {type:"schema:CodeRepository"})-[:isType]-(ocr:OBJECT)-[:Target]-()
 RETURN COUNT(DISTINCT ocr)
 ```
 
