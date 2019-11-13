@@ -69,41 +69,12 @@ with open("type.cql") as type:
 """
 
 print("Adding Language Nodes")
-link = "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"
-f = requests.get(link)
+link = "https://raw.githubusercontent.com/maikudou/iso639-js/master/iso639-3_living.json"
+f = requests.get(link).json()
 
-""" Breaks the language list into chunks delimited by %% """
-
-langelem = f.text.split("\n%%\n")
-
-for elm in langelem[1:]:
-
-  """
-      Find all the language labels:
-      Split by the colon, keeping the colon as a property marker
-  """
-  things = [x for x in (re.split("\n*(.*:)", elm)) if x != '']
-
-  isElem = list(map(lambda x: re.search(":", x) != None, things))
-
-  """
-      Once we've found them, get the typeself.
-      Because there are a number of subtypes in this definition we use the
-      prefix 'lng_' to indicate they are all types of 'language' nodes.
-  """
-
-  type = "lng_" + re.sub("^ ", "", things[([c for c, v in enumerate(things) if things[c - 1] == 'Type:'][0])]
-).upper()
-
-  """ Then add all the node properties to a dictionary: """
-  nodeProp = dict()
-
-  for counter, v in enumerate(isElem):
-    if counter < len(isElem) - 1:
-      if isElem[counter] & (things[counter] != "Type:"):
-        key = re.sub(":", "", things[counter]).lower()
-        nodeProp[key] = re.sub("^ ", "", things[counter + 1])
-
+for key in f:
+  elm = f[key]
+  elm['code'] = key
   tx = graph.begin()
-  tx.create(Node(type, **nodeProp))
+  tx.create(Node("LANGUAGE", **elm))
   tx.commit()
