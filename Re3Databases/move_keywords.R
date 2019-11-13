@@ -24,7 +24,7 @@ get_keys <- query %>%
   pluck("n.id") %>%
   unlist() %>%
   map(function(x) {
-    addkw <- sprintf(add_kw, i)
+    addkw <- sprintf(add_kw, x)
     addkw  %>% call_neo4j(con, output="json")
   }) %>%
   bind_rows()
