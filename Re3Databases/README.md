@@ -43,3 +43,8 @@ WITH a, ag, ags
 MERGE (ag)-[:Created {created: timestamp()}]->(a)
 MERGE (ags)-[:Generated {generated: timestamp()}]->(a)
 ```
+## Keywords
+
+Individual databases have keywords associated with them.  In some cases keywords may be misspelled, or may be either too general (`"science"`) or too specific (`"holocene fossils"`).  To ensure that keywords can be used effectively we want to add them to the graph.
+
+We do this by creating a special node type (`KEYWORD`), with the constraint that each keyword is unique.  Keywords may be related using the `:implies` relationship.  All `KEYWORD`s are related to `OBJECT`s through annotations.
