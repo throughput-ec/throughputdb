@@ -1,4 +1,7 @@
 id,error
+r3d100010800,"Error in open.connection(x, ""rb"") : 
+  Timeout was reached: Resolving timed out after 10000 milliseconds
+"
 r3d100011604,"Error in data.frame(name = unlist(small_repos$re3data.repository$repositoryName),  : 
   arguments imply differing number of rows: 1, 0
 "
