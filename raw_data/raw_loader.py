@@ -39,7 +39,7 @@ if good is False:
 with open('../connect_remote.json') as f:
     data = json.load(f)
 
-graph = Graph(**data)
+graph = Graph(**data[1])
 
 tx = graph.begin()
 
@@ -76,5 +76,13 @@ for key in f:
   elm = f[key]
   elm['code'] = key
   tx = graph.begin()
-  tx.create(Node("LANGUAGE", **elm))
+  tx.merge(Node("LANGUAGE", **elm))
   tx.commit()
+
+'''
+Remove duplicate nodes:
+MATCH (g:LANGUAGE)
+WITH g.part1 as id, collect(g) AS nodes
+WHERE size(nodes) >  1
+FOREACH (g in tail(nodes) | DELETE g)
+'''
