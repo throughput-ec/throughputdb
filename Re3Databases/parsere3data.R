@@ -62,19 +62,22 @@ for(i in 1:nrow(all_repos)) {
   test_run <- try(call_repo(all_repos$id[i], re3api_short))
 
   if (!"try-error" %in% class(test_run)) {
-    lang <- detect_language(test_run$description)
 
-    inset <- paste0("MATCH (ln:lng_LANGUAGE {subtag:'",lang,"'}) RETURN COUNT(ln)") %>%
-      call_neo4j(con) %>%
-      unlist()
+    lang <- strsplit(test_run$lang, ",") %>% unlist
 
-    if (inset > 0) {
-      paste0("MATCH (o:OBJECT {id:'",all_repos$id[i],"'})
-       MATCH (ln:lng_LANGUAGE {subtag:'",lang,"'})
-       WITH o, ln
-       MERGE (o)-[:hasLanguage]-(ln);") %>%
-           call_neo4j(con)
-      cat(paste0(" Added language '", lang, "' to ", test_run$name, "\n"))
+    for(i in lang) {
+      inset <- paste0("MATCH (ln:LANGUAGE {code:'",i,"'}) RETURN COUNT(ln)") %>%
+        call_neo4j(con) %>%
+        unlist()
+
+      if (inset > 0) {
+        paste0("MATCH (o:OBJECT {id:'",all_repos$id[i],"'})
+         MATCH (ln:LANGUAGE {code:'",i,"'})
+         WITH o, ln
+         MERGE (o)-[:hasLanguage]-(ln);") %>%
+             call_neo4j(con)
+        cat(paste0(" Added language '", i, "' to ", test_run$name, "\n"))
+      }
     }
   }
 }
