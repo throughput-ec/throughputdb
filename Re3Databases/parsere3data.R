@@ -59,6 +59,8 @@ for(i in 1:nrow(all_repos)) {
     }
   }
 
+  test_run <- try(call_repo(all_repos$id[i], re3api_short))
+
   if (!"try-error" %in% class(test_run)) {
     lang <- detect_language(test_run$description)
 
