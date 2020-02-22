@@ -1,11 +1,29 @@
+library(purrr)
+library(dplyr)
 library(jsonlite)
-library(RNeo4j)
+library(neo4r)
+library(httr)
+
+source('./R/callapi.R')
+
+linkropen <- readr::read_file("cql/link_ropensci.cql")
+
+con_list <- jsonlite::fromJSON('../connect_remote.json')[2,]
+
+con <- neo4j_api$new(
+  url = paste0(con_list$host, ":", con_list$r_port),
+  user = unlist(con_list$user),
+  password = unlist(con_list$password)
+)
 
 ropensci_registry <- jsonlite::fromJSON("https://raw.githubusercontent.com/ropensci/roregistry/gh-pages/registry.json")
 
-packages <- ropensci_registry$packages$name
+packages <- ropensci_registry$packages
 
-gh_token <- scan('gh.token', what = 'character')
+gh_token <- scan('./../gh.token', what = 'character')
+
+headers <- c(Accept='application/vnd.github.v3+json',
+            Authorization=paste0('token ', gh_token[3]))
 
 if('all_github.rds' %in% list.files('data')) {
 
@@ -14,70 +32,42 @@ if('all_github.rds' %in% list.files('data')) {
 
 } else {
   test_pks <- list()
-}
 
   script_home <- 'https://github.com/throughput-ec/throughputdb/blob/master/populate/case_study.Rmd'
 
-  for (i in 1:length(packages)) {
+  for (i in 1:nrow(packages)) {
 
     # I had to serialize this to avoid getting caught by GitHub's abuse detection.
 
-    x <- packages[i]
-
+    x <- packages[i,]
 
     if (!length(test_pks) >= i) {
       Sys.sleep(5) # This is probably longer than it needs to be. . .
 
-      repos <- gh::gh(paste0('/search/code?q=library(',x,
-                             ')+in:file+language:R+extension:R+extension:Rmd'),
-                       .token = gh_token)
+      test_pks[[i]] <- list(package = x$name,
+                            result = try(callapi(x$name)))
 
-      annotation_text <- paste0("The GitHub repository uses the package ",
-                                x, " in a `library()` or `require()` call.")
+      if(!'try-error' %in% class(test_pks[[i]]$result)) {
+        annotation_text <- paste0("The GitHub repository uses the package ",
+                                  x$name, " in a `library()` or `require()` call.")
 
-      repo_list <- unique(sapply(repos$items, function(x)x$repository$html_url))
+        results <- test_pks[[i]]$result
 
-      target_list <- lapply(repo_list,
-                            function(y) {
-                              if(length(repo_list) > 0) {
-                                return(object(value = y, type = 'URL'))
-                                } else { return(NULL) }
-                              }
-                            )
+        for(i in 1:nrow(results)) {
 
-      if (length(target_list) > 0) {
-
-        test_pks[[i]] <- list(
-          target = target_list,
-          body = list(object(value = paste0('http://github.com/ropensci/',x),
-                                       type = 'URL'),
-                      object( type = "annotationText",
-                             value = annotation_text),
-                      object(type = 'URL',
-                            value = script_home)),
-          generator = creator(identifier = '0000-0002-2700-4605',
-                                      PropertyID = 'orcid',
-                                        lastName = 'Goring',
-                                     firstName = 'Simon'),
-                body_rel = object(type = 'URL',
-                                 value = 'https://ropensci.org/'),
-                source = object(type = 'URL',
-                                value = 'http://github.com'))
-    } else {
-      test_pks[[i]] <- list()
+          sprintf(linkropen,
+            results$id[i],
+            results$name[i],
+            results$url[i],
+            ifelse(is.na(results$description[i]), "",results$description[i]),
+            x$name,
+            x$url,
+            ifelse(is.na(x$description), "",x$description),
+            annotation_text) %>%
+            map(function(x) call_neo4j(con, query=.))
+        }
+      }
     }
+    writeRDS(test_pks, 'all_github.rds')
   }
-
-  if (length(test_pks[[i]]) > 0) {
-
-    link_record(con,
-                target = test_pks[[i]]$target,
-                  body = test_pks[[i]]$body,
-             generator = test_pks[[i]]$generator,
-              body_rel = test_pks[[i]]$body_rel,
-                source = test_pks[[i]]$source)
-  }
-
-  saveRDS(object = test_pks, file = 'data/all_github.rds')
-  cat(i, '\n')
 }
