@@ -18,7 +18,8 @@ con <- neo4j_api$new(
 
 ropensci_registry <- jsonlite::fromJSON("https://raw.githubusercontent.com/ropensci/roregistry/gh-pages/registry.json")
 
-packages <- ropensci_registry$packages
+packages <- ropensci_registry$packages %>%
+  filter(status == "active")
 
 gh_token <- scan('./../gh.token', what = 'character')
 
@@ -45,22 +46,24 @@ if('all_github.rds' %in% list.files('data')) {
       Sys.sleep(5) # This is probably longer than it needs to be. . .
 
       test_pks[[i]] <- list(package = x$name,
-                            result = try(callapi(x$name)))
+                            result = try(list(callapi(x$name, libCall = TRUE),
+                                              callapi(x$name, libCall = FALSE))))
 
       if(!'try-error' %in% class(test_pks[[i]]$result)) {
         annotation_text <- paste0("The GitHub repository uses the package ",
                                   x$name, " in a `library()` or `require()` call.")
 
-        results <- test_pks[[i]]$result
+        results <- test_pks[[i]]$result %>% bind_rows()
 
-        for(i in 1:nrow(results)) {
+        for(j in 1:nrow(results)) {
 
           sprintf(linkropen,
-            results$id[i],
-            results$name[i],
-            results$url[i],
-            ifelse(is.na(results$description[i]), "",results$description[i]),
+            results$id[j],
+            results$name[j],
+            results$url[j],
+            ifelse(is.na(results$description[j]), "",results$description[j]),
             x$name,
+            x$keywords,
             x$url,
             ifelse(is.na(x$description), "",x$description),
             annotation_text) %>%
@@ -68,6 +71,6 @@ if('all_github.rds' %in% list.files('data')) {
         }
       }
     }
-    writeRDS(test_pks, 'all_github.rds')
+    saveRDS(test_pks, 'all_github.rds')
   }
 }
