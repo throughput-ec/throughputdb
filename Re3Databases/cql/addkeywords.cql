@@ -1,4 +1,5 @@
-MATCH  (o:OBJECT {id: "%s"})
+MATCH  (o:OBJECT)
+WHERE id(o) = %d
 MERGE (aty:AGENTTYPE {type:"Person"})
 WITH aty, o
   MERGE (ag:AGENT { id:"0000-0002-2700-4605",
@@ -15,7 +16,7 @@ WITH o, a
   MERGE (a)-[:Body]->(:OBJECT {value: "The database is tagged with these terms."})-[:isType]->(:TYPE {type: "TextualBody"})
 WITH o, a, SPLIT(o.keywords, ",") AS kw
   FOREACH (kword IN kw |
-    MERGE (knode:KEYWORD {keyword: kword})
+    MERGE (knode:KEYWORD {keyword: rTrim(lTrim(kword))})
       ON CREATE SET knode.created = timestamp()
       CREATE (a)-[:Target]->(knode) )
-RETURN kw, o.name
+RETURN kw AS keywords, o.name AS name

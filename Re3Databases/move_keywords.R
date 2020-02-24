@@ -14,18 +14,26 @@ con <- neo4j_api$new(
   password = unlist(con_list$password)
 )
 
-query <- 'MATCH (n:OBJECT)-[:isType]-(:TYPE {type:"schema:DataCatalog"})
-          RETURN n.id'
+query <- 'MATCH (n:OBJECT) WHERE exists(n.keywords)
+          RETURN id(n) AS id'
 
 add_kw <- readr::read_file("cql/addkeywords.cql")
 
 get_keys <- query %>%
   call_neo4j(con) %>%
-  pluck("n.id") %>%
+  pluck("id") %>%
   unlist() %>%
   map(function(x) {
     addkw <- sprintf(add_kw, x)
-    addkw  %>% call_neo4j(con, output="json")
+    result <- addkw %>%
+      call_neo4j(con, output="json") %>%
+      fromJSON() %>%
+      bind_rows() %>%
+      pluck("row") %>%
+      unlist(recursive = FALSE)
+    return(data.frame(keywords = result[[1]],
+                      object = result[[2]],
+                      stringsAsFactors = FALSE))
   }) %>%
   bind_rows()
 
