@@ -75,8 +75,12 @@ f = requests.get(link).json()
 for key in f:
   elm = f[key]
   elm['code'] = key
+  clean = {k: v for k, v in elm.items() if v is not None}
   tx = graph.begin()
-  tx.merge(Node("LANGUAGE", **elm))
+  newNode = Node("LANGUAGE", **clean)
+  newNode.__primarylabel__ = "LANGUAGE"
+  newNode.__primarykey__ = "code"
+  tx.merge(newNode)
   tx.commit()
 
 '''
