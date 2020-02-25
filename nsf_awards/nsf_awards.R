@@ -5,8 +5,6 @@ library(neo4r)
 library(httr)
 library(xml2)
 
-fileloc <- paste0('file://////', getwd())
-
 source('R/bind_to_file.R')
 query <- readr::read_file('cql/parameterized.cql')
 con_list <- jsonlite::fromJSON('../connect_remote.json')[2,]
@@ -17,9 +15,20 @@ con <- neo4j_api$new(
   password = unlist(con_list$password)
 )
 
-nsfawards <- list.files('data/input/awards', full.names = TRUE)
+nsfawards <- list.files('data/input/awards',
+                        full.names = TRUE,
+                        include.dirs = FALSE)
 
 for (i in 1:length(nsfawards)) {
+
+  unzip <- list.files('data/input/awards/unzip',
+                      full.names = TRUE,
+                      include.dirs = FALSE)
+
+  if(length(unzip) > 0) {
+    unlink(unzip)
+  }
+
   cat(sprintf("\n***\nUnzipping %s\n", nsfawards[i]))
   unzip(nsfawards[i], exdir = 'data/input/awards/unzip')
   unzippers <- list.files('data/input/awards/unzip', full.names = TRUE)
@@ -55,7 +64,7 @@ for (i in 1:length(nsfawards)) {
   }
 
   cat('\n')
-  
+
   datecheck <- function(x) {
     res <- (is.null(x) | is.na(x) | x %in% c("NA", "None"))
     x[res] <- "0/0/0"
