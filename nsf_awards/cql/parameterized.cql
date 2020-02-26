@@ -1,6 +1,6 @@
 USING PERIODIC COMMIT 50 LOAD CSV WITH HEADERS FROM 'file:///awards.csv' AS row
 MERGE (award:OBJECT {AwardID: row.AwardID})
-  ON CREATE SET award.name = UPPER(row.AwardTitle),
+  ON CREATE SET award.name = toUpper(row.AwardTitle),
                award.amount = TOINT(row.AwardAmount),
                 award.ARRAAmount = TOINT(row.ARRAAmount),
            award.AwardInstrument = row.AwardInstrument,
@@ -8,15 +8,15 @@ MERGE (award:OBJECT {AwardID: row.AwardID})
 
 MERGE (award)-[:isType]-(:TYPE {type:"schema:Grant"})
 
-MERGE ( state:State { Name: UPPER(row.InstitutionStateName) })
-ON CREATE SET  state.Code = UPPER(row.InstitutionStateCode)
+MERGE ( state:State { Name: toUpper(row.InstitutionStateName) })
+ON CREATE SET  state.Code = toUpper(row.InstitutionStateCode)
 
-MERGE (country:Country { Name: UPPER(row.InstitutionCountryName) } )
+MERGE (country:Country { Name: toUpper(row.InstitutionCountryName) } )
 
-MERGE (institution:Institution { Name: UPPER(row.InstitutionName) } )
+MERGE (institution:Institution { Name: toUpper(row.InstitutionName) } )
 ON CREATE SET institution.PhoneNumber = row.InstitutionPhoneNumber,
-                 institution.CityName = UPPER(row.InstitutionCityName),
-            institution.StreetAddress = UPPER(row.InstitutionStreetAddress),
+                 institution.CityName = toUpper(row.InstitutionCityName),
+            institution.StreetAddress = toUpper(row.InstitutionStreetAddress),
                   institution.ZipCode = row.InstitutionZipCode
 
 MERGE (institution)-[is:In_State]->(state)
