@@ -65,18 +65,24 @@ for(i in 1:nrow(all_repos)) {
 
     lang <- strsplit(test_run$lang, ",") %>% unlist
 
-    for(i in lang) {
-      inset <- paste0("MATCH (ln:LANGUAGE {code:'",i,"'}) RETURN COUNT(ln)") %>%
+    for(j in lang) {
+      inset <- paste0("MATCH (ln:LANGUAGE {code:'",j,"'}) RETURN COUNT(ln)") %>%
         call_neo4j(con) %>%
         unlist()
 
       if (inset > 0) {
-        paste0("MATCH (o:OBJECT {id:'",all_repos$id[i],"'})
-         MATCH (ln:LANGUAGE {code:'",i,"'})
+        runreturn <- paste0("MATCH (o:OBJECT {id:'",test_run$id,"'})
+         MATCH (ln:LANGUAGE {code:'",j,"'})
          WITH o, ln
-         MERGE (o)-[:hasLanguage]-(ln);") %>%
+         MERGE (o)-[hln:hasLanguage]-(ln)
+         ON CREATE SET hln.created = timestamp()
+         RETURN hln.created;") %>%
              call_neo4j(con)
-        cat(paste0(" Added language '", i, "' to ", test_run$name, "\n"))
+        if(length(runreturn$hln.created) > 0) {
+          cat(paste0(" Added language '", j, "' to ", test_run$name, "\n"))
+        } else {
+          cat('Failed to create language link to ', test_run$name, "\n")
+        }
       }
     }
   }
