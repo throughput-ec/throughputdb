@@ -1,8 +1,8 @@
 USING PERIODIC COMMIT 50 LOAD CSV WITH HEADERS FROM 'file:///awards.csv' AS row
 MERGE (award:OBJECT {AwardID: row.AwardID})
   ON CREATE SET award.name = toUpper(row.AwardTitle),
-               award.amount = TOINT(row.AwardAmount),
-                award.ARRAAmount = TOINT(row.ARRAAmount),
+               award.amount = toInteger(row.AwardAmount),
+                award.ARRAAmount = toInteger(row.ARRAAmount),
            award.AwardInstrument = row.AwardInstrument,
          award.description = row.AbstractNarration
 
@@ -38,8 +38,8 @@ MERGE (award)-[ai:Administered_by]->(institution)
 // As with others, this has to be done year, then month because otherwise the unique
 // constraint of the award number screws things up.
 
-MERGE ( year:Year   {Year: TOINT(SPLIT(row.AwardEffectiveDate, '/')[2]) } )
-MERGE (month:Month {Month: TOINT(SPLIT(row.AwardEffectiveDate, '/')[0]) } )
+MERGE ( year:Year   {Year: toInteger(SPLIT(row.AwardEffectiveDate, '/')[2]) } )
+MERGE (month:Month {Month: toInteger(SPLIT(row.AwardEffectiveDate, '/')[0]) } )
 
 MERGE (award)-[yst:Year_Started]-(year)
   ON CREATE SET yst.AwardID = [] + row.AwardID
@@ -52,8 +52,8 @@ MERGE (year)-[mst:Month_Started]-(month)
 ELSE mst.AwardID END
 
 // Dates for awards - End date:
-MERGE ( year_end:Year   {Year: TOINT(SPLIT(row.AwardExpirationDate, '/')[2]) } )
-MERGE (month_end:Month {Month: TOINT(SPLIT(row.AwardExpirationDate, '/')[0]) } )
+MERGE ( year_end:Year   {Year: toInteger(SPLIT(row.AwardExpirationDate, '/')[2]) } )
+MERGE (month_end:Month {Month: toInteger(SPLIT(row.AwardExpirationDate, '/')[0]) } )
 
 MERGE (award)-[yen:Year_Expired]-(year_end)
   ON CREATE SET yen.AwardID = [] + row.AwardID
@@ -66,8 +66,8 @@ MERGE (year_end)-[men:Month_Expired]-(month_end)
 ELSE men.AwardID END
 
 // Dates for awards - Amendment Letter min date:
-MERGE  (year_amdS:Year   {Year: TOINT(SPLIT(row.MinAmdLetterDate, '/')[2]) } )
-MERGE (month_amdS:Month {Month: TOINT(SPLIT(row.MinAmdLetterDate, '/')[0]) } )
+MERGE  (year_amdS:Year   {Year: toInteger(SPLIT(row.MinAmdLetterDate, '/')[2]) } )
+MERGE (month_amdS:Month {Month: toInteger(SPLIT(row.MinAmdLetterDate, '/')[0]) } )
 
 MERGE (award)-[yam:Year_Amended_Min]-(year_amdS)
   ON CREATE SET yam.AwardID = [] + row.AwardID
@@ -80,8 +80,8 @@ MERGE (year_amdS)-[mam:Month_Amended_Min]-(month_amdS)
 ELSE mam.AwardID END
 
 // Dates for awards - Amendment letter max date:
-MERGE (year_amdE:Year    {Year: TOINT(SPLIT(row.MaxAmdLetterDate, '/')[2])})
-MERGE (month_amdE:Month {Month: TOINT(SPLIT(row.MaxAmdLetterDate, '/')[0])})
+MERGE (year_amdE:Year    {Year: toInteger(SPLIT(row.MaxAmdLetterDate, '/')[2])})
+MERGE (month_amdE:Month {Month: toInteger(SPLIT(row.MaxAmdLetterDate, '/')[0])})
 
 MERGE (award)-[ymx:Year_Amended_Max]-(year_amdE)
   ON CREATE SET ymx.AwardID = [] + row.AwardID
