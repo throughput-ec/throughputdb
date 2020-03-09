@@ -18,5 +18,5 @@ WITH o, a, SPLIT(o.keywords, ",") AS kw
   FOREACH (kword IN kw |
     MERGE (knode:KEYWORD {keyword: rTrim(lTrim(kword))})
       ON CREATE SET knode.created = timestamp()
-      CREATE (a)-[:Target]->(knode) )
+      CREATE (a)-[:hasKeyword]->(knode) )
 RETURN kw AS keywords, o.name AS name
