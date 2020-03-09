@@ -7,7 +7,8 @@ library(xml2)
 
 source('R/bind_to_file.R')
 query <- readr::read_file('cql/parameterized.cql')
-con_list <- jsonlite::fromJSON('../connect_remote.json')[2,]
+
+con_list <- jsonlite::fromJSON('../connect_remote.json')[1,]
 
 con <- neo4j_api$new(
   url = paste0(con_list$host, ":", con_list$r_port),
@@ -74,7 +75,9 @@ for (i in 1:length(nsfawards)) {
   years <- big_table  %>%
     bind_rows() %>%
     mutate_at(vars(contains("Date")), datecheck) %>%
-    readr::write_csv(path='/var/lib/neo4j/import/awards.csv')
+    readr::write_csv(., path=paste0('data/output/awards_',i,'.csv'))
+
+  years[is.na(years)] <- "None"
 
   cat(sprintf('\nRunning query for the %dth file from NSF: %s\n',
               i, nsfawards[i]))
@@ -82,7 +85,11 @@ for (i in 1:length(nsfawards)) {
   cat(sprintf('\nA total of %d award files to be run against.\n*****\n',
               length(unzippers)))
   query <- readr::read_file('cql/parameterized.cql')
-  call_neo4j(con, query=query)
+  for(j in 1:nrow(years)) {
+    aa <- as.list(years[j,]) %>%
+      glue_data(query, .open="|", .close="|") %>%
+      call_neo4j(con, query=.)
+  }
 
   unlink(unzippers)
 }
