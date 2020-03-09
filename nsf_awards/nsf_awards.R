@@ -19,6 +19,7 @@ con <- neo4j_api$new(
 nsfawards <- list.files('data/input/awards',
                         full.names = TRUE,
                         include.dirs = FALSE)
+nsfawards <- nsfawards[length(nsfawards):1][-1]
 
 for (i in 1:length(nsfawards)) {
 
@@ -86,9 +87,15 @@ for (i in 1:length(nsfawards)) {
               length(unzippers)))
   query <- readr::read_file('cql/parameterized.cql')
   for(j in 1:nrow(years)) {
-    aa <- as.list(years[j,]) %>%
+    aa <- suppressMessages(as.list(years[j,]) %>%
       glue_data(query, .open="|", .close="|") %>%
-      call_neo4j(con, query=.)
+      stringr::str_replace_all("//.*\\n", "") %>%
+      call_neo4j(con, query=., include_stats = TRUE, include_meta = TRUE))
+
+    cat(".")
+    if (j %% 50 == 0) {
+      cat(paste0(" ", j, "\n"))
+    }
   }
 
   unlink(unzippers)
