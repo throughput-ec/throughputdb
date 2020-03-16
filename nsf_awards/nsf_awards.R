@@ -83,14 +83,17 @@ for (i in 1:length(nsfawards)) {
   cat(sprintf('\nRunning query for the %dth file from NSF: %s\n',
               i, nsfawards[i]))
 
-  cat(sprintf('\nA total of %d award files to be run against.\n*****\n',
-              length(unzippers)))
+  cat(sprintf('\nA total of %d award files to be run against.\n*****\nWith %d unique entries.',
+              length(unzippers),
+            nrow(years)))
   query <- readr::read_file('cql/parameterized.cql')
   for(j in 1:nrow(years)) {
-    aa <- suppressMessages(as.list(years[j,]) %>%
-      glue_data(query, .open="|", .close="|") %>%
-      stringr::str_replace_all("//.*\\n", "") %>%
-      call_neo4j(con, query=., include_stats = TRUE, include_meta = TRUE))
+
+      aa <- try(suppressMessages(as.list(years[j,]) %>%
+        glue_data(query, .open="|", .close="|") %>%
+        stringr::str_replace_all("//.*\\n", "") %>%
+        stringr::str_replace_all("\\n", " ") %>%
+        call_neo4j(con, query=., include_stats = TRUE, include_meta = TRUE)))
 
     cat(".")
     if (j %% 50 == 0) {
