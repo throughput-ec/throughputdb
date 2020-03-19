@@ -5,7 +5,8 @@ MERGE (award:OBJECT {AwardID: '|AwardID|'})
            award.AwardInstrument = '|AwardInstrument|',
          award.description = '|AbstractNarration|'
 
-MERGE (award)-[:isType]-(:TYPE {type:"schema:Grant"})
+MATCH (g:TYPE {type:"schema:Grant"})
+MERGE (award)-[:isType]-(g)
 
 MERGE ( state:State { Name: toUpper('|InstitutionStateName|') })
 ON CREATE SET  state.Code = toUpper('|InstitutionStateCode|')
