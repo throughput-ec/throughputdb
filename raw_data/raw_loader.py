@@ -18,11 +18,9 @@ Please ensure that this file is included in the .gitignore file.
 '''
 
 from py2neo import Graph
-from py2neo.data import Node, Relationship
+from py2neo.data import Node
 import json
-import urllib
 import requests
-import re
 
 with open('../.gitignore') as gi:
     good = False
@@ -34,7 +32,8 @@ with open('../.gitignore') as gi:
             break
 
 if good is False:
-    print("The connect_remote.json file is not in your .gitignore file.  Please add it!")
+    print("The connect_remote.json file is not in your .gitignore file. \
+           Please add it!")
 
 with open('../connect_remote.json') as f:
     data = json.load(f)
@@ -69,24 +68,25 @@ with open("type.cql") as type:
 """
 
 print("Adding Language Nodes")
-link = "https://raw.githubusercontent.com/maikudou/iso639-js/master/iso639-3_living.json"
+link = "https://raw.githubusercontent.com/maikudou/iso639-js/master\
+        /iso639-3_living.json"
 f = requests.get(link).json()
 
 for key in f:
-  elm = f[key]
-  elm['code'] = key
-  clean = {k: v for k, v in elm.items() if v is not None}
-  tx = graph.begin()
-  newNode = Node("LANGUAGE", **clean)
-  newNode.__primarylabel__ = "LANGUAGE"
-  newNode.__primarykey__ = "code"
-  tx.merge(newNode)
-  tx.commit()
+    elm = f[key]
+    elm['code'] = key
+    clean = {k: v for k, v in elm.items() if v is not None}
+    tx = graph.begin()
+    newNode = Node("LANGUAGE", **clean)
+    newNode.__primarylabel__ = "LANGUAGE"
+    newNode.__primarykey__ = "code"
+    tx.merge(newNode)
+    tx.commit()
 
 '''
 Remove duplicate nodes:
 MATCH (g:LANGUAGE)
-WITH g.part1 as id, collect(g) AS nodes
+WITH g.code as id, collect(g) AS nodes
 WHERE size(nodes) >  1
 FOREACH (g in tail(nodes) | DELETE g)
 '''
