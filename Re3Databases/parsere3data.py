@@ -18,7 +18,6 @@ Please ensure that this file is included in the .gitignore file.
 '''
 
 from py2neo import Graph
-from py2neo.data import Node
 import json
 import requests
 import xmltodict
@@ -42,7 +41,9 @@ def parsere3(uri):
     data = xmltodict.parse(file.content)
     return data
 
-repositories = parsere3("https://www.re3data.org/api/v1/repositories")['list']['repository']
+
+repositories = parsere3("https://www.re3data.org/api/v1/repositories")
+repositories = repositories.get('list').get('repository')
 
 with open('../.gitignore') as gi:
     good = False
