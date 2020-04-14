@@ -65,25 +65,29 @@ graph = Graph(**data[1])
 tx = graph.begin()
 
 re3api_short = "https://www.re3data.org/api/beta/repository/"
+kws = set()
 
 for repo in repositories:
     print("Working on " + str(repo['name']))
     uri = "https://www.re3data.org/api/beta/repository/" + repo['id']
     repodata = parsere3(uri)['r3d:re3data']['r3d:repository']
-    node = {'id': repo['id'],
-            'name': repodata['r3d:repositoryName']['#text'],
-            'url': repodata['r3d:repositoryURL'],
-            'keywords': repodata['r3d:keyword'],
-            'description': repodata['r3d:description']['#text'],
-            'languages': repodata['r3d:repositoryLanguage']}
-    node = {key: '' if value is None else value for (key, value) in node.items()}
+    node = {'id': repo.get('id'),
+            'name': repodata.get('r3d:repositoryName').get('#text'),
+            'url': repodata.get('r3d:repositoryURL'),
+            'keywords': repodata.get('r3d:keyword'),
+            'description': repodata.get('r3d:description').get('#text'),
+            'languages': repodata.get('r3d:repositoryLanguage')}
+    node = {key: ''
+            if value is None else value for (key, value) in node.items()}
     if isinstance(node['keywords'], str):
         node['keywords'] = [node['keywords']]
     if isinstance(node['languages'], str):
         node['languages'] = [node['languages']]
+    kws.update(node['keywords'])
     with open("cql/linkdbs.cql") as linker:
-        graph.run(linker.read(), node)
+        silent = graph.run(linker.read(), node)
     with open("cql/addkeywords.cql") as keyworder:
-        graph.run(keyworder.read(), node)
+        print(node['keywords'])
+        silent = graph.run(keyworder.read(), node)
     with open("cql/addlanguage.cql") as langer:
-        graph.run(langer.read(), node)
+        silent = graph.run(langer.read(), node)
