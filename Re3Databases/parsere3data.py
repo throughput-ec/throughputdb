@@ -1,0 +1,89 @@
+'''
+**Load data from the Re3Database **
+There is an assumption here that a json file exists with the
+connection data for the database.  This file is in the ``.gitignore`
+by default (or should be).
+
+NOTE: This requires the inclusion of a json file in the base directory called
+connect_remote.json that uses the format:
+
+{
+  "user": "neo4j",
+  "password": "neo4j",
+  "host": "localhost",
+  "port": 7687
+}
+
+Please ensure that this file is included in the .gitignore file.
+'''
+
+from py2neo import Graph
+from py2neo.data import Node
+import json
+import requests
+import xmltodict
+
+
+def parsere3(uri):
+    """Parse Re3Data from XML to Python dictionary.
+
+    Parameters
+    ----------
+    uri : string
+        A web address (https://www.re3data.org/api/v1/repositories)
+
+    Returns
+    -------
+    dict
+        The rendered re3data object from XML.
+
+    """
+    file = requests.get(uri)
+    data = xmltodict.parse(file.content)
+    return data
+
+repositories = parsere3("https://www.re3data.org/api/v1/repositories")['list']['repository']
+
+with open('../.gitignore') as gi:
+    good = False
+    # This simply checks to see if you have a connection string in your repo.
+    # I use `strip` to remove whitespace/newlines.
+    for line in gi:
+        if line.strip() == "connect_remote.json":
+            good = True
+            break
+
+if good is False:
+    print("The connect_remote.json file is not in your .gitignore file. \
+           Please add it!")
+
+with open('../connect_remote.json') as f:
+    data = json.load(f)
+
+graph = Graph(**data[1])
+
+tx = graph.begin()
+
+re3api_short = "https://www.re3data.org/api/beta/repository/"
+
+for repo in repositories:
+    print("Working on " + str(repo['name']))
+    uri = "https://www.re3data.org/api/beta/repository/" + repo['id']
+    repodata = parsere3(uri)['r3d:re3data']['r3d:repository']
+    node = {'id': repo['id'],
+            'name': repodata['r3d:repositoryName']['#text'],
+            'url': repodata['r3d:repositoryURL'],
+            'keywords': repodata['r3d:keyword'],
+            'description': repodata['r3d:description']['#text'],
+            'languages': repodata['r3d:repositoryLanguage']}
+    node = {key: '' if value is None else value for (key, value) in node.items()}
+    if isinstance(node['keywords'], str):
+        node['keywords'] = [node['keywords']]
+    if isinstance(node['languages'], str):
+        node['languages'] = [node['languages']]
+    with open("cql/linkdbs.cql") as linker:
+        graph.run(linker.read(), node)
+    with open("cql/addkeywords.cql") as keyworder:
+        graph.run(keyworder.read(), node)
+    with open("cql/addlanguage.cql") as langer:
+        graph.run(langer.read(), node)
