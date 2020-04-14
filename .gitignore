@@ -1,6 +1,6 @@
 nsf_awards/data/input/awards/*
 connect_remote.json
-github_scraper/gh.token
+gh.token
 
 # History files
 .Rhistory
@@ -48,4 +48,3 @@ Throughput-Marketplace-Key.pem
 auth.log
 
 github_scraper/gh.token
-
