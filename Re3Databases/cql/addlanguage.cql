@@ -10,13 +10,12 @@ WITH aty, asy
   MERGE (o)<-[:Body]-(a:ANNOTATION)-[:Generated]->(ags)
     ON CREATE SET a.created = timestamp()
   MERGE (o)<-[:Body]-(a)-[:Created]->(ag)
-  MERGE (mv:MOTIVATION {term: "tagging"})<-[:hasMotivation]-(a)
+  MERGE (mv:MOTIVATION {term: "describing"})<-[:hasMotivation]-(a)
 WITH a, o
-  MERGE (dbt:OBJECT {value: "The database is tagged with these terms."})-[:isType]->(:TYPE {type: "TextualBody"})
+  MERGE (dbt:OBJECT {value: "The database uses the following language."})-[:isType]->(:TYPE {type: "TextualBody"})
   MERGE (a)-[:Body]->(dbt)
 WITH a, o
-  UNWIND $keywords AS kword
-    MERGE (knode:KEYWORD {keyword: rTrim(lTrim(tolower(kword)))})
-      ON CREATE SET knode.created = timestamp()
-    MERGE (a)-[hk:hasKeyword]->(knode)
-      ON CREATE SET hk.created = timestamp()
+  UNWIND $languages AS lang
+    MERGE (lnode:LANGUAGE {code: rTrim(lTrim(tolower(lang)))})
+    MERGE (a)-[hl:hasLanguage]->(lnode)
+      ON CREATE SET hl.created = timestamp()
