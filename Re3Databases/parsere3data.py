@@ -19,28 +19,7 @@ Please ensure that this file is included in the .gitignore file.
 
 from py2neo import Graph
 import json
-import requests
-import xmltodict
-
-
-def parsere3(uri):
-    """Parse Re3Data from XML to Python dictionary.
-
-    Parameters
-    ----------
-    uri : string
-        A web address (https://www.re3data.org/api/v1/repositories)
-
-    Returns
-    -------
-    dict
-        The rendered re3data object from XML.
-
-    """
-    file = requests.get(uri)
-    data = xmltodict.parse(file.content)
-    return data
-
+from parsere3 import parsere3
 
 repositories = parsere3("https://www.re3data.org/api/v1/repositories")
 repositories = repositories.get('list').get('repository')
