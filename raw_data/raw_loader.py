@@ -68,8 +68,8 @@ with open("type.cql") as type:
 """
 
 print("Adding Language Nodes")
-link = "https://raw.githubusercontent.com/maikudou/iso639-js/master\
-        /iso639-3_living.json"
+link = "https://raw.githubusercontent.com/maikudou/iso639-js/" + \
+    "master/iso639-3_living.json"
 f = requests.get(link).json()
 
 for key in f:
