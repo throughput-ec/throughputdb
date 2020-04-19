@@ -6,6 +6,8 @@ import re
 from github import Github
 from github import RateLimitExceededException
 import time
+from throughputpy import shortname
+from throughputpy import goodHit
 
 with open('../.gitignore') as gi:
     good = False
@@ -111,6 +113,7 @@ def callquery(g, query, silent=False):
             time.sleep(600)
     i = 0
     for sres in results:
+        print('hit')
         if goodHit(query, sres.text_matches):
             res = sres.repository
             left = g.get_rate_limit()
@@ -199,11 +202,11 @@ for pack in ropensci:
         try:
             libcall = callquery(g, 'library ' + query)
             break
-        except RateLimitExceededException:
+        except :
             print("Unexpected error:", sys.exc_info()[0])
             print('Oops, broke for ' + parent.get('parentname')
                   + ' with library call.')
-            time.sleep(600)
+            time.sleep(120)
             continue
         while True:
             try:
@@ -213,7 +216,7 @@ for pack in ropensci:
                 reqcall = callquery(g, 'require ' + query)
                 break
             except RateLimitExceededException:
-                time.sleep(600)
+                time.sleep(120)
                 continue
         print("Done getting repositories")
         allrepos = libcall | reqcall
