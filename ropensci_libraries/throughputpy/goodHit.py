@@ -18,7 +18,7 @@ def goodHit(query, text):
 
     """
     strings = query.split(" ")
-    matcher = strings[0] + r'\(([^\)]*' + strings[1][:-1] + ')'
+    matcher = strings[0] + r'\(([^\)]*' + strings[1] + ')'
     check = list(map(lambda x: match(matcher, x.get('fragment')), text))
     output = not(all(matches is None for matches in check))
     return output

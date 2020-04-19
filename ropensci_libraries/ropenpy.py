@@ -2,7 +2,6 @@ import sys
 from py2neo import Graph
 import requests
 import json
-import re
 from github import Github
 from github import RateLimitExceededException
 import time
@@ -38,7 +37,6 @@ tx = graph.begin()
 link = "https://raw.githubusercontent.com/ropensci/roregistry/" + \
         "gh-pages/registry.json"
 
-
 headers = {'Accept': 'application/vnd.github.v3+json',
            'Authorization': 'token ' + gh_token[2]}
 
@@ -48,29 +46,6 @@ script_home = 'https://github.com/throughput-ec/' + \
 gitendpoint = 'https://api.github.com/search/code'
 
 ropensci = requests.get(link).json().get('packages')
-
-
-def goodHit(query, text):
-    """Check for expected query call in file content.
-
-    Parameters
-    ----------
-    query : str
-        Text string passed to the original GitHub code search query.
-    text : list
-        The File contents, including highlighted fragments.
-
-    Returns
-    -------
-    type
-        Description of returned object.
-
-    """
-    strings = query.split(" ")
-    match = strings[0] + r'\(([^\)]*' + strings[1][:-1] + ')'
-    check = list(map(lambda x: re.match(match, x.get('fragment')), text))
-    output = not(all(matches is None for matches in check))
-    return output
 
 
 def callquery(g, query, silent=False):
@@ -114,7 +89,7 @@ def callquery(g, query, silent=False):
     i = 0
     for sres in results:
         print('hit')
-        if goodHit(query, sres.text_matches):
+        if goodHit.goodHit(query, sres.text_matches):
             res = sres.repository
             left = g.get_rate_limit()
             if left.core.remaining < 100:
@@ -138,19 +113,13 @@ def callquery(g, query, silent=False):
     return resset
 
 
-def shortname(package):
-    gh = re.compile(r'.*github.com\/(:?.*)')
-    matcher = gh.match(pack.get('github')).group(1)
-    return matcher
-
-
 def repoinfo(g, package):
-    matcher = shortname(package)
+    matcher = shortname.shortname(package)
     repo = g.get_repo(matcher)
     return repo
 
 
-def getRepo(g, pack):
+def getRepo(g, package):
     """Get repository information, with try/catch.
 
     Parameters
@@ -168,15 +137,15 @@ def getRepo(g, pack):
     """
     while True:
         try:
-            repo = repoinfo(g, pack)
+            repo = repoinfo(g, package)
             break
         except RateLimitExceededException:
             time.sleep(120)
             continue
-    annotation = "The GitHub repository uses the package " \
-                 + pack.get('name') + " in a `library()` or `require()` call."
+    annotation = "The GitHub repository uses " \
+                 + package + " in a `library()` or `require()` call."
     parent = {'parentid': repo.id,
-              'parentname': shortname(reponame),
+              'parentname': package,
               'parentdescription': repo.description,
               'parenturl': repo.html_url,
               'parentkeywords': str(repo.topics) + ',' + pack.get('keywords'),
@@ -189,7 +158,7 @@ def getRepo(g, pack):
 
 for pack in ropensci:
     reponame = pack.get('github')
-    parent = getRepo(g, pack)
+    parent = getRepo(g, reponame)
     if parent['parentkeywords'] != ['']:
         keywordadd = {'id': parent['parentid'],
                       'keywords': parent['parentkeywords']}
@@ -197,7 +166,7 @@ for pack in ropensci:
         with open('cql/addkeywords.cql') as kwlink:
             silent = graph.run(kwlink.read(), keywordadd)
     query = pack.get('name') \
-        + ') extension:R extension:Rmd'
+        + ' extension:R extension:Rmd'
     while True:
         try:
             libcall = callquery(g, 'library ' + query)
