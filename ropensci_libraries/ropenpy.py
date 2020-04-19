@@ -5,8 +5,8 @@ import json
 from github import Github
 from github import RateLimitExceededException
 import time
-from throughputpy import shortname
-from throughputpy import goodHit
+from throughputpy import getRepo
+from throughputpy import callquery
 
 with open('../.gitignore') as gi:
     good = False
@@ -37,128 +37,15 @@ tx = graph.begin()
 link = "https://raw.githubusercontent.com/ropensci/roregistry/" + \
         "gh-pages/registry.json"
 
-headers = {'Accept': 'application/vnd.github.v3+json',
-           'Authorization': 'token ' + gh_token[2]}
-
 script_home = 'https://github.com/throughput-ec/' + \
               'throughputdb/blob/master/populate/case_study.Rmd'
-
-gitendpoint = 'https://api.github.com/search/code'
 
 ropensci = requests.get(link).json().get('packages')
 
 
-def callquery(g, query, silent=False):
-    """Calls the GitHub API through the GitHub package.
-    Probably better to pass the `g` object as well.
-
-    Parameters
-    ----------
-    g : Github
-        The GitHub session connection.
-    query : string
-        A query to pass to the GitHub code search API at
-        https://developer.github.com/v3/search/
-    silent : boolean
-        Should a verbose response be returned?
-
-    Returns
-    -------
-    set
-        The set of all responses from the code search as a JSON string with
-        keys `id`, `name`, `url`, `description` and `keywords`.
-
-    """
-    resset = set()
-    left = g.get_rate_limit()
-    if left.search.remaining < 5:
-        reset = left.search.reset
-        diff = int(reset.strftime('%s')) - int(time.mktime(time.gmtime()))
-        if diff > 0:
-            print('pausing . . for ' + str(diff) + 'sec')
-            time.pause(diff)
-    while True:
-        try:
-            results = g.search_code(query, highlight=True)
-            break
-        except RateLimitExceededException:
-            delay = g.rate_limiting_resettime
-            diff = delay - int(time.mktime(time.gmtime()))
-            print("Hit error.  Waiting: 2mins")
-            time.sleep(600)
-    i = 0
-    for sres in results:
-        print('hit')
-        if goodHit.goodHit(query, sres.text_matches):
-            res = sres.repository
-            left = g.get_rate_limit()
-            if left.core.remaining < 100:
-                reset = left.core.reset
-                diff = int(reset.strftime('%s')) \
-                    - int(time.mktime(time.gmtime()))
-                if diff > 0:
-                    print('pausing . . for ' + str(diff) + 'sec')
-                    time.sleep(diff)
-            if silent is False:
-                print(str(i) + ' ' + res.full_name
-                      + ' (remaining GitHub API calls: '
-                      + str(left.core.remaining) + ')')
-            repo = {'id': res.id,
-                    'name': res.full_name,
-                    'url': res.html_url,
-                    'description': res.description,
-                    'keywords': res.topics}
-            i = i + 1
-            resset.add(json.dumps(repo))
-    return resset
-
-
-def repoinfo(g, package):
-    matcher = shortname.shortname(package)
-    repo = g.get_repo(matcher)
-    return repo
-
-
-def getRepo(g, package):
-    """Get repository information, with try/catch.
-
-    Parameters
-    ----------
-    g : GitHub
-        A Python GitHub object from `PyGithub`.
-    pack : dict
-        A dictionary object from the ROpenSci registry.
-
-    Returns
-    -------
-    type
-        An object of type `github.Repository.Repository`.
-
-    """
-    while True:
-        try:
-            repo = repoinfo(g, package)
-            break
-        except RateLimitExceededException:
-            time.sleep(120)
-            continue
-    annotation = "The GitHub repository uses " \
-                 + package + " in a `library()` or `require()` call."
-    parent = {'parentid': repo.id,
-              'parentname': package,
-              'parentdescription': repo.description,
-              'parenturl': repo.html_url,
-              'parentkeywords': str(repo.topics) + ',' + pack.get('keywords'),
-              'annotation': annotation}
-    parent['parentkeywords'] = parent.get('parentkeywords').split(',')
-    if 'None' in parent.get('parentkeywords'):
-        parent.get('parentkeywords').remove('None')
-    return parent
-
-
 for pack in ropensci:
     reponame = pack.get('github')
-    parent = getRepo(g, reponame)
+    parent = getRepo.getRepo(g, reponame, pack)
     if parent['parentkeywords'] != ['']:
         keywordadd = {'id': parent['parentid'],
                       'keywords': parent['parentkeywords']}
@@ -171,7 +58,7 @@ for pack in ropensci:
         try:
             libcall = callquery(g, 'library ' + query)
             break
-        except :
+        except RateLimitExceededException:
             print("Unexpected error:", sys.exc_info()[0])
             print('Oops, broke for ' + parent.get('parentname')
                   + ' with library call.')
