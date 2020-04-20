@@ -63,11 +63,23 @@ for pack in ropensci:
                   + ' with library call.')
             time.sleep(120)
             continue
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            print('Oops, broke for ' + parent.get('parentname')
+                  + ' with library call.')
+            time.sleep(120)
+            continue
     while True:
         try:
             reqcall = callquery.callquery(g, 'require ' + query)
             break
         except RateLimitExceededException:
+            time.sleep(120)
+            continue
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            print('Oops, broke for ' + parent.get('parentname')
+                  + ' with library call.')
             time.sleep(120)
             continue
     print("Done getting repositories")
