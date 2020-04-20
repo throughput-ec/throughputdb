@@ -32,7 +32,7 @@ def callquery(g, query, silent=False):
         diff = int(reset.strftime('%s')) - int(time.mktime(time.gmtime()))
         if diff > 0:
             print('pausing . . for ' + str(diff) + 'sec')
-            time.pause(diff)
+            time.sleep(diff)
     while True:
         try:
             results = g.search_code(query, highlight=True)
@@ -44,8 +44,11 @@ def callquery(g, query, silent=False):
             time.sleep(600)
     i = 0
     for sres in results:
-        print('hit')
-        if goodHit.goodHit(query, sres.text_matches):
+        time.sleep(2)
+        textlinks = list(sres.text_matches)
+        print("**** " + sres.name + " has " + str(len(textlinks)) + " possible string matches.****")
+        print("**** for query " + query)
+        if goodHit.goodHit(query, textlinks):
             res = sres.repository
             left = g.get_rate_limit()
             if left.core.remaining < 100:
@@ -56,7 +59,7 @@ def callquery(g, query, silent=False):
                     print('pausing . . for ' + str(diff) + 'sec')
                     time.sleep(diff)
             if silent is False:
-                print(str(i) + ' ' + res.full_name
+                print("     " + str(i) + ' ' + res.full_name
                       + ' (remaining GitHub API calls: '
                       + str(left.core.remaining) + ')')
             repo = {'id': res.id,
@@ -66,4 +69,6 @@ def callquery(g, query, silent=False):
                     'keywords': res.topics}
             i = i + 1
             resset.add(dumps(repo))
+        else:
+            print("    - No Hit (written to file).")
     return resset

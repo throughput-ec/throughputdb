@@ -42,21 +42,20 @@ script_home = 'https://github.com/throughput-ec/' + \
 
 ropensci = requests.get(link).json().get('packages')
 
-
 for pack in ropensci:
     reponame = pack.get('github')
     parent = getRepo.getRepo(g, reponame, pack)
     if parent['parentkeywords'] != ['']:
         keywordadd = {'id': parent['parentid'],
                       'keywords': parent['parentkeywords']}
-        print("Adding keywords for parent repo")
+        print("Adding keywords for " + reponame)
         with open('cql/addkeywords.cql') as kwlink:
             silent = graph.run(kwlink.read(), keywordadd)
     query = pack.get('name') \
         + ' extension:R extension:Rmd'
     while True:
         try:
-            libcall = callquery(g, 'library ' + query)
+            libcall = callquery.callquery(g, 'library ' + query)
             break
         except RateLimitExceededException:
             print("Unexpected error:", sys.exc_info()[0])
@@ -64,38 +63,35 @@ for pack in ropensci:
                   + ' with library call.')
             time.sleep(120)
             continue
-        while True:
-            try:
-                print("Unexpected error:", sys.exc_info()[0])
-                print('Oops, broke for ' + parent.get('parentname')
-                      + ' with require call.')
-                reqcall = callquery(g, 'require ' + query)
-                break
-            except RateLimitExceededException:
-                time.sleep(120)
-                continue
-        print("Done getting repositories")
-        allrepos = libcall | reqcall
-        print("Called a total of " + str(len(allrepos)) + " repositories.")
-        if len(allrepos) > 0:
-            for childrepo in allrepos:
-                reposet = json.loads(childrepo)
-                reposet.update(parent)
-                print("Adding " + str(reposet['name']))
-                if reposet.get('name') == parent.get('parentname'):
-                    print("Skipping link to same parent repository.")
-                else:
-                    print("")
-                    print(reposet)
-                    reposet = {key: ''
-                               if value is None else value
-                               for (key, value) in reposet.items()}
-                    reposet['keywords'] = reposet['keywords'].split(',')
-                    with open('cql/link_ropensci.cql') as linking:
-                        silent = graph.run(linking.read(), reposet)
-                    if reposet['keywords'] != ['']:
-                        keywordadd = {'id': reposet['id'],
-                                      'keywords': reposet['keywords']}
-                        print("Adding keywords for child repo")
-                        with open('cql/addkeywords.cql') as kwlink:
-                            silent = graph.run(kwlink.read(), keywordadd)
+    while True:
+        try:
+            reqcall = callquery.callquery(g, 'require ' + query)
+            break
+        except RateLimitExceededException:
+            time.sleep(120)
+            continue
+    print("Done getting repositories")
+    allrepos = libcall | reqcall
+    print("Called a total of " + str(len(allrepos)) + " repositories.")
+    if len(allrepos) > 0:
+        for childrepo in allrepos:
+            reposet = json.loads(childrepo)
+            reposet.update(parent)
+            print("Adding " + str(reposet['name']))
+            if reposet.get('name') == parent.get('parentname'):
+                print("Skipping link to same parent repository.")
+            else:
+                print("")
+                print(reposet)
+                reposet = {key: ''
+                           if value is None else value
+                           for (key, value) in reposet.items()}
+                reposet['keywords'] = reposet['keywords'].split(',')
+                with open('cql/link_ropensci.cql') as linking:
+                    silent = graph.run(linking.read(), reposet)
+                if reposet['keywords'] != ['']:
+                    keywordadd = {'id': reposet['id'],
+                                  'keywords': reposet['keywords']}
+                    print("Adding keywords for child repo")
+                    with open('cql/addkeywords.cql') as kwlink:
+                        silent = graph.run(kwlink.read(), keywordadd)
