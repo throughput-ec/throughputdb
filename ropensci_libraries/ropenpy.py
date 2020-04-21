@@ -7,6 +7,7 @@ from github import RateLimitExceededException
 import time
 from throughputpy import getRepo
 from throughputpy import callquery
+from throughputpy import tryCatchQuery
 
 with open('../.gitignore') as gi:
     good = False
@@ -53,35 +54,8 @@ for pack in ropensci:
             silent = graph.run(kwlink.read(), keywordadd)
     query = pack.get('name') \
         + ' extension:R extension:Rmd'
-    while True:
-        try:
-            libcall = callquery.callquery(g, 'library ' + query)
-            break
-        except RateLimitExceededException:
-            print("Unexpected error:", sys.exc_info()[0])
-            print('Oops, broke for ' + parent.get('parentname')
-                  + ' with library call.')
-            time.sleep(120)
-            continue
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
-            print('Oops, broke for ' + parent.get('parentname')
-                  + ' with library call.')
-            time.sleep(120)
-            continue
-    while True:
-        try:
-            reqcall = callquery.callquery(g, 'require ' + query)
-            break
-        except RateLimitExceededException:
-            time.sleep(120)
-            continue
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
-            print('Oops, broke for ' + parent.get('parentname')
-                  + ' with library call.')
-            time.sleep(120)
-            continue
+    libcall = tryCatchQuery.tryCatchQuery(g, parent, 'library ' + query)
+    reqcall = tryCatchQuery.tryCatchQuery(g, parent, 'require ' + query)
     print("Done getting repositories")
     allrepos = libcall | reqcall
     print("Called a total of " + str(len(allrepos)) + " repositories.")
