@@ -43,12 +43,19 @@ def callquery(g, query, silent=False):
             print("Hit error.  Waiting: 2mins")
             time.sleep(600)
     i = 0
+    total_res = results.totalCount
+    if total_res < 50:
+        total_res = 50
+    miss = 0
+
     for sres in results:
         time.sleep(2)
         textlinks = list(sres.text_matches)
-        print("**** " + sres.name + " has " + str(len(textlinks)) + " possible string matches.****")
+        print("**** " + sres.name + " has " + str(len(textlinks))
+              + " possible string matches.****")
         print("**** for query " + query)
         if goodHit.goodHit(query, textlinks):
+            miss = 0
             res = sres.repository
             left = g.get_rate_limit()
             if left.core.remaining < 100:
@@ -71,4 +78,8 @@ def callquery(g, query, silent=False):
             resset.add(dumps(repo))
         else:
             print("    - No Hit (written to file).")
+            miss = miss + 1
+            if miss > total_res / 5:
+                print("Into poor matches at this point.")
+                break
     return resset
