@@ -7,7 +7,7 @@ from time import sleep
 def tryCatchQuery(g, parent, query):
     while True:
         try:
-            libcall = callquery.callquery(g, 'library ' + query)
+            libcall = callquery.callquery(g, query)
             break
         except RateLimitExceededException:
             print("Unexpected error:", sys.exc_info()[0])

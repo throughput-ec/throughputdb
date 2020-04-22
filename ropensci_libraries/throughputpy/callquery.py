@@ -43,9 +43,6 @@ def callquery(g, query, silent=False):
             print("Hit error.  Waiting: 2mins")
             time.sleep(600)
     i = 0
-    total_res = results.totalCount
-    if total_res < 50:
-        total_res = 50
     miss = 0
 
     for sres in results:
@@ -77,9 +74,10 @@ def callquery(g, query, silent=False):
             i = i + 1
             resset.add(dumps(repo))
         else:
-            print("    - No Hit (written to file).")
             miss = miss + 1
-            if miss > total_res / 5:
+            print("    - No Hit (written to file). Missed " + str(miss)
+                  + " in a row.")
+            if miss > 10:
                 print("Into poor matches at this point.")
                 break
     return resset
