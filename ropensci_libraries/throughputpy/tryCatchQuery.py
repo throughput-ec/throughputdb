@@ -1,13 +1,13 @@
 import sys
 from github import RateLimitExceededException
-from throughputpy import callquery
+from throughputpy.callquery import callquery
 from time import sleep
 
 
 def tryCatchQuery(g, parent, query):
     while True:
         try:
-            libcall = callquery.callquery(g, query)
+            libcall = callquery(g, query)
             break
         except RateLimitExceededException:
             print("Unexpected error:", sys.exc_info()[0])
