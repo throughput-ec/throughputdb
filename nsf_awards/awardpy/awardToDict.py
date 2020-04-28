@@ -1,17 +1,27 @@
 from cleantext import clean
+import json
 
 
 def awardToDict(award):
+    """Turn the NSF Award schema into a Python dictionary.
+
+    Parameters
+    ----------
+    award : string
+        Text representation of the XML file provided by the NSF.
+
+    Returns
+    -------
+    dict
+        A dictionary representation.
+
+    """
     tags = award['rootTag']['Award']
     awardDict = {'AwardID': tags.get('AwardID'),
                  'AwardTitle': tags.get('AwardTitle'),
                  'AwardAmount': tags.get('AwardAmount'),
                  'ARRAAmount': tags.get('ARRAAmount'),
-                 'OrganizationCode': tags.get('Organization').get('Code'),
-                 'OrganizationDirectorate': tags.get('Organization').get(
-                                            'Directorate').get('LongName'),
-                 'OrganizationDivision': tags.get('Organization').get(
-                                            'Division').get('LongName'),
+                 'Organization': dict(tags.get('Organization')),
                  'MinAmdLetterDate': tags.get('MinAmdLetterDate'),
                  'MaxAmdLetterDate': tags.get('MaxAmdLetterDate'),
                  'AwardInstrument': tags.get('AwardInstrument').get('Value'),
@@ -66,4 +76,5 @@ def awardToDict(award):
                 map(lambda x: dict(x), tags.get('ProgramReference')))
         else:
             awardDict['ProgramReference'] = [dict(tags.get('ProgramReference'))]
+    awardDict = json.loads(json.dumps(awardDict))
     return awardDict
