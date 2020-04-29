@@ -1,0 +1,80 @@
+{
+  "AwardID": "7301528",
+  "AwardTitle": "Families and Genera of Hepaticae",
+  "AwardAmount": "28300",
+  "ARRAAmount": "",
+  "Organization": {
+    "Code": "08010207",
+    "Directorate": {
+      "LongName": "
+    Direct For Biological Sciences "},
+    "Division": {
+      "LongName": "Division Of Environmental Biology"
+    }
+  },
+  "MinAmdLetterDate": "08/17/1973",
+  "MaxAmdLetterDate": "04/28/1976",
+  "AwardInstrument": "Standard Grant",
+  "AwardEffectiveDate": "01/01/1900",
+  "AwardExpirationDate": "08/31/1976",
+  "AbstractNarration": "",
+  "Investigator": [{
+      "FirstName": "",
+      "LastName": "DATA NOT AVAILABLE",
+      "EmailAddress": "",
+      "StartDate": "01/01/1900",
+      "EndDate": "0/0/0",
+      "RoleCode": "Principal Investigator"
+    },
+    {
+      "FirstName": "",
+      "LastName": "DATA NOT AVAILABLE",
+      "EmailAddress": "",
+      "StartDate": "01/01/1900",
+      "EndDate": "0/0/0",
+      "RoleCode": "Co-Principal Investigator"
+    },
+    {
+      "FirstName": "",
+      "LastName": "DATA NOTAVAILABLE",
+      "EmailAddress": "",
+      "StartDate": "01/01/1900",
+      "EndDate": "0/0/0",
+      "RoleCode": "Co-Principal Investigator"
+    },
+    {
+      "FirstName": "John",
+      "LastName": "Bradbury",
+      "EmailAddress": "jbradbur@usgs.gov",
+      "StartDate": "01/01/1900",
+      "EndDate": "0/0/0",
+      "RoleCode": "Co-Principal Investigator"
+    },
+    {
+      "FirstName": "Hai Won",
+      "LastName": "Chang",
+      "EmailAddress": "",
+      "StartDate": "01/01/1900",
+      "EndDate": "0/0/0",
+      "RoleCode": "Co-Principal Investigator"
+    }
+  ],
+  "Institution": [{
+    "Name": "University of Massachusetts Amherst",
+    "CityName": "Hadley",
+    "ZipCode": "010359450",
+    "PhoneNumber": "4135450698",
+    "StreetAddress": "Research Administration Building",
+    "CountryName": "United States",
+    "StateName": "Massachusetts",
+    "StateCode": "MA"
+  }],
+  "ProgramElement": [{
+    "Code": "1127",
+    "Text": "EVOLUTIONARY PROCESSES CLUSTER"
+  }],
+  "ProgramReference": {
+    "Code": "",
+    "Text": ""
+  }
+}
