@@ -5,7 +5,7 @@ MERGE (ropen:OBJECT {  id: $parentid,
   ON CREATE SET ropen.created = timestamp()
 MERGE (ty:TYPE {type: "schema:CodeRepository"})
 MERGE (tyt:TYPE {type: "TextualBody"})
-MERGE (mv:MOTIVATION {term: "linking"})
+MERGE (mv:MOTIVATION) WHERE term="linking"
 MERGE (aty:AGENTTYPE {type:"Person"})
 MERGE (child:OBJECT {  id: $id,
                      name: $name,

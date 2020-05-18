@@ -10,7 +10,8 @@ WITH aty, asy
   MERGE (o)<-[:Body]-(a:ANNOTATION)-[:Generated]->(ags)
     ON CREATE SET a.created = timestamp()
   MERGE (o)<-[:Body]-(a)-[:Created]->(ag)
-  MERGE (mv:MOTIVATION {term: "tagging"})<-[:hasMotivation]-(a)
+  MERGE (mv:MOTIVATION) WHERE term="tagging"
+  MERGE (mv)<-[:hasMotivation]-(a)
 WITH a, o
   MERGE (dbt:OBJECT {value: "The repository is tagged with these terms."})-[:isType]->(:TYPE {type: "TextualBody"})
   MERGE (a)-[:Body]->(dbt)
