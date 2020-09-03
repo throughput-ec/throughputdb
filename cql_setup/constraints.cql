@@ -3,7 +3,7 @@
 // CREATE CONSTRAINT ON (o:OBJECT) ASSERT (o.id, o.url) IS NODE KEY;
 CREATE CONSTRAINT ON (o:OBJECT) ASSERT o.id IS UNIQUE;
 
-// A person must have some sort of unque identifier
+// A person must have some sort of unique identifier
 CREATE CONSTRAINT ON (p:AGENT) ASSERT p.id IS UNIQUE;
 
 // A keyword must be unique
