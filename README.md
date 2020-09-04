@@ -1,3 +1,6 @@
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![NSF-1928366](https://img.shields.io/badge/NSF-1928366-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1928366)
+
 # neo4j Annotation Engine
 
 This engine is designed to run in a [`docker` container](https://www.docker.com/) for deployment portability & to facilitate reproducibility among collaborators.  The intention of this engine is to provide a platform for the credentialed crowd-sourcing of scientific records and publications without requiring underlying data resources to manage additional unstructured data.
@@ -10,7 +13,7 @@ Use cases include:
 
 Annotations should follow the [WC3 Web Annotation](https://www.w3.org/TR/annotation-model/) protocols and follow a model that supports API first development.  As such, this database is in fact composed of two distinct elements, a database, built using `neo4j`, and an API built using node/express.
 
-This repository contains the raw code for the `neo4j` Docker container, test data for populating the database, database scripts for the database schema and constraints, and helper cypher scripts.
+This repository contains the raw code for the `neo4j` database, test data for populating the database, database scripts for the database schema and constraints, and helper cypher scripts.
 
 ## Contributions
 
@@ -20,7 +23,7 @@ This repository contains the raw code for the `neo4j` Docker container, test dat
 
 ## Setting up docker
 
-Setting up Docker followed the [instructions posted by Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for Ubuntu.
+CURRENTLY UNIMPLEMENTED - Setting up Docker followed the [instructions posted by Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for Ubuntu.
 
 ## Using this Repository
 

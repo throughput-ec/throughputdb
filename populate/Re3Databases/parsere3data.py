@@ -19,7 +19,7 @@ Please ensure that this file is included in the .gitignore file.
 
 from py2neo import Graph
 import json
-from parsere3 import parsere3
+from func import parsere3
 
 repositories = parsere3("https://www.re3data.org/api/v1/repositories")
 repositories = repositories.get('list').get('repository')
