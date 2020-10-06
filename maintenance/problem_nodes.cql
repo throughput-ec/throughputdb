@@ -1,5 +1,4 @@
 // Missing objects in the graph:
-
 MATCH (a:ANNOTATION)-[]-(:MOTIVATION)
 WHERE NOT (a)-[]-(:OBJECT)
 RETURN COUNT(a)
@@ -34,3 +33,8 @@ WITH a
 MATCH (a)-[b]-(a)
 RETURN a, b
 LIMIT 5
+
+// URLs that don't use https.
+MATCH (o:OBJECT)-[:isType]->(:TYPE {type:'schema:CodeRepository'})
+WHERE NOT o.url CONTAINS('https')
+RETURN COUNT(o)

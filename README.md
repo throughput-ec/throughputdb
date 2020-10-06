@@ -58,3 +58,17 @@ Currently there are two sets of external data that can be added to a new instanc
 ![](images/euro_data_portal.png)
 
 As the graph fills we can use progressively more powerful search tools to access data, data resources and understand connections within the annotation database.
+
+## Loading Data Locally
+
+A small version of the database can be accessed [here]().
+
+To import the data into neo4j you must have the following:
+* APOC must be installed locally (within the plugins folder for your neo4j installation)
+  * With the installation of neo4j v4.1+ the (core) APOC plugin can be found within the `labs` folder (`/var/lib/neo4j/labs` on linux)
+  * Simply copy the file from the `labs` folder to the `plugins` folder and restart the server.
+  * **NOTE** If you'd like more APOC functionality you may want to get a copy from the [APOC releases page](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases).
+* The neo4j configuration file (`/etc/neo4j/neo4j.conf`) must be configured to allow file imports & the use of `apoc` procedures:
+  * `dbms.security.procedures.whitelist=apoc.coll.*,apoc.load.*`
+  * `dbms.security.procedures.unrestricted=apoc.*`
+  * `apoc.import.file.enabled=true`
