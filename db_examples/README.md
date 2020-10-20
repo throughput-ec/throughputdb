@@ -76,55 +76,65 @@ MATCH (odc:dataCat)
 MATCH (kw:KEYWORD)
 MATCH (odc)<-[:Target]-(:ANNOTATION)-[:hasKeyword]->(kw)
 RETURN DISTINCT odc, COLLECT(kw) AS keywords
+LIMIT 10
 ```
 
 # Find Linked Code and Data Repositories
 
-## One Code Repo, one Database
+## One Code Repo per Row, Multiple Databases
 
-This query returns all data repositories linked to a single research database.
+This query returns all data repositories linked to each code repository. We create and unwind `dbs` because there are instances when (it appears) a database is connected to a code repository multiple times.
 
 ```coffee
 MATCH (ocr:codeRepo)
 MATCH (odb:dataCat)
-MATCH (ocr)<-[:Target]-(:ANNOTATION)-[:Target]-(odb)
+MATCH (ocr)<-[:Target]-(:ANNOTATION)-[:Target]->(odb)
 WITH DISTINCT ocr.name AS repo, ocr.description AS desc, COLLECT([odb.name, odb.description]) AS dbs
 UNWIND dbs AS x
 RETURN repo, desc, COLLECT(DISTINCT x) AS dbs, COUNT(DISTINCT x) AS n
 ORDER BY n DESC
+LIMIT 10
 ```
 
-# Match a specific Database:
+# Match Code Repos Connected to a Specific Database (graphs):
+
+Here we're looking for code repositories connected to a specific database (identified using its name), and returning the graph as an object in the browser.
 
 ```coffee
-MATCH p=(:TYPE {type:"schema:DataCatalog"})-[:isType]-(odc:OBJECT)-[]-(:ANNOTATION)-[]-()-[:isType]-(d:TYPE)
+MATCH (odb:dataCat)
 WHERE odc.name STARTS WITH "Neotoma"
+WITH odb
+MATCH p=(odb)-[]-(:ANNOTATION)-[]-(:codeRepo)
 RETURN p
+LIMIT 10
 ```
 
 # Return GitHub Users. Sort by number of linked repositories
 
 ```coffee
-MATCH p=(:TYPE {type:"schema:CodeRepository"})-[:isType]-(odc:OBJECT)
-WITH SPLIT(odc.name, "/")[0] AS users
+MATCH (ocr:codeRepo)
+WITH SPLIT(ocr.name, "/")[0] AS users
 RETURN DISTINCT users, COUNT(users) AS n
 ORDER BY n DESC
+LIMIT 10
 ```
 
 # How many different resources is a user associated with?
 
 ```coffee
-MATCH p=(ocr:OBJECT)-[]-(:ANNOTATION)-[]-(obc:OBJECT)-[:isType]-(:TYPE {type:"schema:DataCatalog"})
-WITH SPLIT(ocr.name, "/")[0] AS owner, COUNT(DISTINCT obc.name) AS n, COLLECT(DISTINCT obc.name) AS resources
+MATCH (ocr:codeRepo)
+MATCH (odb:dataCat)
+WITH SPLIT(ocr.name, "/")[0] AS owner, COUNT(DISTINCT odb.name) AS n, COLLECT(DISTINCT odb.name) AS resources
 WHERE n > 3
 RETURN owner, n, resources
 ORDER BY n DESC, resources[0]
+LIMIT 10
 ```
 
-# Match a specific repository:
+# Match a Specific Repository and Visualize All `OBJECT` Links
 
 ```coffee
-MATCH p=(:TYPE {type:"schema:CodeRepository"})-[:isType]-(ocr:OBJECT)-[]-(:ANNOTATION)-[]-()-[:isType]-(d:TYPE)
+MATCH p=(ocr:codeRepo)-[]-(:ANNOTATION)-[]-()-[:isType]-(:TYPE)
 WHERE ocr.name = "jansergithub/awesome-public-datasets"
 RETURN p
 ```
