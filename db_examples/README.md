@@ -6,7 +6,7 @@ The actual concept is that an object can be one of many types. We have types for
 
 Splitting the match into two lines (first matching `TYPE` and then matching the linked `OBJECT`) helps the query planner optimize more easily since there are few `TYPE` nodes.
 
-```cypher
+```coffee
 MATCH (crt:TYPE {type:"schema:CodeRepository"})
 MATCH (crt)<-[:isType]-(ocr:OBJECT)
 RETURN COUNT(DISTINCT ocr)
@@ -14,7 +14,7 @@ RETURN COUNT(DISTINCT ocr)
 
 ## Optimized Match
 
-```cypher
+```coffee
 MATCH (ocr:codeRep)
 RETURN COUNT(DISTINCT ocr)
 ```
@@ -23,14 +23,14 @@ RETURN COUNT(DISTINCT ocr)
 
 Similar to the last match, we can optimize the following:
 
-```
+```coffee
 MATCH (:TYPE {type:"schema:DataCatalog"})-[:isType]-(odc:OBJECT)
 RETURN COUNT(DISTINCT odc)
 ```
 
 Using:
 
-```
+```coffee
 MATCH (odc:dataCat)
 RETURN COUNT(DISTINCT odc)
 ```
@@ -43,7 +43,7 @@ We'll use the optimized labels here. We're splitting up the matches to help the 
 
 ### Distinct Keywords
 
-```
+```coffee
 MATCH (odc:dataCat)
 MATCH (kw:KEYWORD)
 MATCH (odc)-[:hasKeyword]->(kw)
@@ -52,7 +52,7 @@ RETURN DISTINCT kw
 
 ### Distinct Keywords with Counts
 
-```
+```coffee
 MATCH (odc:dataCat)
 MATCH (kw:KEYWORD)
 MATCH (odc)-[:hasKeyword]->(kw)
@@ -62,7 +62,9 @@ ORDER BY dbs DESC
 
 ### Keywords Collected by Database
 
-```
+You could replace `dataCat` with `codeRep` to get the keywords associated with code repositories.
+
+```coffee
 MATCH (odc:dataCat)
 MATCH (kw:KEYWORD)
 MATCH (odc)-[:hasKeyword]->(kw)
@@ -71,17 +73,15 @@ RETURN DISTINCT odc, COLLECT(kw) AS keywords
 
 # Find Linked Code and Data Repositories
 
-This query returns all data repositories linked to multiple research databases.
+This query returns all data repositories linked to a research databases.
 
 ```coffee
-MATCH (:TYPE {type:"schema:CodeRepository"})-[:isType]-(ocr:OBJECT)
-WITH ocr
-MATCH p=(:TYPE {type:"schema:DataCatalog"})-[:isType]-(odc_a:OBJECT)-[:Target]-(:ANNOTATION)-[:Target]-(ocr)-[:Target]-(:ANNOTATION)-[:Target]-(odc_b:OBJECT)-[:isType]-(:TYPE {type:"schema:DataCatalog"})
-WHERE odc_a <> odc_b
-WITH DISTINCT ocr.name AS repo, ocr.description AS desc, COLLECT([odc_a.name, odc_b.name]) AS dbs
+MATCH (ocr:codeRep)
+MATCH (odb:dataCat)
+MATCH p=(ocr)<-[:Target]-(:ANNOTATION)-[:Target]-(odb)
+WITH DISTINCT ocr.name AS repo, ocr.description AS desc, COLLECT([odb.name, odb.description]) AS dbs
 UNWIND dbs AS x
-UNWIND x AS y
-RETURN repo, desc, COLLECT(DISTINCT y) AS dbs, COUNT(DISTINCT y) AS n
+RETURN repo, desc, COLLECT(DISTINCT x) AS dbs, COUNT(DISTINCT x) AS n
 ORDER BY n DESC
 ```
 
