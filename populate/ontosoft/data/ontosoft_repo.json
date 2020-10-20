@@ -1,0 +1,34 @@
+[{
+    "potal": "CSDMS",
+    "url": "http://csdms.ontosoft.org/repository/software"
+  },
+  {
+    "potal": "C4P",
+    "url": "http://c4p.ontosoft.org/repository/software"
+  },
+  {
+    "potal": "Geospace",
+    "url",
+    "http://geospace.ontosoft.org/repository/software"
+  },
+  {
+    "potal": "USGS",
+    "url": "http://usgs.ontosoft.org/repository/software"
+  },
+  {
+    "potal": "CRESCYNT",
+    "url": "http://coral.ontosoft.org/repository/software"
+  },
+  {
+    "potal": "OMICS",
+    "url": "http://omics.ontosoft.org/repository/software"
+  },
+  {
+    "potal": "IS-GEO",
+    "url": "http://is-geo.ontosoft.org/repository/software"
+  },
+  {
+    "potal": "Main Portal",
+    "url": "http://ontosoft.org/repository/software"
+  }
+]
