@@ -15,20 +15,21 @@ RETURN COUNT(DISTINCT ocr)
 ## Optimized Match
 
 ```coffee
-MATCH (ocr:codeRep)
+MATCH (ocr:codeRepo)
+RETURN COUNT(DISTINCT ocr)
+```
+
+## Optimized Match by Repository Description
+
+```coffee
+MATCH (ocr:codeRepo)
+WHERE tolower(ocr.description) CONTAINS ('python')
 RETURN COUNT(DISTINCT ocr)
 ```
 
 # How many Data Catalogs are in the Database
 
 Similar to the last match, we can optimize the following:
-
-```coffee
-MATCH (:TYPE {type:"schema:DataCatalog"})-[:isType]-(odc:OBJECT)
-RETURN COUNT(DISTINCT odc)
-```
-
-Using:
 
 ```coffee
 MATCH (odc:dataCat)
@@ -43,42 +44,50 @@ We'll use the optimized labels here. We're splitting up the matches to help the 
 
 ### Distinct Keywords
 
+A keyword is connected to an `OBJECT` node by an annotation, with the relationship `hasKeyword`. We can look at all keywords (limited here to the first 10). Here we're just looking at data catalogs, but we could switch `dataCat` for `OBJECT` which would also include keywords associated with journal articles and code repositories.
+
 ```coffee
 MATCH (odc:dataCat)
 MATCH (kw:KEYWORD)
-MATCH (odc)-[:hasKeyword]->(kw)
+MATCH (odc)<-[:Target]-(:ANNOTATION)-[:hasKeyword]->(kw)
 RETURN DISTINCT kw
+LIMIT 10
 ```
 
 ### Distinct Keywords with Counts
 
+This list is ordered by the number of times a keyword is linked.
+
 ```coffee
 MATCH (odc:dataCat)
 MATCH (kw:KEYWORD)
-MATCH (odc)-[:hasKeyword]->(kw)
+MATCH (odc)<-[:Target]-(:ANNOTATION)-[:hasKeyword]->(kw)
 RETURN DISTINCT kw, COUNT(odc) AS dbs
 ORDER BY dbs DESC
+LIMIT 10
 ```
 
 ### Keywords Collected by Database
 
-You could replace `dataCat` with `codeRep` to get the keywords associated with code repositories.
+You could replace `dataCat` with `codeRep` to get the keywords associated with code repositories, or you could use `OBJECT` for all objects with keywords.
 
 ```coffee
 MATCH (odc:dataCat)
 MATCH (kw:KEYWORD)
-MATCH (odc)-[:hasKeyword]->(kw)
+MATCH (odc)<-[:Target]-(:ANNOTATION)-[:hasKeyword]->(kw)
 RETURN DISTINCT odc, COLLECT(kw) AS keywords
 ```
 
 # Find Linked Code and Data Repositories
 
-This query returns all data repositories linked to a research databases.
+## One Code Repo, one Database
+
+This query returns all data repositories linked to a single research database.
 
 ```coffee
-MATCH (ocr:codeRep)
+MATCH (ocr:codeRepo)
 MATCH (odb:dataCat)
-MATCH p=(ocr)<-[:Target]-(:ANNOTATION)-[:Target]-(odb)
+MATCH (ocr)<-[:Target]-(:ANNOTATION)-[:Target]-(odb)
 WITH DISTINCT ocr.name AS repo, ocr.description AS desc, COLLECT([odb.name, odb.description]) AS dbs
 UNWIND dbs AS x
 RETURN repo, desc, COLLECT(DISTINCT x) AS dbs, COUNT(DISTINCT x) AS n
@@ -105,7 +114,7 @@ ORDER BY n DESC
 # How many different resources is a user associated with?
 
 ```coffee
-MATCH p=(:TYPE {type:"schema:CodeRepository"})-[:isType]-(ocr:OBJECT)-[]-(:ANNOTATION)-[]-(obc:OBJECT)-[:isType]-(:TYPE {type:"schema:DataCatalog"})
+MATCH p=(ocr:OBJECT)-[]-(:ANNOTATION)-[]-(obc:OBJECT)-[:isType]-(:TYPE {type:"schema:DataCatalog"})
 WITH SPLIT(ocr.name, "/")[0] AS owner, COUNT(DISTINCT obc.name) AS n, COLLECT(DISTINCT obc.name) AS resources
 WHERE n > 3
 RETURN owner, n, resources
