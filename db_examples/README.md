@@ -6,7 +6,7 @@ The actual concept is that an object can be one of many types. We have types for
 
 Splitting the match into two lines (first matching `TYPE` and then matching the linked `OBJECT`) helps the query planner optimize more easily since there are few `TYPE` nodes.
 
-```
+```cypher
 MATCH (crt:TYPE {type:"schema:CodeRepository"})
 MATCH (crt)<-[:isType]-(ocr:OBJECT)
 RETURN COUNT(DISTINCT ocr)
@@ -14,25 +14,59 @@ RETURN COUNT(DISTINCT ocr)
 
 ## Optimized Match
 
-```
+```cypher
 MATCH (ocr:codeRep)
 RETURN COUNT(DISTINCT ocr)
 ```
 
 # How many Data Catalogs are in the Database
 
+Similar to the last match, we can optimize the following:
+
 ```
 MATCH (:TYPE {type:"schema:DataCatalog"})-[:isType]-(odc:OBJECT)
 RETURN COUNT(DISTINCT odc)
 ```
 
-# What Distinct Keywords have been Linked
+Using:
 
 ```
-MATCH (:TYPE {type: "schema:DataCatalog"})-[:isType]-(ob:OBJECT)
-UNWIND SPLIT(ob.keywords, ",") AS uwky
-WITH toLower(TRIM(uwky)) AS keywords
-RETURN DISTINCT keywords
+MATCH (odc:dataCat)
+RETURN COUNT(DISTINCT odc)
+```
+
+# Keywords
+
+## Keywords Linked to Data Catalogs
+
+We'll use the optimized labels here. We're splitting up the matches to help the optimizer, and we're using only keywords associated with the data catalogs.
+
+### Distinct Keywords
+
+```
+MATCH (odc:dataCat)
+MATCH (kw:KEYWORD)
+MATCH (odc)-[:hasKeyword]->(kw)
+RETURN DISTINCT kw
+```
+
+### Distinct Keywords with Counts
+
+```
+MATCH (odc:dataCat)
+MATCH (kw:KEYWORD)
+MATCH (odc)-[:hasKeyword]->(kw)
+RETURN DISTINCT kw, COUNT(odc) AS dbs
+ORDER BY dbs DESC
+```
+
+### Keywords Collected by Database
+
+```
+MATCH (odc:dataCat)
+MATCH (kw:KEYWORD)
+MATCH (odc)-[:hasKeyword]->(kw)
+RETURN DISTINCT odc, COLLECT(kw) AS keywords
 ```
 
 # Find Linked Code and Data Repositories
