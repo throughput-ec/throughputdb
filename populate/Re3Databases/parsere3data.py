@@ -19,7 +19,7 @@ Please ensure that this file is included in the .gitignore file.
 
 from py2neo import Graph
 import json
-from func import parsere3
+from func.parsere3 import parsere3
 
 repositories = parsere3("https://www.re3data.org/api/v1/repositories")
 repositories = repositories.get('list').get('repository')
@@ -37,10 +37,10 @@ if good is False:
     print("The connect_remote.json file is not in your .gitignore file. \
            Please add it!")
 
-with open('../connect_remote.json') as f:
+with open('./connect_remote.json') as f:
     data = json.load(f)
 
-graph = Graph(**data[1])
+graph = Graph(**data)
 
 tx = graph.begin()
 
