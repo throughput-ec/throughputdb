@@ -46,38 +46,43 @@ graph = Graph(**data)
 tx = graph.begin()
 
 re3api_short = "https://www.re3data.org/api/beta/repository/"
-kws = set()
 
 nodes = []
 
 for repo in repositories:
     print("Working on " + str(repo['name']))
-    uri = "https://www.re3data.org/api/beta/repository/" + repo['id']
-    repodata = parsere3(uri)['r3d:re3data']['r3d:repository']
-    subjects = map(lambda x:
-        {
-            'scheme': x.get('@subjectScheme'),
-            'subject': {'subjectid': int(re.match(r'\d+', x.get('#text'))[0]),
-                        'subject': re.match(r'(?:\d*\s)([A-Za-z].*)', x.get('#text'))[1]
-                        }
+    check = graph.run("""
+        MATCH (dc:dataCat {id: $id})
+        WHERE (:SUBJECT)<-[:hasSubject]-(:ANNOTATION)-[:Target]->(dc)
+        RETURN dc""", {'id': repo['id']}).data()
+    if len(check) > 0:
+        print("Skipped " + str(repo['name']))
+    if len(check) == 0:
+        uri = "https://www.re3data.org/api/beta/repository/" + repo['id']
+        repodata = parsere3(uri)['r3d:re3data']['r3d:repository']
+        if 'r3d:subject' in list(repodata):
+            if type(repodata.get('r3d:subject')) is list:
+                subjects = map(lambda x: {
+                        'scheme': x.get('@subjectScheme'),
+                        'subject': {'subjectid': int(re.match(r'\d+',
+                                                     x.get('#text'))[0]),
+                                    'subject': re.match(r'(?:\d*\s)([A-Za-z].*)',
+                                                        x.get('#text'))[1]
+                                    }
                     }, repodata.get('r3d:subject'))
-    node = {'id': repo.get('id'),
-            'subjects': subjects,
-            'contact': repodata.get('r3d:repositoryContact')}
-    nodes.append(node)
-
-
-    node = {key: ''
-            if value is None else value for (key, value) in node.items()}
-    if isinstance(node['keywords'], str):
-        node['keywords'] = [node['keywords']]
-    if isinstance(node['languages'], str):
-        node['languages'] = [node['languages']]
-    kws.update(node['keywords'])
-    with open("cql/linkdbs.cql") as linker:
-        silent = graph.run(linker.read(), node)
-    with open("cql/addkeywords.cql") as keyworder:
-        print(node['keywords'])
-        silent = graph.run(keyworder.read(), node)
-    with open("cql/addlanguage.cql") as langer:
-        silent = graph.run(langer.read(), node)
+            else:
+                x = repodata.get('r3d:subject')
+                subjects = [{
+                    'scheme': x.get('@subjectScheme'),
+                    'subject': {'subjectid': int(re.match(r'\d+',
+                                                          x.get('#text'))[0]),
+                                'subject': re.match(r'(?:\d*\s)([A-Za-z].*)',
+                                                    x.get('#text'))[1]
+                                }
+                            }]
+            node = {'id': repo.get('id'),
+                    'subjects': list(subjects),
+                    'contact': repodata.get('r3d:repositoryContact')}
+            with open("cql/addSubjects.cql") as linker:
+                silent = graph.run(linker.read(), node)
+            nodes.append(node)
