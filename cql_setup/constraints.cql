@@ -13,3 +13,5 @@ CREATE CONSTRAINT ON (o:OBJECT) ASSERT o.AwardID IS UNIQUE;
 CREATE INDEX otherid FOR (o:OBJECT) ON (o.id);
 
 CREATE INDEX objname FOR (o:OBJECT) ON (o.name);
+
+CALL db.index.fulltext.createNodeIndex("namesAndDescriptions",["OBJECT"],["name", "description"])

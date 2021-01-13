@@ -14,6 +14,8 @@ RETURN COUNT(DISTINCT odc)
 
 ## What Distinct Keywords have been Linked
 
+No longer supported.
+
 ```
 MATCH (:TYPE {type: "schema:DataCatalog"})-[:isType]-(ob:OBJECT)
 UNWIND SPLIT(ob.keywords, ",") AS uwky
@@ -70,4 +72,18 @@ ORDER BY n DESC, resources[0]
 MATCH p=(:TYPE {type:"schema:CodeRepository"})-[:isType]-(ocr:OBJECT)-[]-(:ANNOTATION)-[]-()-[:isType]-(d:TYPE)
 WHERE ocr.name = "jansergithub/awesome-public-datasets"
 RETURN p
+```
+
+## Match all Databases with their code repositories by keyword.
+
+```coffeescript
+MATCH (kw:KEYWORD)
+WHERE kw.keyword =~ '(earth)|(paleo)|(space)'
+WITH kw
+MATCH (db:dataCat)<-[:Body]-(:ANNOTATION)-[:hasKeyword]->(kw)
+MATCH (db)<-[:Body]-(:ANNOTATION)-[:hasKeyword]->(allkws:KEYWORD)
+MATCH (cr:codeRepo)<-[:Target]-(:ANNOTATION)-[:Target]->(db)
+RETURN DISTINCT db.name AS name, COUNT(DISTINCT cr.url) AS repos, COLLECT(DISTINCT allkws.keyword) AS keywords
+ORDER BY repos DESC
+LIMIT 5
 ```
